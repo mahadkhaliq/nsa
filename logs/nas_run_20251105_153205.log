@@ -1,0 +1,40 @@
+2025-11-05 15:32:05 [INFO] ======================================================================
+2025-11-05 15:32:05 [INFO] NAS with Approximate Multipliers - Started
+2025-11-05 15:32:05 [INFO] Log file: logs/nas_run_20251105_153205.log
+2025-11-05 15:32:05 [INFO] ======================================================================
+2025-11-05 15:32:10 [INFO] 
+======================================================================
+2025-11-05 15:32:10 [INFO] STEP 1: NAS with STANDARD multipliers
+2025-11-05 15:32:10 [INFO] ======================================================================
+2025-11-05 15:32:10 [INFO] Starting NAS: STANDARD
+
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined
+2025-11-05 15:32:10 [INFO]   ✗ Failed: name 'FakeApproxConv2D' is not defined

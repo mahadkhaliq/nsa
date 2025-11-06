@@ -1,0 +1,40 @@
+2025-11-06 09:46:23 [INFO] ======================================================================
+2025-11-06 09:46:23 [INFO] NAS with Approximate Multipliers - Started
+2025-11-06 09:46:23 [INFO] Log file: logs/nas_run_20251106_094623.log
+2025-11-06 09:46:23 [INFO] ======================================================================
+2025-11-06 09:46:24 [INFO] 
+======================================================================
+2025-11-06 09:46:24 [INFO] STEP 1: NAS with STANDARD multipliers
+2025-11-06 09:46:24 [INFO] ======================================================================
+2025-11-06 09:46:24 [INFO] Starting NAS: STANDARD
+
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_1 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_2 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_3 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_4 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_5 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_6 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_7 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_8 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_9 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_10 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_11 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_12 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_13 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_14 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_15 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_16 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_17 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_18 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_19 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_20 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_21 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_22 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:25 [INFO]   ✗ Failed: Error when checking input: expected input_23 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:26 [INFO]   ✗ Failed: Error when checking input: expected input_24 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:26 [INFO]   ✗ Failed: Error when checking input: expected input_25 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:26 [INFO]   ✗ Failed: Error when checking input: expected input_26 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:26 [INFO]   ✗ Failed: Error when checking input: expected input_27 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:26 [INFO]   ✗ Failed: Error when checking input: expected input_28 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:26 [INFO]   ✗ Failed: Error when checking input: expected input_29 to have shape (28, 28, 1) but got array with shape (32, 32, 3)
+2025-11-06 09:46:26 [INFO]   ✗ Failed: Error when checking input: expected input_30 to have shape (28, 28, 1) but got array with shape (32, 32, 3)

@@ -1,0 +1,15 @@
+{
+  "start_time": "20251105_142110",
+  "nas_results": [
+    {
+      "trial": 1,
+      "architecture": [
+        {
+          "op": "avg_pool",
+          "filters": 128,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 64,
+          "use_bn": 

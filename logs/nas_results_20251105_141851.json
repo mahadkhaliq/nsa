@@ -1,0 +1,9 @@
+{
+  "start_time": "20251105_141851",
+  "nas_results": [
+    {
+      "trial": 1,
+      "architecture": [
+        {
+          "op": "conv3x3",
+          "filters": 

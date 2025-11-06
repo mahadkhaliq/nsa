@@ -1,0 +1,40 @@
+2025-11-05 16:03:20 [INFO] ======================================================================
+2025-11-05 16:03:20 [INFO] NAS with Approximate Multipliers - Started
+2025-11-05 16:03:20 [INFO] Log file: logs/nas_run_20251105_160320.log
+2025-11-05 16:03:20 [INFO] ======================================================================
+2025-11-05 16:03:20 [INFO] 
+======================================================================
+2025-11-05 16:03:20 [INFO] STEP 1: NAS with STANDARD multipliers
+2025-11-05 16:03:20 [INFO] ======================================================================
+2025-11-05 16:03:20 [INFO] Starting NAS: STANDARD
+
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_1 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_2 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_3 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_4 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_5 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_6 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_7 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_8 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_9 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_10 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_11 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_12 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_13 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_14 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_15 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:21 [INFO]   ✗ Failed: Error when checking input: expected input_16 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_17 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_18 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_19 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_20 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_21 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_22 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_23 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_24 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_25 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_26 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_27 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_28 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_29 to have 4 dimensions, but got array with shape (5000, 28, 28)
+2025-11-05 16:03:22 [INFO]   ✗ Failed: Error when checking input: expected input_30 to have 4 dimensions, but got array with shape (5000, 28, 28)
