@@ -64,13 +64,13 @@ def conv1x1_standard(filters, use_bn=False):
         layers.append(keras.layers.BatchNormalization())
     return layers
 
-# Depthwise Separable Convolutions (efficient!)
-def depthwise_sep_standard(filters, use_bn=False):
-    layers = []
-    layers.append(keras.layers.SeparableConv2D(filters, 3, padding='same', activation='relu'))
-    if use_bn:
-        layers.append(keras.layers.BatchNormalization())
-    return layers
+# # Depthwise Separable Convolutions (efficient!)
+# def depthwise_sep_standard(filters, use_bn=False):
+#     layers = []
+#     layers.append(keras.layers.SeparableConv2D(filters, 3, padding='same', activation='relu'))
+#     if use_bn:
+#         layers.append(keras.layers.BatchNormalization())
+#     return layers
 
 # Identity (skip connection)
 def identity(filters):
@@ -123,7 +123,7 @@ def get_search_space(use_approximate=False, mul_map_file='', include_advanced=Tr
         if include_advanced:
             base_space.update({
                 'conv1x1': conv1x1_standard,
-                'depthwise_sep': depthwise_sep_standard,
+                # 'depthwise_sep': depthwise_sep_standard, causing problem for the multiplier
                 'identity': identity,
             })
     
