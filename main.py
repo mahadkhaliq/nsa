@@ -144,7 +144,7 @@ def main():
                                input_shape=(height, width, channels), 
                                num_classes=num_classes)
         train_model(model_std, x_train, y_train, x_val, y_val, 
-                   epochs=10, batch_size=args.batch_size, verbose=0)
+                   epochs=10, batch_size=args.batch_size, verbose=1)
         quick_acc = evaluate_model(model_std, x_val, y_val)
         logger.log(f"Quick evaluation accuracy: {quick_acc:.4f}")
         
