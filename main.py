@@ -29,7 +29,7 @@ def parse_args():
                        help='Number of validation samples')
     
     # NAS parameters
-    parser.add_argument('--nas_trials', type=int, default=20,
+    parser.add_argument('--nas_trials', type=int, default=50,
                        help='Number of NAS trials')
     parser.add_argument('--nas_blocks', type=int, default=4,
                        help='Number of blocks in architecture')
