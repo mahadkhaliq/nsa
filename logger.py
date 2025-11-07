@@ -179,3 +179,48 @@ class NASLogger:
         self.logger.info("NAS Run Completed")
         self.logger.info(f"Log file: {self.log_file}")
         self.logger.info("="*70)
+
+
+def log_training_curves(self, history, output_dir, model_name='best_model'):
+    """Save training curves as images"""
+    os.makedirs(output_dir, exist_ok=True)
+    
+    epochs = range(1, len(history.history['accuracy']) + 1)
+    
+    # Plot accuracy
+    plt.figure(figsize=(12, 5))
+    
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs, history.history['accuracy'], 'b-', label='Training', linewidth=2)
+    plt.plot(epochs, history.history['val_accuracy'], 'r-', label='Validation', linewidth=2)
+    plt.xlabel('Epoch')
+    plt.ylabel('Accuracy')
+    plt.title(f'{model_name} - Accuracy')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    
+    # Plot loss
+    plt.subplot(1, 2, 2)
+    plt.plot(epochs, history.history['loss'], 'b-', label='Training', linewidth=2)
+    plt.plot(epochs, history.history['val_loss'], 'r-', label='Validation', linewidth=2)
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.title(f'{model_name} - Loss')
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_dir, f'{model_name}_training_curves.png'), dpi=150)
+    plt.close()
+    
+    # Save history as JSON
+    history_dict = {
+        'epochs': len(epochs),
+        'accuracy': [float(x) for x in history.history['accuracy']],
+        'val_accuracy': [float(x) for x in history.history['val_accuracy']],
+        'loss': [float(x) for x in history.history['loss']],
+        'val_loss': [float(x) for x in history.history['val_loss']]
+    }
+    
+    with open(os.path.join(output_dir, f'{model_name}_history.json'), 'w') as f:
+        json.dump(history_dict, f, indent=2)
