@@ -1,6 +1,11 @@
+"""
+Main script for Neural Architecture Search with Approximate Multipliers
+Supports evolutionary and random search, tracks model complexity, and tests multiple multipliers
+"""
+
 from tensorflow import keras
 from nas import run_nas
-from model_builder import build_model
+from model_builder import build_model, count_model_params, estimate_flops
 from operations import get_search_space
 from training import evaluate_model, train_model
 from logger import NASLogger
@@ -8,130 +13,350 @@ import numpy as np
 from dataloader import load_dataset
 import os
 import glob
+import argparse
 
-# Initialize logger
-logger = NASLogger(log_dir='logs')
-
-# Load dataset
-x_train, y_train, x_val, y_val, x_test, y_test = load_dataset('cifar10', num_val=6000)
-
-# ✅ FIX: Properly handle image dimensions
-if x_train.ndim == 3:  # Grayscale images (H, W)
-    x_train = np.expand_dims(x_train, -1)
-    x_val = np.expand_dims(x_val, -1)
-    x_test = np.expand_dims(x_test, -1)
-
-# ✅ FIX: Extract shape correctly
-height, width, channels = x_train.shape[1], x_train.shape[2], x_train.shape[3]
-num_classes = len(np.unique(y_train))
-
-logger.log(f"Dataset: CIFAR-10")
-logger.log(f"Input shape: ({height}, {width}, {channels})")
-logger.log(f"Number of classes: {num_classes}")
-logger.log(f"Training samples: {len(x_train)}")
-
-# Use subset for faster experimentation
-x_train = x_train[:5000]
-y_train = y_train[:5000]
-x_val = x_val[:1000]
-y_val = y_val[:1000]
-
-logger.log_section("STEP 1: NAS with STANDARD multipliers")
-results_std, best_std = run_nas(
-    x_train, y_train, x_val, y_val,
-    num_trials=10,
-    num_blocks=2,
-    use_approximate=False,
-    logger=logger,
-    input_shape=(height, width, channels),  # ✅ Pass shape
-    num_classes=num_classes
-)
-
-logger.log_section("STEP 2: Train BEST architecture")
-logger.log(f"Best Architecture: {best_std['architecture']}")
-
-search_space_std = get_search_space(use_approximate=False)
-model_std = build_model(
-    best_std['architecture'], 
-    search_space_std, 
-    input_shape=(height, width, channels),  # ✅ Correct shape
-    num_classes=num_classes
-)
-
-logger.log("Training standard model...")
-train_model(model_std, x_train, y_train, x_val, y_val, epochs=50)
-
-std_accuracy = evaluate_model(model_std, x_val, y_val)
-logger.log_training(epochs=50, std_accuracy=std_accuracy)
-logger.log_best_architecture(best_std['architecture'], std_accuracy)
-
-trained_weights = model_std.get_weights()
-
-logger.log_section("STEP 3: Test with DIFFERENT APPROXIMATE MULTIPLIERS")
-
-multiplier_dir = './multipliers'
-multiplier_files = sorted(glob.glob(os.path.join(multiplier_dir, '*.bin')))
-
-if not multiplier_files:
-    logger.log(f"⚠ No .bin files found in {multiplier_dir}")
-    logger.log("Testing with empty mul_map_file (baseline approximation)...")
-    multiplier_files = ['']
-
-logger.log(f"Found {len(multiplier_files)} multipliers to test\n")
-
-approx_results = []
-
-for mul_file in multiplier_files:
-    mul_name = os.path.basename(mul_file) if mul_file else 'BASELINE'
+def parse_args():
+    """Parse command line arguments"""
+    parser = argparse.ArgumentParser(description='NAS with Approximate Computing')
     
-    search_space_approx = get_search_space(use_approximate=True, mul_map_file=mul_file)
-    model_approx = build_model(
+    # Dataset
+    parser.add_argument('--dataset', type=str, default='cifar10',
+                       choices=['mnist', 'cifar10', 'cifar100', 'fashion_mnist'],
+                       help='Dataset to use')
+    parser.add_argument('--train_samples', type=int, default=5000,
+                       help='Number of training samples')
+    parser.add_argument('--val_samples', type=int, default=1000,
+                       help='Number of validation samples')
+    
+    # NAS parameters
+    parser.add_argument('--nas_trials', type=int, default=20,
+                       help='Number of NAS trials')
+    parser.add_argument('--nas_blocks', type=int, default=4,
+                       help='Number of blocks in architecture')
+    parser.add_argument('--nas_method', type=str, default='evolutionary',
+                       choices=['random', 'evolutionary'],
+                       help='NAS search method')
+    parser.add_argument('--skip_nas', action='store_true',
+                       help='Skip NAS and use predefined architecture')
+    
+    # Training parameters
+    parser.add_argument('--epochs', type=int, default=50,
+                       help='Training epochs for final model')
+    parser.add_argument('--batch_size', type=int, default=128,
+                       help='Batch size for training')
+    
+    # Multiplier testing
+    parser.add_argument('--multiplier_dir', type=str, default='./multipliers',
+                       help='Directory containing .bin multiplier files')
+    parser.add_argument('--skip_multipliers', action='store_true',
+                       help='Skip multiplier testing')
+    
+    # Output
+    parser.add_argument('--log_dir', type=str, default='logs',
+                       help='Directory for logs')
+    
+    return parser.parse_args()
+
+def get_predefined_architecture(dataset):
+    """Get a good predefined architecture for quick testing"""
+    if dataset in ['mnist', 'fashion_mnist']:
+        return [
+            {'op': 'conv3x3', 'filters': 64, 'use_bn': True},
+            {'op': 'max_pool', 'filters': 64, 'use_bn': False},
+            {'op': 'conv5x5', 'filters': 128, 'use_bn': True},
+            {'op': 'conv1x1', 'filters': 64, 'use_bn': False}
+        ]
+    else:  # CIFAR
+        return [
+            {'op': 'conv3x3', 'filters': 64, 'use_bn': True},
+            {'op': 'conv3x3', 'filters': 64, 'use_bn': True},
+            {'op': 'max_pool', 'filters': 64, 'use_bn': False},
+            {'op': 'conv5x5', 'filters': 128, 'use_bn': True},
+            {'op': 'conv1x1', 'filters': 64, 'use_bn': False}
+        ]
+
+def main():
+    args = parse_args()
+    
+    # Initialize logger
+    logger = NASLogger(log_dir=args.log_dir)
+    
+    logger.log("="*70)
+    logger.log("CONFIGURATION")
+    logger.log("="*70)
+    logger.log(f"Dataset: {args.dataset}")
+    logger.log(f"Training samples: {args.train_samples}")
+    logger.log(f"Validation samples: {args.val_samples}")
+    logger.log(f"NAS trials: {args.nas_trials}")
+    logger.log(f"NAS blocks: {args.nas_blocks}")
+    logger.log(f"NAS method: {args.nas_method}")
+    logger.log(f"Training epochs: {args.epochs}")
+    logger.log(f"Multiplier dir: {args.multiplier_dir}")
+    
+    # ========================================================================
+    # STEP 0: Load and Prepare Dataset
+    # ========================================================================
+    logger.log_section("STEP 0: Loading Dataset")
+    
+    x_train, y_train, x_val, y_val, x_test, y_test = load_dataset(
+        args.dataset, 
+        num_val=6000
+    )
+    
+    # Handle grayscale images
+    if x_train.ndim == 3:
+        x_train = np.expand_dims(x_train, -1)
+        x_val = np.expand_dims(x_val, -1)
+        x_test = np.expand_dims(x_test, -1)
+    
+    # Extract shape information
+    height, width, channels = x_train.shape[1], x_train.shape[2], x_train.shape[3]
+    num_classes = len(np.unique(y_train))
+    
+    logger.log(f"Input shape: ({height}, {width}, {channels})")
+    logger.log(f"Number of classes: {num_classes}")
+    logger.log(f"Training samples (full): {len(x_train)}")
+    logger.log(f"Validation samples (full): {len(x_val)}")
+    logger.log(f"Test samples: {len(x_test)}")
+    
+    # Use subset for faster experimentation
+    x_train = x_train[:args.train_samples]
+    y_train = y_train[:args.train_samples]
+    x_val = x_val[:args.val_samples]
+    y_val = y_val[:args.val_samples]
+    
+    logger.log(f"\nUsing subset:")
+    logger.log(f"  Training: {len(x_train)} samples")
+    logger.log(f"  Validation: {len(x_val)} samples")
+    
+    # ========================================================================
+    # STEP 1: Neural Architecture Search
+    # ========================================================================
+    if args.skip_nas:
+        logger.log_section("STEP 1: Using Predefined Architecture (NAS Skipped)")
+        best_architecture = get_predefined_architecture(args.dataset)
+        logger.log(f"Architecture: {best_architecture}")
+        
+        # Quick evaluation
+        search_space_std = get_search_space(use_approximate=False, include_advanced=True)
+        model_std = build_model(best_architecture, search_space_std, 
+                               input_shape=(height, width, channels), 
+                               num_classes=num_classes)
+        train_model(model_std, x_train, y_train, x_val, y_val, epochs=10)
+        quick_acc = evaluate_model(model_std, x_val, y_val)
+        logger.log(f"Quick evaluation accuracy: {quick_acc:.4f}")
+        
+        best_std = {
+            'architecture': best_architecture,
+            'accuracy': quick_acc
+        }
+        results_std = [best_std]
+        
+        del model_std
+        keras.backend.clear_session()
+    else:
+        logger.log_section("STEP 1: Neural Architecture Search")
+        results_std, best_std = run_nas(
+            x_train, y_train, x_val, y_val,
+            num_trials=args.nas_trials,
+            num_blocks=args.nas_blocks,
+            use_approximate=False,
+            logger=logger,
+            input_shape=(height, width, channels),
+            num_classes=num_classes,
+            method=args.nas_method
+        )
+        
+        # Log top 3 architectures
+        logger.log("\nTop 3 Architectures:")
+        sorted_results = sorted(results_std, key=lambda x: x['accuracy'], reverse=True)
+        for i, result in enumerate(sorted_results[:3]):
+            logger.log(f"{i+1}. Accuracy: {result['accuracy']:.4f}")
+            logger.log(f"   {result['architecture']}")
+    
+    # ========================================================================
+    # STEP 2: Train Best Architecture
+    # ========================================================================
+    logger.log_section("STEP 2: Training Best Architecture")
+    logger.log(f"Best Architecture: {best_std['architecture']}")
+    
+    # Build model
+    search_space_std = get_search_space(use_approximate=False, include_advanced=True)
+    model_std = build_model(
         best_std['architecture'], 
-        search_space_approx,
-        input_shape=(height, width, channels),  # ✅ Correct shape
+        search_space_std, 
+        input_shape=(height, width, channels),
         num_classes=num_classes
     )
     
-    try:
-        model_approx.set_weights(trained_weights)
-    except Exception as e:
-        logger.log(f"✗ Failed to copy weights for {mul_name}: {e}")
-        continue
+    # Calculate model complexity
+    params = count_model_params(model_std)
+    flops = estimate_flops(best_std['architecture'], (height, width, channels))
     
-    approx_accuracy = evaluate_model(model_approx, x_val, y_val)
-    accuracy_drop = std_accuracy - approx_accuracy
-    drop_percent = (accuracy_drop / std_accuracy) * 100 if std_accuracy > 0 else 0
+    logger.log(f"\nModel Complexity:")
+    logger.log(f"  Trainable Parameters: {params:,}")
+    logger.log(f"  Estimated FLOPs: {flops:,}")
+    logger.log(f"  Model Size (approx): {params * 4 / (1024**2):.2f} MB (float32)")
     
-    logger.log_multiplier_test(mul_name, approx_accuracy, accuracy_drop, drop_percent)
+    # Train
+    logger.log(f"\nTraining for {args.epochs} epochs...")
+    history = train_model(
+        model_std, x_train, y_train, x_val, y_val, 
+        epochs=args.epochs,
+        batch_size=args.batch_size
+    )
     
-    approx_results.append({
-        'multiplier': mul_name,
-        'file': mul_file,
-        'accuracy': approx_accuracy,
-        'drop': accuracy_drop,
-        'drop_percent': drop_percent
-    })
+    # Evaluate
+    std_accuracy = evaluate_model(model_std, x_val, y_val)
+    logger.log_training(epochs=args.epochs, std_accuracy=std_accuracy)
+    logger.log_best_architecture(best_std['architecture'], std_accuracy)
     
-    del model_approx
+    # Save trained weights
+    trained_weights = model_std.get_weights()
+    
+    # Training summary
+    logger.log(f"\nTraining Summary:")
+    logger.log(f"  Final Training Accuracy: {history.history['accuracy'][-1]:.4f}")
+    logger.log(f"  Final Validation Accuracy: {history.history['val_accuracy'][-1]:.4f}")
+    logger.log(f"  Final Training Loss: {history.history['loss'][-1]:.4f}")
+    logger.log(f"  Final Validation Loss: {history.history['val_loss'][-1]:.4f}")
+    
+    # Check for overfitting
+    train_val_gap = history.history['accuracy'][-1] - history.history['val_accuracy'][-1]
+    if train_val_gap > 0.1:
+        logger.log(f"  ⚠ Warning: Large train-val gap ({train_val_gap:.4f}) suggests overfitting")
+    
+    # ========================================================================
+    # STEP 3: Test with Approximate Multipliers
+    # ========================================================================
+    if args.skip_multipliers:
+        logger.log_section("STEP 3: Multiplier Testing Skipped")
+    else:
+        logger.log_section("STEP 3: Testing Approximate Multipliers")
+        
+        # Find multiplier files
+        multiplier_files = sorted(glob.glob(os.path.join(args.multiplier_dir, '*.bin')))
+        
+        if not multiplier_files:
+            logger.log(f"⚠ No .bin files found in {args.multiplier_dir}")
+            logger.log("Skipping multiplier testing...")
+        else:
+            logger.log(f"Found {len(multiplier_files)} multipliers to test")
+            logger.log(f"Standard model accuracy: {std_accuracy:.4f}\n")
+            
+            approx_results = []
+            
+            for idx, mul_file in enumerate(multiplier_files):
+                mul_name = os.path.basename(mul_file)
+                logger.log(f"[{idx+1}/{len(multiplier_files)}] Testing: {mul_name}")
+                
+                # Build approximate model
+                search_space_approx = get_search_space(
+                    use_approximate=True, 
+                    mul_map_file=mul_file,
+                    include_advanced=True
+                )
+                model_approx = build_model(
+                    best_std['architecture'], 
+                    search_space_approx,
+                    input_shape=(height, width, channels),
+                    num_classes=num_classes
+                )
+                
+                # Copy weights
+                try:
+                    model_approx.set_weights(trained_weights)
+                except Exception as e:
+                    logger.log(f"  ✗ Failed to copy weights: {e}\n")
+                    del model_approx
+                    keras.backend.clear_session()
+                    continue
+                
+                # Evaluate
+                approx_accuracy = evaluate_model(model_approx, x_val, y_val)
+                accuracy_drop = std_accuracy - approx_accuracy
+                drop_percent = (accuracy_drop / std_accuracy) * 100 if std_accuracy > 0 else 0
+                
+                logger.log_multiplier_test(mul_name, approx_accuracy, accuracy_drop, drop_percent)
+                
+                approx_results.append({
+                    'multiplier': mul_name,
+                    'file': mul_file,
+                    'accuracy': approx_accuracy,
+                    'drop': accuracy_drop,
+                    'drop_percent': drop_percent
+                })
+                
+                # Cleanup
+                del model_approx
+                keras.backend.clear_session()
+            
+            # ================================================================
+            # STEP 4: Analysis and Summary
+            # ================================================================
+            logger.log_section("STEP 4: Results Analysis")
+            
+            if approx_results:
+                # Summary statistics
+                logger.log_summary(std_accuracy, approx_results)
+                
+                # Detailed table
+                logger.log(f"\n{'Multiplier':<30} {'Accuracy':<12} {'Drop':<12} {'Drop %':<10}")
+                logger.log("-" * 70)
+                
+                # Sort by accuracy (best to worst)
+                approx_results.sort(key=lambda x: x['accuracy'], reverse=True)
+                
+                for result in approx_results:
+                    logger.log(f"{result['multiplier']:<30} {result['accuracy']:<12.4f} "
+                             f"{result['drop']:<12.4f} {result['drop_percent']:<10.2f}%")
+                
+                # Best multiplier
+                logger.log_section("BEST APPROXIMATE MULTIPLIER")
+                best_approx = approx_results[0]
+                logger.log(f"Multiplier:  {best_approx['multiplier']}")
+                logger.log(f"Accuracy:    {best_approx['accuracy']:.4f}")
+                logger.log(f"Drop:        {best_approx['drop']:.4f} ({best_approx['drop_percent']:.2f}%)")
+                
+                # Top 5 multipliers
+                logger.log(f"\nTop 5 Multipliers:")
+                for i, result in enumerate(approx_results[:5]):
+                    logger.log(f"{i+1}. {result['multiplier']:<30} "
+                             f"Acc: {result['accuracy']:.4f} "
+                             f"Drop: {result['drop_percent']:+.2f}%")
+                
+                # Efficiency estimate
+                logger.log(f"\nEstimated Energy Savings:")
+                excellent_count = sum(1 for r in approx_results if abs(r['drop']) <= 0.01)
+                logger.log(f"  {excellent_count} multipliers with ≤1% accuracy drop")
+                logger.log(f"  Potential energy savings: 30-50% (typical for approximate multipliers)")
+                logger.log(f"  Model parameters: {params:,}")
+                logger.log(f"  Estimated MACs per inference: {flops//2:,}")
+    
+    # ========================================================================
+    # Final Cleanup and Summary
+    # ========================================================================
+    logger.log_section("FINAL SUMMARY")
+    logger.log(f"Dataset: {args.dataset}")
+    logger.log(f"Best Architecture: {best_std['architecture']}")
+    logger.log(f"Standard Model Accuracy: {std_accuracy:.4f}")
+    logger.log(f"Model Parameters: {params:,}")
+    logger.log(f"Estimated FLOPs: {flops:,}")
+    
+    if not args.skip_multipliers and approx_results:
+        logger.log(f"\nMultiplier Testing:")
+        logger.log(f"  Total tested: {len(approx_results)}")
+        logger.log(f"  Best accuracy: {approx_results[0]['accuracy']:.4f}")
+        logger.log(f"  Best multiplier: {approx_results[0]['multiplier']}")
+    
+    # Close logger and save results
+    logger.close()
+    
+    # Cleanup
+    del model_std
     keras.backend.clear_session()
+    
+    logger.log("\n✓ All done!")
 
-# Log summary
-logger.log_summary(std_accuracy, approx_results)
-
-# Print table
-logger.log(f"\n{'Multiplier':<30} {'Accuracy':<12} {'Drop':<12} {'Drop %':<10}")
-logger.log("-" * 70)
-
-approx_results.sort(key=lambda x: x['accuracy'], reverse=True)
-
-for result in approx_results:
-    logger.log(f"{result['multiplier']:<30} {result['accuracy']:<12.4f} {result['drop']:<12.4f} {result['drop_percent']:<10.2f}%")
-
-logger.log_section("BEST APPROXIMATE MULTIPLIER")
-if approx_results:
-    best_approx = approx_results[0]
-    logger.log(f"Multiplier:  {best_approx['multiplier']}")
-    logger.log(f"Accuracy:    {best_approx['accuracy']:.4f}")
-    logger.log(f"Drop:        {best_approx['drop']:.4f} ({best_approx['drop_percent']:.2f}%)")
-
-logger.close()
+if __name__ == '__main__':
+    main()
