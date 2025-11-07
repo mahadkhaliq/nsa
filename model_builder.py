@@ -1,7 +1,18 @@
 from tensorflow import keras
 import numpy as np
 
-def build_model(architecture, search_space, input_shape=(28, 28, 1), num_classes=10):
+def build_model(architecture, search_space, input_shape=(28, 28, 1), 
+                num_classes=10, learning_rate=0.001):
+    """
+    Build a model from architecture specification
+    
+    Args:
+        architecture: List of layer specifications
+        search_space: Dictionary of operations
+        input_shape: Input image shape
+        num_classes: Number of output classes
+        learning_rate: Learning rate for optimizer
+    """
     inputs = keras.Input(shape=input_shape)
     x = inputs
     
@@ -21,19 +32,22 @@ def build_model(architecture, search_space, input_shape=(28, 28, 1), num_classes
             x = layer(x)
     
     # Use GlobalAveragePooling instead of Flatten for efficiency
-    if x.shape[1] > 1:  # If not already flattened
+    if x.shape[1] > 1:
         x = keras.layers.GlobalAveragePooling2D()(x)
     else:
         x = keras.layers.Flatten()(x)
     
     x = keras.layers.Dense(128, activation='relu')(x)
-    x = keras.layers.Dropout(0.3)(x)  # Add dropout
+    x = keras.layers.Dropout(0.3)(x)
     outputs = keras.layers.Dense(num_classes, activation='softmax')(x)
     
     model = keras.Model(inputs=inputs, outputs=outputs)
     
+    # Use Adam with configurable learning rate
+    optimizer = keras.optimizers.Adam(learning_rate=learning_rate)
+    
     model.compile(
-        optimizer='adam',
+        optimizer=optimizer,
         loss='sparse_categorical_crossentropy',
         metrics=['accuracy']
     )
