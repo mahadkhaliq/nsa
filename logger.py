@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 import json
 import numpy as np
+import matplotlib.pyplot as plt
 
 def convert_to_json_serializable(obj):
     """Convert numpy types to Python native types"""
@@ -10,7 +11,7 @@ def convert_to_json_serializable(obj):
         return int(obj)
     elif isinstance(obj, (np.floating, np.float64, np.float32)):
         return float(obj)
-    elif isinstance(obj, (np.bool_, bool)):  # ← Added bool handling
+    elif isinstance(obj, (np.bool_, bool)):
         return bool(obj)
     elif isinstance(obj, np.ndarray):
         return obj.tolist()
@@ -154,6 +155,51 @@ class NASLogger:
                 }
             }
     
+    def log_training_curves(self, history, output_dir, model_name='best_model'):
+        """Save training curves as images and JSON"""
+        os.makedirs(output_dir, exist_ok=True)
+        
+        epochs = range(1, len(history.history['accuracy']) + 1)
+        
+        # Plot accuracy and loss
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+        
+        # Accuracy plot
+        ax1.plot(epochs, history.history['accuracy'], 'b-', label='Training', linewidth=2)
+        ax1.plot(epochs, history.history['val_accuracy'], 'r-', label='Validation', linewidth=2)
+        ax1.set_xlabel('Epoch')
+        ax1.set_ylabel('Accuracy')
+        ax1.set_title(f'{model_name} - Accuracy')
+        ax1.legend()
+        ax1.grid(True, alpha=0.3)
+        
+        # Loss plot
+        ax2.plot(epochs, history.history['loss'], 'b-', label='Training', linewidth=2)
+        ax2.plot(epochs, history.history['val_loss'], 'r-', label='Validation', linewidth=2)
+        ax2.set_xlabel('Epoch')
+        ax2.set_ylabel('Loss')
+        ax2.set_title(f'{model_name} - Loss')
+        ax2.legend()
+        ax2.grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        plt.savefig(os.path.join(output_dir, f'{model_name}_training_curves.png'), dpi=150)
+        plt.close()
+        
+        # Save history as JSON
+        history_dict = {
+            'epochs': len(epochs),
+            'accuracy': [float(x) for x in history.history['accuracy']],
+            'val_accuracy': [float(x) for x in history.history['val_accuracy']],
+            'loss': [float(x) for x in history.history['loss']],
+            'val_loss': [float(x) for x in history.history['val_loss']]
+        }
+        
+        with open(os.path.join(output_dir, f'{model_name}_history.json'), 'w') as f:
+            json.dump(history_dict, f, indent=2)
+        
+        self.logger.info(f"  ✓ Training curves saved to {output_dir}/")
+    
     def save_json(self):
         self.results['end_time'] = datetime.now().strftime('%Y%m%d_%H%M%S')
         
@@ -179,48 +225,3 @@ class NASLogger:
         self.logger.info("NAS Run Completed")
         self.logger.info(f"Log file: {self.log_file}")
         self.logger.info("="*70)
-
-
-def log_training_curves(self, history, output_dir, model_name='best_model'):
-    """Save training curves as images"""
-    os.makedirs(output_dir, exist_ok=True)
-    
-    epochs = range(1, len(history.history['accuracy']) + 1)
-    
-    # Plot accuracy
-    plt.figure(figsize=(12, 5))
-    
-    plt.subplot(1, 2, 1)
-    plt.plot(epochs, history.history['accuracy'], 'b-', label='Training', linewidth=2)
-    plt.plot(epochs, history.history['val_accuracy'], 'r-', label='Validation', linewidth=2)
-    plt.xlabel('Epoch')
-    plt.ylabel('Accuracy')
-    plt.title(f'{model_name} - Accuracy')
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    
-    # Plot loss
-    plt.subplot(1, 2, 2)
-    plt.plot(epochs, history.history['loss'], 'b-', label='Training', linewidth=2)
-    plt.plot(epochs, history.history['val_loss'], 'r-', label='Validation', linewidth=2)
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
-    plt.title(f'{model_name} - Loss')
-    plt.legend()
-    plt.grid(True, alpha=0.3)
-    
-    plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, f'{model_name}_training_curves.png'), dpi=150)
-    plt.close()
-    
-    # Save history as JSON
-    history_dict = {
-        'epochs': len(epochs),
-        'accuracy': [float(x) for x in history.history['accuracy']],
-        'val_accuracy': [float(x) for x in history.history['val_accuracy']],
-        'loss': [float(x) for x in history.history['loss']],
-        'val_loss': [float(x) for x in history.history['val_loss']]
-    }
-    
-    with open(os.path.join(output_dir, f'{model_name}_history.json'), 'w') as f:
-        json.dump(history_dict, f, indent=2)
