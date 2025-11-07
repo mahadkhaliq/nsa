@@ -1,6 +1,6 @@
 """
 Main script for Neural Architecture Search with Approximate Multipliers
-Supports evolutionary and random search, tracks model complexity, and tests multiple multipliers
+Compatible with TensorFlow 2.1.0+
 """
 
 from tensorflow import keras
@@ -91,6 +91,7 @@ def main():
     logger.log(f"NAS blocks: {args.nas_blocks}")
     logger.log(f"NAS method: {args.nas_method}")
     logger.log(f"Training epochs: {args.epochs}")
+    logger.log(f"Batch size: {args.batch_size}")
     logger.log(f"Multiplier dir: {args.multiplier_dir}")
     
     # ========================================================================
@@ -142,7 +143,8 @@ def main():
         model_std = build_model(best_architecture, search_space_std, 
                                input_shape=(height, width, channels), 
                                num_classes=num_classes)
-        train_model(model_std, x_train, y_train, x_val, y_val, epochs=10)
+        train_model(model_std, x_train, y_train, x_val, y_val, 
+                   epochs=10, batch_size=args.batch_size, verbose=0)
         quick_acc = evaluate_model(model_std, x_val, y_val)
         logger.log(f"Quick evaluation accuracy: {quick_acc:.4f}")
         
@@ -198,12 +200,13 @@ def main():
     logger.log(f"  Estimated FLOPs: {flops:,}")
     logger.log(f"  Model Size (approx): {params * 4 / (1024**2):.2f} MB (float32)")
     
-    # Train
+    # Train with progress
     logger.log(f"\nTraining for {args.epochs} epochs...")
     history = train_model(
         model_std, x_train, y_train, x_val, y_val, 
         epochs=args.epochs,
-        batch_size=args.batch_size
+        batch_size=args.batch_size,
+        verbose=1  # Show progress bar
     )
     
     # Evaluate
@@ -256,12 +259,17 @@ def main():
                     mul_map_file=mul_file,
                     include_advanced=True
                 )
-                model_approx = build_model(
-                    best_std['architecture'], 
-                    search_space_approx,
-                    input_shape=(height, width, channels),
-                    num_classes=num_classes
-                )
+                
+                try:
+                    model_approx = build_model(
+                        best_std['architecture'], 
+                        search_space_approx,
+                        input_shape=(height, width, channels),
+                        num_classes=num_classes
+                    )
+                except Exception as e:
+                    logger.log(f"  ✗ Failed to build model: {e}\n")
+                    continue
                 
                 # Copy weights
                 try:
@@ -273,23 +281,26 @@ def main():
                     continue
                 
                 # Evaluate
-                approx_accuracy = evaluate_model(model_approx, x_val, y_val)
-                accuracy_drop = std_accuracy - approx_accuracy
-                drop_percent = (accuracy_drop / std_accuracy) * 100 if std_accuracy > 0 else 0
-                
-                logger.log_multiplier_test(mul_name, approx_accuracy, accuracy_drop, drop_percent)
-                
-                approx_results.append({
-                    'multiplier': mul_name,
-                    'file': mul_file,
-                    'accuracy': approx_accuracy,
-                    'drop': accuracy_drop,
-                    'drop_percent': drop_percent
-                })
-                
-                # Cleanup
-                del model_approx
-                keras.backend.clear_session()
+                try:
+                    approx_accuracy = evaluate_model(model_approx, x_val, y_val)
+                    accuracy_drop = std_accuracy - approx_accuracy
+                    drop_percent = (accuracy_drop / std_accuracy) * 100 if std_accuracy > 0 else 0
+                    
+                    logger.log_multiplier_test(mul_name, approx_accuracy, accuracy_drop, drop_percent)
+                    
+                    approx_results.append({
+                        'multiplier': mul_name,
+                        'file': mul_file,
+                        'accuracy': approx_accuracy,
+                        'drop': accuracy_drop,
+                        'drop_percent': drop_percent
+                    })
+                except Exception as e:
+                    logger.log(f"  ✗ Evaluation failed: {e}\n")
+                finally:
+                    # Cleanup
+                    del model_approx
+                    keras.backend.clear_session()
             
             # ================================================================
             # STEP 4: Analysis and Summary
@@ -332,6 +343,8 @@ def main():
                 logger.log(f"  Potential energy savings: 30-50% (typical for approximate multipliers)")
                 logger.log(f"  Model parameters: {params:,}")
                 logger.log(f"  Estimated MACs per inference: {flops//2:,}")
+            else:
+                logger.log("⚠ No multipliers were successfully tested")
     
     # ========================================================================
     # Final Cleanup and Summary
@@ -343,7 +356,7 @@ def main():
     logger.log(f"Model Parameters: {params:,}")
     logger.log(f"Estimated FLOPs: {flops:,}")
     
-    if not args.skip_multipliers and approx_results:
+    if not args.skip_multipliers and 'approx_results' in locals() and approx_results:
         logger.log(f"\nMultiplier Testing:")
         logger.log(f"  Total tested: {len(approx_results)}")
         logger.log(f"  Best accuracy: {approx_results[0]['accuracy']:.4f}")
