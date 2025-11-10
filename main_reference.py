@@ -46,6 +46,8 @@ def parse_args():
     parser.add_argument('--nas_method', type=str, default='evolutionary',
                        choices=['random', 'evolutionary'])
     parser.add_argument('--skip_nas', action='store_true')
+    parser.add_argument('--nas_test_multiplier', type=str, default=None,
+                       help='Multiplier file to use for hardware-aware NAS')
 
     # Training
     parser.add_argument('--epochs_per_trial', type=int, default=15)
@@ -135,6 +137,14 @@ def main():
         logger.log(f"Config: {config_to_string(best_config)}")
     else:
         logger.log_section("STEP 2: Neural Architecture Search")
+
+        # Use hardware-aware NAS if multiplier specified
+        use_approx_in_nas = args.nas_test_multiplier is not None
+        if use_approx_in_nas:
+            logger.log(f"Hardware-aware NAS enabled with multiplier: {args.nas_test_multiplier}")
+        else:
+            logger.log("Standard NAS (no approximate multiplier evaluation)")
+
         nas_results = run_nas_reference(
             x_train, y_train, x_val, y_val,
             input_shape, num_classes,
@@ -143,6 +153,8 @@ def main():
             batch_size=args.batch_size,
             learning_rate=args.learning_rate,
             method=args.nas_method,
+            test_multiplier=args.nas_test_multiplier,
+            use_approximate_in_search=use_approx_in_nas,
             logger=logger
         )
         best_config = nas_results['best_config']

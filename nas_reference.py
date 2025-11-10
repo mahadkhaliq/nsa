@@ -73,9 +73,12 @@ def config_to_string(config):
 
 def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
                      num_trials=20, epochs_per_trial=15, batch_size=64,
-                     learning_rate=0.001, method='evolutionary', logger=None):
+                     learning_rate=0.001, method='evolutionary',
+                     test_multiplier=None, use_approximate_in_search=True,
+                     logger=None):
     """
-    Run NAS with reference architecture pattern.
+    Hardware-aware NAS with reference architecture pattern.
+    Evaluates architectures with approximate multipliers during search.
 
     Args:
         x_train, y_train: Training data
@@ -87,6 +90,8 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
         batch_size: Training batch size
         learning_rate: Learning rate
         method: 'random' or 'evolutionary'
+        test_multiplier: Path to multiplier file for approximate evaluation
+        use_approximate_in_search: If True, use approximate multiplier during NAS
         logger: Logger instance
 
     Returns:
@@ -94,15 +99,18 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
     """
     if logger:
         logger.log(f"\n{'='*80}")
-        logger.log(f"NAS with Reference Architecture Pattern")
+        logger.log(f"Hardware-Aware NAS with Reference Architecture")
         logger.log(f"{'='*80}")
         logger.log(f"Method: {method}")
         logger.log(f"Trials: {num_trials}")
         logger.log(f"Epochs per trial: {epochs_per_trial}")
         logger.log(f"Batch size: {batch_size}")
+        logger.log(f"Approximate evaluation: {use_approximate_in_search}")
+        if use_approximate_in_search and test_multiplier:
+            logger.log(f"Test multiplier: {test_multiplier}")
 
     configs_tried = []
-    accuracies = []
+    fitness_scores = []
     results = []
 
     for trial in range(num_trials):
@@ -117,7 +125,7 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
             config = random_config()
         else:
             # Evolutionary: mutate best config
-            best_idx = np.argmax(accuracies)
+            best_idx = np.argmax(fitness_scores)
             config = mutate_config(configs_tried[best_idx])
 
         if logger:
@@ -137,31 +145,77 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
             verbose=0
         )
 
-        val_accuracy = evaluate_model(model_std, x_val, y_val)
+        std_accuracy = evaluate_model(model_std, x_val, y_val)
+        trained_weights = model_std.get_weights()
+
+        # Stage 2: Evaluate with approximate multiplier (if enabled)
+        approx_accuracy = std_accuracy
+        accuracy_drop = 0.0
+
+        if use_approximate_in_search and test_multiplier:
+            if logger:
+                logger.log(f"→ Evaluating with approximate multiplier...")
+
+            # Set multiplier for all blocks
+            approx_config = config.copy()
+            approx_config['conv1_multiplier'] = test_multiplier
+            approx_config['conv2_multiplier'] = test_multiplier
+            approx_config['conv3_multiplier'] = test_multiplier
+
+            model_approx = build_model_for_evaluation(
+                approx_config, input_shape, num_classes,
+                learning_rate, weights=trained_weights
+            )
+
+            approx_accuracy = evaluate_model(model_approx, x_val, y_val)
+            accuracy_drop = std_accuracy - approx_accuracy
+
+            del model_approx
+            keras.backend.clear_session()
+
+        # Fitness function: balance standard accuracy and robustness to approximate multipliers
+        # fitness = standard_accuracy - penalty_for_accuracy_drop
+        # We want high standard accuracy AND low drop when using approximate multipliers
+        if use_approximate_in_search and test_multiplier:
+            # Multi-objective: 70% standard accuracy + 30% robustness (low drop)
+            # Normalize drop to [0, 1] range (assuming max drop could be 100%)
+            robustness_score = max(0, 1 - (accuracy_drop / std_accuracy))
+            fitness = 0.7 * std_accuracy + 0.3 * robustness_score
+        else:
+            # Single objective: just standard accuracy
+            fitness = std_accuracy
 
         configs_tried.append(config)
-        accuracies.append(val_accuracy)
+        fitness_scores.append(fitness)
 
         result = {
             'trial': trial,
             'config': config,
-            'accuracy': val_accuracy,
+            'std_accuracy': std_accuracy,
+            'approx_accuracy': approx_accuracy,
+            'accuracy_drop': accuracy_drop,
+            'fitness': fitness,
             'history': history.history
         }
         results.append(result)
 
         if logger:
-            logger.log(f"✓ Validation accuracy: {val_accuracy:.4f}")
-            logger.log(f"  Best so far: {max(accuracies):.4f}")
+            logger.log(f"✓ Standard accuracy: {std_accuracy:.4f}")
+            if use_approximate_in_search and test_multiplier:
+                drop_pct = (accuracy_drop / std_accuracy) * 100 if std_accuracy > 0 else 0
+                logger.log(f"  Approximate accuracy: {approx_accuracy:.4f}")
+                logger.log(f"  Accuracy drop: {accuracy_drop:.4f} ({drop_pct:.2f}%)")
+                logger.log(f"  Fitness score: {fitness:.4f}")
+            logger.log(f"  Best fitness so far: {max(fitness_scores):.4f}")
 
         # Cleanup
         del model_std
         keras.backend.clear_session()
 
-    # Find best configuration
-    best_idx = np.argmax(accuracies)
+    # Find best configuration based on fitness
+    best_idx = np.argmax(fitness_scores)
     best_config = configs_tried[best_idx]
-    best_accuracy = accuracies[best_idx]
+    best_result = results[best_idx]
 
     if logger:
         logger.log(f"\n{'='*80}")
@@ -169,13 +223,17 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
         logger.log(f"{'='*80}")
         logger.log(f"Best configuration:")
         logger.log(f"  {config_to_string(best_config)}")
-        logger.log(f"  Validation accuracy: {best_accuracy:.4f}")
-        logger.log(f"  Mean accuracy: {np.mean(accuracies):.4f} ± {np.std(accuracies):.4f}")
+        logger.log(f"  Standard accuracy: {best_result['std_accuracy']:.4f}")
+        if use_approximate_in_search and test_multiplier:
+            logger.log(f"  Approximate accuracy: {best_result['approx_accuracy']:.4f}")
+            logger.log(f"  Accuracy drop: {best_result['accuracy_drop']:.4f}")
+        logger.log(f"  Fitness score: {best_result['fitness']:.4f}")
+        logger.log(f"  Mean fitness: {np.mean(fitness_scores):.4f} ± {np.std(fitness_scores):.4f}")
 
     return {
         'best_config': best_config,
-        'best_accuracy': best_accuracy,
+        'best_result': best_result,
         'all_configs': configs_tried,
-        'all_accuracies': accuracies,
+        'all_fitness_scores': fitness_scores,
         'results': results
     }
