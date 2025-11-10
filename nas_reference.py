@@ -74,11 +74,11 @@ def config_to_string(config):
 def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
                      num_trials=20, epochs_per_trial=15, batch_size=64,
                      learning_rate=0.001, method='evolutionary',
-                     test_multiplier=None, use_approximate_in_search=True,
+                     test_multipliers=None, use_approximate_in_search=True,
                      logger=None):
     """
     Hardware-aware NAS with reference architecture pattern.
-    Evaluates architectures with approximate multipliers during search.
+    Evaluates architectures with ALL approximate multipliers during search.
 
     Args:
         x_train, y_train: Training data
@@ -90,8 +90,8 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
         batch_size: Training batch size
         learning_rate: Learning rate
         method: 'random' or 'evolutionary'
-        test_multiplier: Path to multiplier file for approximate evaluation
-        use_approximate_in_search: If True, use approximate multiplier during NAS
+        test_multipliers: LIST of multiplier file paths for approximate evaluation
+        use_approximate_in_search: If True, use approximate multipliers during NAS
         logger: Logger instance
 
     Returns:
@@ -106,8 +106,8 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
         logger.log(f"Epochs per trial: {epochs_per_trial}")
         logger.log(f"Batch size: {batch_size}")
         logger.log(f"Approximate evaluation: {use_approximate_in_search}")
-        if use_approximate_in_search and test_multiplier:
-            logger.log(f"Test multiplier: {test_multiplier}")
+        if use_approximate_in_search and test_multipliers:
+            logger.log(f"Testing with {len(test_multipliers)} multipliers")
 
     configs_tried = []
     fitness_scores = []
@@ -148,38 +148,43 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
         std_accuracy = evaluate_model(model_std, x_val, y_val)
         trained_weights = model_std.get_weights()
 
-        # Stage 2: Evaluate with approximate multiplier (if enabled)
-        approx_accuracy = std_accuracy
-        accuracy_drop = 0.0
+        # Stage 2: Evaluate with ALL approximate multipliers (if enabled)
+        multiplier_accuracies = []
+        mean_approx_accuracy = std_accuracy
+        mean_accuracy_drop = 0.0
 
-        if use_approximate_in_search and test_multiplier:
+        if use_approximate_in_search and test_multipliers:
             if logger:
-                logger.log(f"→ Evaluating with approximate multiplier...")
+                logger.log(f"→ Evaluating with {len(test_multipliers)} approximate multipliers...")
 
-            # Set multiplier for all blocks
-            approx_config = config.copy()
-            approx_config['conv1_multiplier'] = test_multiplier
-            approx_config['conv2_multiplier'] = test_multiplier
-            approx_config['conv3_multiplier'] = test_multiplier
+            for mul_file in test_multipliers:
+                # Set multiplier for all blocks
+                approx_config = config.copy()
+                approx_config['conv1_multiplier'] = mul_file
+                approx_config['conv2_multiplier'] = mul_file
+                approx_config['conv3_multiplier'] = mul_file
 
-            model_approx = build_model_for_evaluation(
-                approx_config, input_shape, num_classes,
-                learning_rate, weights=trained_weights
-            )
+                model_approx = build_model_for_evaluation(
+                    approx_config, input_shape, num_classes,
+                    learning_rate, weights=trained_weights
+                )
 
-            approx_accuracy = evaluate_model(model_approx, x_val, y_val)
-            accuracy_drop = std_accuracy - approx_accuracy
+                approx_accuracy = evaluate_model(model_approx, x_val, y_val)
+                multiplier_accuracies.append(approx_accuracy)
 
-            del model_approx
-            keras.backend.clear_session()
+                del model_approx
+                keras.backend.clear_session()
+
+            # Calculate mean performance across ALL multipliers
+            mean_approx_accuracy = np.mean(multiplier_accuracies)
+            mean_accuracy_drop = std_accuracy - mean_approx_accuracy
 
         # Fitness function: balance standard accuracy and robustness to approximate multipliers
-        # fitness = standard_accuracy - penalty_for_accuracy_drop
-        # We want high standard accuracy AND low drop when using approximate multipliers
-        if use_approximate_in_search and test_multiplier:
-            # Multi-objective: 70% standard accuracy + 30% robustness (low drop)
-            # Normalize drop to [0, 1] range (assuming max drop could be 100%)
-            robustness_score = max(0, 1 - (accuracy_drop / std_accuracy))
+        # We want high standard accuracy AND low AVERAGE drop across ALL multipliers
+        if use_approximate_in_search and test_multipliers:
+            # Multi-objective: 70% standard accuracy + 30% robustness (low average drop)
+            # Robustness = average performance across all multipliers
+            robustness_score = max(0, 1 - (mean_accuracy_drop / std_accuracy))
             fitness = 0.7 * std_accuracy + 0.3 * robustness_score
         else:
             # Single objective: just standard accuracy
@@ -192,8 +197,9 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
             'trial': trial,
             'config': config,
             'std_accuracy': std_accuracy,
-            'approx_accuracy': approx_accuracy,
-            'accuracy_drop': accuracy_drop,
+            'mean_approx_accuracy': mean_approx_accuracy,
+            'mean_accuracy_drop': mean_accuracy_drop,
+            'multiplier_accuracies': multiplier_accuracies,
             'fitness': fitness,
             'history': history.history
         }
@@ -201,10 +207,11 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
 
         if logger:
             logger.log(f"✓ Standard accuracy: {std_accuracy:.4f}")
-            if use_approximate_in_search and test_multiplier:
-                drop_pct = (accuracy_drop / std_accuracy) * 100 if std_accuracy > 0 else 0
-                logger.log(f"  Approximate accuracy: {approx_accuracy:.4f}")
-                logger.log(f"  Accuracy drop: {accuracy_drop:.4f} ({drop_pct:.2f}%)")
+            if use_approximate_in_search and test_multipliers:
+                drop_pct = (mean_accuracy_drop / std_accuracy) * 100 if std_accuracy > 0 else 0
+                logger.log(f"  Mean approx accuracy (across {len(test_multipliers)} muls): {mean_approx_accuracy:.4f}")
+                logger.log(f"  Mean accuracy drop: {mean_accuracy_drop:.4f} ({drop_pct:.2f}%)")
+                logger.log(f"  Best/Worst approx: {max(multiplier_accuracies):.4f} / {min(multiplier_accuracies):.4f}")
                 logger.log(f"  Fitness score: {fitness:.4f}")
             logger.log(f"  Best fitness so far: {max(fitness_scores):.4f}")
 
@@ -224,9 +231,11 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
         logger.log(f"Best configuration:")
         logger.log(f"  {config_to_string(best_config)}")
         logger.log(f"  Standard accuracy: {best_result['std_accuracy']:.4f}")
-        if use_approximate_in_search and test_multiplier:
-            logger.log(f"  Approximate accuracy: {best_result['approx_accuracy']:.4f}")
-            logger.log(f"  Accuracy drop: {best_result['accuracy_drop']:.4f}")
+        if use_approximate_in_search and test_multipliers:
+            logger.log(f"  Mean approx accuracy: {best_result['mean_approx_accuracy']:.4f}")
+            logger.log(f"  Mean accuracy drop: {best_result['mean_accuracy_drop']:.4f}")
+            if best_result['multiplier_accuracies']:
+                logger.log(f"  Best/Worst multiplier: {max(best_result['multiplier_accuracies']):.4f} / {min(best_result['multiplier_accuracies']):.4f}")
         logger.log(f"  Fitness score: {best_result['fitness']:.4f}")
         logger.log(f"  Mean fitness: {np.mean(fitness_scores):.4f} ± {np.std(fitness_scores):.4f}")
 

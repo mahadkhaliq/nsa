@@ -1,7 +1,8 @@
-"""Test hardware-aware NAS with approximate multipliers"""
+"""Test hardware-aware NAS with ALL approximate multipliers"""
 import tensorflow as tf
 from tensorflow import keras
 import numpy as np
+import glob
 from dataloader import load_dataset
 from nas_reference import run_nas_reference
 from logger import NASLogger
@@ -34,8 +35,10 @@ print(f"Input shape: {input_shape}")
 print(f"Training samples: {len(x_train)}")
 print(f"Validation samples: {len(x_val)}")
 
-# Test multiplier
-test_mul = './multipliers/mul8u_2P7.bin'
+# Load ALL multipliers
+all_multipliers = sorted(glob.glob('./multipliers/*.bin'))
+test_multipliers = all_multipliers[:5]  # Use first 5 for quick test
+print(f"Found {len(all_multipliers)} multipliers, using {len(test_multipliers)} for test")
 
 print("\n" + "="*80)
 print("COMPARISON: Standard NAS vs Hardware-Aware NAS")
@@ -68,11 +71,12 @@ print(f"  Best standard accuracy: {results_std['best_result']['std_accuracy']:.4
 print(f"  All fitness scores: {[f'{f:.4f}' for f in results_std['all_fitness_scores']]}")
 
 # ============================================================================
-# Test 2: Hardware-Aware NAS (with approximate multiplier)
+# Test 2: Hardware-Aware NAS (with ALL multipliers)
 # ============================================================================
 print("\n" + "="*80)
-print("TEST 2: Hardware-Aware NAS (with approximate multiplier)")
-print(f"Using multiplier: {test_mul}")
+print(f"TEST 2: Hardware-Aware NAS (with {len(test_multipliers)} multipliers)")
+for i, mul in enumerate(test_multipliers):
+    print(f"  {i+1}. {mul.split('/')[-1]}")
 print("="*80)
 
 results_hw = run_nas_reference(
@@ -83,15 +87,15 @@ results_hw = run_nas_reference(
     batch_size=64,
     learning_rate=0.001,
     method='random',
-    test_multiplier=test_mul,
+    test_multipliers=test_multipliers,
     use_approximate_in_search=True,
     logger=None  # Disable logging for cleaner output
 )
 
 print(f"\nHardware-Aware NAS Results:")
 print(f"  Best standard accuracy: {results_hw['best_result']['std_accuracy']:.4f}")
-print(f"  Best approximate accuracy: {results_hw['best_result']['approx_accuracy']:.4f}")
-print(f"  Best accuracy drop: {results_hw['best_result']['accuracy_drop']:.4f}")
+print(f"  Best mean approx accuracy: {results_hw['best_result']['mean_approx_accuracy']:.4f}")
+print(f"  Best mean accuracy drop: {results_hw['best_result']['mean_accuracy_drop']:.4f}")
 print(f"  Best fitness score: {results_hw['best_result']['fitness']:.4f}")
 print(f"  All fitness scores: {[f'{f:.4f}' for f in results_hw['all_fitness_scores']]}")
 
@@ -107,13 +111,16 @@ print(f"  Standard accuracy: {results_std['best_result']['std_accuracy']:.4f}")
 
 print(f"\nHardware-Aware NAS best config:")
 print(f"  Standard accuracy: {results_hw['best_result']['std_accuracy']:.4f}")
-print(f"  Approximate accuracy: {results_hw['best_result']['approx_accuracy']:.4f}")
-drop_pct = (results_hw['best_result']['accuracy_drop'] / results_hw['best_result']['std_accuracy']) * 100
-print(f"  Accuracy drop: {drop_pct:.2f}%")
+print(f"  Mean approx accuracy: {results_hw['best_result']['mean_approx_accuracy']:.4f}")
+drop_pct = (results_hw['best_result']['mean_accuracy_drop'] / results_hw['best_result']['std_accuracy']) * 100
+print(f"  Mean accuracy drop: {drop_pct:.2f}%")
 print(f"  Fitness (0.7*std + 0.3*robust): {results_hw['best_result']['fitness']:.4f}")
+if results_hw['best_result']['multiplier_accuracies']:
+    print(f"  Best/Worst multiplier: {max(results_hw['best_result']['multiplier_accuracies']):.4f} / {min(results_hw['best_result']['multiplier_accuracies']):.4f}")
 
 print(f"\n{'='*80}")
 print("Hardware-aware NAS finds architectures that are:")
 print("  1. Still accurate with standard multipliers")
-print("  2. More ROBUST to approximate multiplier errors")
+print(f"  2. ROBUST to approximate multiplier errors across {len(test_multipliers)} different multipliers")
+print("  3. Optimized for AVERAGE performance across all multipliers")
 print(f"{'='*80}")

@@ -46,8 +46,10 @@ def parse_args():
     parser.add_argument('--nas_method', type=str, default='evolutionary',
                        choices=['random', 'evolutionary'])
     parser.add_argument('--skip_nas', action='store_true')
-    parser.add_argument('--nas_test_multiplier', type=str, default=None,
-                       help='Multiplier file to use for hardware-aware NAS')
+    parser.add_argument('--nas_use_multipliers', action='store_true',
+                       help='Use ALL multipliers for hardware-aware NAS')
+    parser.add_argument('--nas_num_multipliers', type=int, default=10,
+                       help='Number of multipliers to use for NAS (default: 10)')
 
     # Training
     parser.add_argument('--epochs_per_trial', type=int, default=15)
@@ -138,10 +140,15 @@ def main():
     else:
         logger.log_section("STEP 2: Neural Architecture Search")
 
-        # Use hardware-aware NAS if multiplier specified
-        use_approx_in_nas = args.nas_test_multiplier is not None
-        if use_approx_in_nas:
-            logger.log(f"Hardware-aware NAS enabled with multiplier: {args.nas_test_multiplier}")
+        # Use hardware-aware NAS if multipliers requested
+        nas_multipliers = None
+        if args.nas_use_multipliers:
+            multiplier_files = sorted(glob.glob(os.path.join(args.multiplier_dir, '*.bin')))
+            if multiplier_files:
+                nas_multipliers = multiplier_files[:args.nas_num_multipliers]
+                logger.log(f"Hardware-aware NAS enabled with {len(nas_multipliers)} multipliers")
+            else:
+                logger.log(f"⚠ No multipliers found in {args.multiplier_dir}, using standard NAS")
         else:
             logger.log("Standard NAS (no approximate multiplier evaluation)")
 
@@ -153,8 +160,8 @@ def main():
             batch_size=args.batch_size,
             learning_rate=args.learning_rate,
             method=args.nas_method,
-            test_multiplier=args.nas_test_multiplier,
-            use_approximate_in_search=use_approx_in_nas,
+            test_multipliers=nas_multipliers,
+            use_approximate_in_search=nas_multipliers is not None,
             logger=logger
         )
         best_config = nas_results['best_config']
