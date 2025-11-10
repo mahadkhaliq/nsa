@@ -17,8 +17,15 @@ y_train = y_train[:5000]
 x_val = x_val[:1000]
 y_val = y_val[:1000]
 
+# Expand dimensions if needed (MNIST is 28x28, needs to be 28x28x1)
+if len(x_train.shape) == 3:
+    x_train = x_train[..., None]
+    x_val = x_val[..., None]
+    x_test = x_test[..., None]
+
 input_shape = x_train.shape[1:]
 num_classes = 10
+print(f"Input shape: {input_shape}")
 
 # EXACT Nov 5 working architecture
 arch = [
