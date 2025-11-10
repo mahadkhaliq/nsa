@@ -10,7 +10,7 @@ from training import evaluate_model, train_model
 print(f"TensorFlow version: {tf.__version__}")
 
 # Load MNIST
-(x_train, y_train), (x_val, y_val), (x_test, y_test) = load_dataset('mnist')
+x_train, y_train, x_val, y_val, x_test, y_test = load_dataset('mnist')
 # Use subset
 x_train = x_train[:5000]
 y_train = y_train[:5000]
