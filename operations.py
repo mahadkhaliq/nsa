@@ -18,26 +18,18 @@ except Exception as e:
 # ============ EXISTING OPERATIONS ============
 def conv3x3_approx(filters, mul_map_file='', use_bn=False):
     layers = []
+    layers.append(FakeApproxConv2D(filters=filters, kernel_size=(3, 3), padding='same',
+                                   activation='relu', mul_map_file=mul_map_file))
     if use_bn:
-        layers.append(FakeApproxConv2D(filters=filters, kernel_size=(3, 3), padding='same',
-                                       activation=None, mul_map_file=mul_map_file))
         layers.append(keras.layers.BatchNormalization())
-        layers.append(keras.layers.Activation('relu'))
-    else:
-        layers.append(FakeApproxConv2D(filters=filters, kernel_size=(3, 3), padding='same',
-                                       activation='relu', mul_map_file=mul_map_file))
     return layers
 
 def conv5x5_approx(filters, mul_map_file='', use_bn=False):
     layers = []
+    layers.append(FakeApproxConv2D(filters=filters, kernel_size=(5, 5), padding='same',
+                                   activation='relu', mul_map_file=mul_map_file))
     if use_bn:
-        layers.append(FakeApproxConv2D(filters=filters, kernel_size=(5, 5), padding='same',
-                                       activation=None, mul_map_file=mul_map_file))
         layers.append(keras.layers.BatchNormalization())
-        layers.append(keras.layers.Activation('relu'))
-    else:
-        layers.append(FakeApproxConv2D(filters=filters, kernel_size=(5, 5), padding='same',
-                                       activation='relu', mul_map_file=mul_map_file))
     return layers
 
 def conv3x3_standard(filters, use_bn=False):
@@ -65,14 +57,10 @@ def conv5x5_standard(filters, use_bn=False):
 # 1x1 Convolutions (channel mixing, very useful!)
 def conv1x1_approx(filters, mul_map_file='', use_bn=False):
     layers = []
+    layers.append(FakeApproxConv2D(filters=filters, kernel_size=(1, 1), padding='same',
+                                   activation='relu', mul_map_file=mul_map_file))
     if use_bn:
-        layers.append(FakeApproxConv2D(filters=filters, kernel_size=(1, 1), padding='same',
-                                       activation=None, mul_map_file=mul_map_file))
         layers.append(keras.layers.BatchNormalization())
-        layers.append(keras.layers.Activation('relu'))
-    else:
-        layers.append(FakeApproxConv2D(filters=filters, kernel_size=(1, 1), padding='same',
-                                       activation='relu', mul_map_file=mul_map_file))
     return layers
 
 def conv1x1_standard(filters, use_bn=False):
