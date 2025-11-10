@@ -10,7 +10,13 @@ from training import evaluate_model, train_model
 print(f"TensorFlow version: {tf.__version__}")
 
 # Load MNIST
-(x_train, y_train), (x_val, y_val), (x_test, y_test) = load_dataset('mnist', 5000, 1000)
+(x_train, y_train), (x_val, y_val), (x_test, y_test) = load_dataset('mnist')
+# Use subset
+x_train = x_train[:5000]
+y_train = y_train[:5000]
+x_val = x_val[:1000]
+y_val = y_val[:1000]
+
 input_shape = x_train.shape[1:]
 num_classes = 10
 
