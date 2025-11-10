@@ -23,7 +23,7 @@ class NASVerifier:
         2. Validation accuracy should not diverge too much from training accuracy
         3. Loss should be decreasing (on average)
         """
-        spec = rtamt.StlDiscreteTimeSpecification()
+        spec = rtamt.StlDiscreteTimeOfflineSpecification()
         spec.name = 'Training Convergence'
 
         # Variables
@@ -51,7 +51,7 @@ class NASVerifier:
         1. Accuracy drop should always be below threshold
         2. If a multiplier has high error, accuracy drop should be bounded
         """
-        spec = rtamt.StlDiscreteTimeSpecification()
+        spec = rtamt.StlDiscreteTimeOfflineSpecification()
         spec.name = 'Multiplier Robustness'
 
         # Variables
@@ -81,7 +81,7 @@ class NASVerifier:
         1. If energy is low (< max_energy_multiplier), then accuracy must be reasonable
         2. High accuracy implies acceptable energy consumption
         """
-        spec = rtamt.StlDiscreteTimeSpecification()
+        spec = rtamt.StlDiscreteTimeOfflineSpecification()
         spec.name = 'Energy-Accuracy Tradeoff'
 
         # Variables
@@ -132,17 +132,26 @@ class NASVerifier:
         # Store trace
         self.traces['training'] = trace
 
-        # Update and evaluate
+        # Evaluate offline
         try:
-            # Add trace data
-            for t in trace:
-                spec.update('train_acc', [(t['time'], t['train_acc'])])
-                spec.update('val_acc', [(t['time'], t['val_acc'])])
-                spec.update('loss', [(t['time'], t['loss'])])
-                spec.update('epoch', [(t['time'], t['epoch'])])
+            # Prepare data for offline evaluation
+            train_acc_data = [(t['time'], t['train_acc']) for t in trace]
+            val_acc_data = [(t['time'], t['val_acc']) for t in trace]
+            loss_data = [(t['time'], t['loss']) for t in trace]
+            epoch_data = [(t['time'], t['epoch']) for t in trace]
 
-            # Get robustness value
-            robustness = spec.evaluate()
+            # Evaluate with offline spec
+            robustness = spec.evaluate(
+                train_acc=train_acc_data,
+                val_acc=val_acc_data,
+                loss=loss_data,
+                epoch=epoch_data
+            )
+
+            # For offline, robustness is a list - take the first value (at time 0)
+            if isinstance(robustness, list) and len(robustness) > 0:
+                robustness = robustness[0][1]  # Get value from (time, value) tuple
+
             satisfaction = robustness > 0
 
             return robustness, satisfaction
@@ -173,7 +182,7 @@ class NASVerifier:
         }
 
         for i, approx_acc in enumerate(multiplier_accuracies):
-            spec = rtamt.StlDiscreteTimeSpecification()
+            spec = rtamt.StlDiscreteTimeOfflineSpecification()
             spec.name = f'Robustness_Multiplier_{i}'
             spec.declare_var('accuracy_drop', 'float')
             spec.spec = 'always(accuracy_drop <= 10.0)'
@@ -182,9 +191,15 @@ class NASVerifier:
             # Calculate drop percentage
             drop_pct = ((std_accuracy - approx_acc) / std_accuracy) * 100 if std_accuracy > 0 else 100
 
-            # Single point trace
-            spec.update('accuracy_drop', [(0, drop_pct)])
-            robustness = spec.evaluate()
+            # Single point trace for offline evaluation
+            robustness_result = spec.evaluate(accuracy_drop=[(0, drop_pct)])
+
+            # Extract robustness value
+            if isinstance(robustness_result, list) and len(robustness_result) > 0:
+                robustness = robustness_result[0][1]
+            else:
+                robustness = robustness_result
+
             satisfaction = robustness > 0
 
             results['robustness_values'].append(robustness)
@@ -215,7 +230,7 @@ class NASVerifier:
         Returns:
             (robustness_value, satisfaction)
         """
-        spec = rtamt.StlDiscreteTimeSpecification()
+        spec = rtamt.StlDiscreteTimeOfflineSpecification()
         spec.name = 'Pareto Point Verification'
 
         spec.declare_var('accuracy', 'float')
@@ -225,11 +240,18 @@ class NASVerifier:
         spec.spec = f'always((energy_ratio <= {max_energy}) implies (accuracy >= {min_accuracy}))'
         spec.parse()
 
-        # Single point evaluation
-        spec.update('accuracy', [(0, accuracy)])
-        spec.update('energy_ratio', [(0, energy_ratio)])
+        # Single point evaluation for offline
+        robustness_result = spec.evaluate(
+            accuracy=[(0, accuracy)],
+            energy_ratio=[(0, energy_ratio)]
+        )
 
-        robustness = spec.evaluate()
+        # Extract robustness value
+        if isinstance(robustness_result, list) and len(robustness_result) > 0:
+            robustness = robustness_result[0][1]
+        else:
+            robustness = robustness_result
+
         satisfaction = robustness > 0
 
         return robustness, satisfaction
