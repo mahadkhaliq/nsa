@@ -1,0 +1,306 @@
+{
+  "start_time": "20251109_191613",
+  "nas_results": [],
+  "multiplier_results": [
+    {
+      "multiplier": "mul8u_125K.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:33.444853"
+    },
+    {
+      "multiplier": "mul8u_12N4.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:33.990139"
+    },
+    {
+      "multiplier": "mul8u_13QR.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:34.467159"
+    },
+    {
+      "multiplier": "mul8u_1446.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:34.944561"
+    },
+    {
+      "multiplier": "mul8u_14VP.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:35.427106"
+    },
+    {
+      "multiplier": "mul8u_150Q.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:35.902874"
+    },
+    {
+      "multiplier": "mul8u_17C8.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:36.381179"
+    },
+    {
+      "multiplier": "mul8u_17KS.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:36.864690"
+    },
+    {
+      "multiplier": "mul8u_17QU.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:37.429890"
+    },
+    {
+      "multiplier": "mul8u_185Q.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:37.914707"
+    },
+    {
+      "multiplier": "mul8u_18DU.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:38.391117"
+    },
+    {
+      "multiplier": "mul8u_199Z.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:38.857738"
+    },
+    {
+      "multiplier": "mul8u_19DB.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:39.322468"
+    },
+    {
+      "multiplier": "mul8u_1AGV.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:39.791275"
+    },
+    {
+      "multiplier": "mul8u_1JFF.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:40.257303"
+    },
+    {
+      "multiplier": "mul8u_2AC.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:40.814657"
+    },
+    {
+      "multiplier": "mul8u_2HH.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:41.281523"
+    },
+    {
+      "multiplier": "mul8u_2P7.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:41.749668"
+    },
+    {
+      "multiplier": "mul8u_7C1.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:42.222909"
+    },
+    {
+      "multiplier": "mul8u_96D.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:42.691251"
+    },
+    {
+      "multiplier": "mul8u_CK5.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:43.155753"
+    },
+    {
+      "multiplier": "mul8u_DM1.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:43.623361"
+    },
+    {
+      "multiplier": "mul8u_EXZ.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:44.194807"
+    },
+    {
+      "multiplier": "mul8u_FTA.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:44.664930"
+    },
+    {
+      "multiplier": "mul8u_GS2.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:45.145691"
+    },
+    {
+      "multiplier": "mul8u_JQQ.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:45.615985"
+    },
+    {
+      "multiplier": "mul8u_JV3.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:46.101342"
+    },
+    {
+      "multiplier": "mul8u_KEM.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:46.569636"
+    },
+    {
+      "multiplier": "mul8u_L40.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:47.044061"
+    },
+    {
+      "multiplier": "mul8u_NGR.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:47.527746"
+    },
+    {
+      "multiplier": "mul8u_PKY.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:48.095680"
+    },
+    {
+      "multiplier": "mul8u_QJD.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:48.562085"
+    },
+    {
+      "multiplier": "mul8u_QKX.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:49.030318"
+    },
+    {
+      "multiplier": "mul8u_Y48.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:49.500606"
+    },
+    {
+      "multiplier": "mul8u_YX7.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:49.975914"
+    },
+    {
+      "multiplier": "mul8u_ZFB.bin",
+      "accuracy": 0.0949999988079071,
+      "drop": 0.4389999806880951,
+      "drop_percent": 82.20973610877991,
+      "timestamp": "2025-11-09T19:17:50.463914"
+    }
+  ],
+  "best_architecture": {
+    "architecture": [
+      {
+        "op": "conv3x3",
+        "filters": 32,
+        "use_bn": true
+      },
+      {
+        "op": "conv3x3",
+        "filters": 64,
+        "use_bn": true
+      },
+      {
+        "op": "max_pool",
+        "filters": 64,
+        "use_bn": false
+      },
+      {
+        "op": "conv3x3",
+        "filters": 128,
+        "use_bn": true
+      },
+      {
+        "op": "conv1x1",
+        "filters": 128,
+        "use_bn": false
+      }
+    ],
+    "accuracy": 0.5339999794960022,
+    "timestamp": "2025-11-09T19:17:32.647388"
+  },
+  "summary": {
+    "standard_accuracy": 0.5339999794960022,
+    "total_multipliers": 36,
+    "best_accuracy": 0.0949999988079071,
+    "worst_accuracy": 0.0949999988079071,
+    "mean_accuracy": 0.0949999988079071,
+    "min_drop": 0.4389999806880951,
+    "max_drop": 0.4389999806880951,
+    "mean_drop": 0.4389999806880951,
+    "categories": {
+      "excellent": 0,
+      "good": 0,
+      "medium": 0,
+      "poor": 36
+    }
+  },
+  "end_time": "20251109_191750"
+}

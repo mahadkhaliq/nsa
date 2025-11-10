@@ -12,16 +12,17 @@ def random_architecture(search_space, num_blocks=3, filter_options=[32, 64, 128]
         max_pools: Maximum number of pooling layers
         force_conv_start: Ensure first layer is convolution
     """
-    operations = list(search_space.keys())
+    operations = [op for op in search_space.keys() if op != 'identity']  # Exclude identity
     architecture = []
     
     pool_count = 0
     consecutive_pools = 0
+    prev_filters = filter_options[0]
     
     for i in range(num_blocks):
         # First layer must be conv
         if i == 0 and force_conv_start:
-            available_ops = [op for op in operations if 'conv' in op]
+            available_ops = [op for op in operations if 'conv' in op and 'conv1x1' not in op]
         # Limit pooling
         elif pool_count >= max_pools:
             available_ops = [op for op in operations if 'pool' not in op]
@@ -33,13 +34,15 @@ def random_architecture(search_space, num_blocks=3, filter_options=[32, 64, 128]
         
         op_name = np.random.choice(available_ops)
         
-        # Progressive filter growth (common in CNNs)
-        if i < num_blocks // 3:
-            filters = np.random.choice(filter_options[:2])  # [32, 64]
+        # Progressive filter growth
+        if 'pool' in op_name:
+            filters = prev_filters  # Keep same filter count through pooling
+        elif i < num_blocks // 3:
+            filters = np.random.choice(filter_options[:2])
         elif i < 2 * num_blocks // 3:
-            filters = np.random.choice(filter_options[1:])  # [64, 128]
+            filters = np.random.choice(filter_options[1:])
         else:
-            filters = np.random.choice(filter_options)      # [32, 64, 128]
+            filters = np.random.choice(filter_options)
         
         use_bn = np.random.choice([True, False]) if 'conv' in op_name else False
         
@@ -49,6 +52,7 @@ def random_architecture(search_space, num_blocks=3, filter_options=[32, 64, 128]
             consecutive_pools += 1
         else:
             consecutive_pools = 0
+            prev_filters = filters
         
         architecture.append({
             'op': op_name,
@@ -68,7 +72,7 @@ def mutate_architecture(architecture, search_space, mutation_rate=0.3):
         mutation_rate: Probability of mutating each block
     """
     new_arch = []
-    operations = list(search_space.keys())
+    operations = [op for op in search_space.keys() if op != 'identity']
     filter_options = [32, 64, 128]
     
     for block in architecture:
@@ -78,7 +82,7 @@ def mutate_architecture(architecture, search_space, mutation_rate=0.3):
             
             if mutation_type == 'op':
                 block['op'] = np.random.choice(operations)
-            elif mutation_type == 'filters':
+            elif mutation_type == 'filters' and 'conv' in block['op']:
                 block['filters'] = np.random.choice(filter_options)
             elif mutation_type == 'bn' and 'conv' in block['op']:
                 block['use_bn'] = not block['use_bn']

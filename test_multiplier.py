@@ -1,269 +1,249 @@
 """
-Diagnostic script to verify FakeApproxConv2D is working correctly
+GPU-based diagnostic to test if multipliers are actually different
+Proper memory management for GPU
 """
 
 import tensorflow as tf
 from tensorflow import keras
 import numpy as np
 import os
+import glob
 
-# Try to import FakeApproxConv2D
+# Proper GPU setup
+physical_devices = tf.config.list_physical_devices('GPU')
+if physical_devices:
+    try:
+        tf.config.experimental.set_memory_growth(physical_devices[0], True)
+        print(f"✓ GPU available: {physical_devices[0]}")
+    except:
+        pass
+else:
+    print("⚠ No GPU detected")
+
 try:
     from keras.layers.fake_approx_convolutional import FakeApproxConv2D
-    print("✓ FakeApproxConv2D imported successfully")
+    print("✓ FakeApproxConv2D imported successfully\n")
 except ImportError as e:
     print(f"✗ Failed to import FakeApproxConv2D: {e}")
     exit(1)
 
-def test_multiplier_basic():
-    """Test 1: Basic functionality"""
-    print("\n" + "="*70)
-    print("TEST 1: Basic FakeApproxConv2D Functionality")
-    print("="*70)
-    
-    # Create a simple input
-    x_test = np.random.randn(1, 32, 32, 3).astype('float32')
-    
-    # Standard Conv2D
-    layer_std = keras.layers.Conv2D(16, 3, padding='same', activation='relu')
-    output_std = layer_std(x_test)
-    
-    # Approximate Conv2D
-    mul_file = './multipliers/mul8u_1JFF.bin'
-    if not os.path.exists(mul_file):
-        print(f"✗ Multiplier file not found: {mul_file}")
-        return False
-    
-    layer_approx = FakeApproxConv2D(16, 3, padding='same', activation='relu', 
-                                    mul_map_file=mul_file)
-    output_approx = layer_approx(x_test)
-    
-    print(f"Standard output shape: {output_std.shape}")
-    print(f"Approx output shape:   {output_approx.shape}")
-    print(f"Standard output mean:  {np.mean(output_std):.4f}")
-    print(f"Approx output mean:    {np.mean(output_approx):.4f}")
-    
-    if output_std.shape != output_approx.shape:
-        print("✗ FAILED: Shape mismatch!")
-        return False
-    
-    print("✓ PASSED: Basic functionality works")
-    return True
+print("="*70)
+print("MULTIPLIER DIFFERENTIATION TEST (GPU)")
+print("="*70)
 
-def test_weight_transfer():
-    """Test 2: Weight transfer between standard and approximate"""
-    print("\n" + "="*70)
-    print("TEST 2: Weight Transfer")
-    print("="*70)
+# Load multiplier files
+mul_dir = './multipliers'
+mul_files = sorted(glob.glob(os.path.join(mul_dir, '*.bin')))[:10]  # Test first 10
+
+if not mul_files:
+    print(f"✗ No multiplier files found in {mul_dir}")
+    exit(1)
+
+print(f"Testing {len(mul_files)} multipliers\n")
+
+# Load real CIFAR-10 data
+print("Loading CIFAR-10 data...")
+(x_train, y_train), (x_test, y_test) = keras.datasets.cifar10.load_data()
+x_train = x_train[:1000].astype('float32') / 255.0
+y_train = y_train[:1000].flatten()
+x_test = x_test[:500].astype('float32') / 255.0
+y_test = y_test[:500].flatten()
+
+print(f"Using {len(x_train)} train, {len(x_test)} test samples\n")
+
+# ============================================================
+# TEST 1: Are multipliers actually being loaded?
+# ============================================================
+print("="*70)
+print("TEST 1: Multiplier File Loading")
+print("="*70)
+
+for i, mul_file in enumerate(mul_files[:3]):
+    size = os.path.getsize(mul_file)
+    name = os.path.basename(mul_file)
     
-    # Create simple models
-    inputs = keras.Input(shape=(32, 32, 3))
-    
-    # Standard model
-    x = keras.layers.Conv2D(32, 3, padding='same', activation='relu')(inputs)
-    x = keras.layers.Conv2D(64, 3, padding='same', activation='relu')(x)
-    x = keras.layers.GlobalAveragePooling2D()(x)
-    x = keras.layers.Dense(10, activation='softmax')(x)
-    model_std = keras.Model(inputs, x)
-    
-    # Approximate model
-    mul_file = './multipliers/mul8u_1JFF.bin'
-    x = FakeApproxConv2D(32, 3, padding='same', activation='relu', mul_map_file=mul_file)(inputs)
-    x = FakeApproxConv2D(64, 3, padding='same', activation='relu', mul_map_file=mul_file)(x)
-    x = keras.layers.GlobalAveragePooling2D()(x)
-    x = keras.layers.Dense(10, activation='softmax')(x)
-    model_approx = keras.Model(inputs, x)
-    
-    # Initialize weights in standard model
-    _ = model_std(np.random.randn(1, 32, 32, 3).astype('float32'))
-    _ = model_approx(np.random.randn(1, 32, 32, 3).astype('float32'))
-    
-    # Get weights
-    weights_std = model_std.get_weights()
-    
-    print(f"Standard model has {len(weights_std)} weight arrays")
-    print(f"Approximate model has {len(model_approx.get_weights())} weight arrays")
-    
-    # Try to copy weights
+    # Try to create layer with this multiplier
     try:
-        model_approx.set_weights(weights_std)
-        print("✓ PASSED: Weights copied successfully")
+        test_input = tf.constant(np.random.randn(1, 32, 32, 3).astype('float32'))
+        layer = FakeApproxConv2D(16, 3, padding='same', mul_map_file=mul_file)
+        output = layer(test_input)
         
-        # Verify weights are actually the same
-        weights_approx = model_approx.get_weights()
-        all_match = True
-        for i, (w_std, w_approx) in enumerate(zip(weights_std, weights_approx)):
-            if not np.allclose(w_std, w_approx):
-                print(f"✗ Weight array {i} doesn't match!")
-                all_match = False
+        print(f"✓ {name} - Loaded and executed")
+        print(f"    File size: {size} bytes, Output mean: {float(tf.reduce_mean(output)):.6f}")
         
-        if all_match:
-            print("✓ PASSED: All weights match after transfer")
-        else:
-            print("✗ FAILED: Some weights don't match")
-            return False
-            
+        # Cleanup
+        del layer, output
+        keras.backend.clear_session()
+        
     except Exception as e:
-        print(f"✗ FAILED: Could not copy weights: {e}")
-        return False
-    
-    return True
+        print(f"✗ {name} - Failed: {e}")
 
-def test_inference_difference():
-    """Test 3: Check if approximate actually differs from standard"""
-    print("\n" + "="*70)
-    print("TEST 3: Inference Difference (Approximate vs Standard)")
-    print("="*70)
+print()
+
+# ============================================================
+# TEST 2: Do different multipliers produce different outputs?
+# ============================================================
+print("="*70)
+print("TEST 2: Output Differentiation Test")
+print("="*70)
+
+test_batch = x_test[:10]  # Use real CIFAR images
+
+# Get standard output
+print("Creating standard model...")
+inputs = keras.Input(shape=(32, 32, 3))
+x = keras.layers.Conv2D(32, 3, padding='same', activation='relu')(inputs)
+x = keras.layers.GlobalAveragePooling2D()(x)
+outputs = keras.layers.Dense(10, activation='softmax')(x)
+model_std = keras.Model(inputs, outputs)
+
+pred_std = model_std.predict(test_batch, verbose=0)
+print(f"Standard model predictions: {pred_std[0]}")
+print()
+
+# Test each multiplier
+results = []
+for mul_file in mul_files:
+    name = os.path.basename(mul_file)
     
-    # Create test input
-    x_test = np.random.randn(10, 32, 32, 3).astype('float32')
-    
-    # Build models
+    # Build model with this multiplier
     inputs = keras.Input(shape=(32, 32, 3))
-    
-    # Standard
-    x = keras.layers.Conv2D(32, 3, padding='same', activation='relu')(inputs)
-    x = keras.layers.GlobalAveragePooling2D()(x)
-    x = keras.layers.Dense(10, activation='softmax')(x)
-    model_std = keras.Model(inputs, x)
-    
-    # Approximate
-    mul_file = './multipliers/mul8u_1JFF.bin'
     x = FakeApproxConv2D(32, 3, padding='same', activation='relu', mul_map_file=mul_file)(inputs)
     x = keras.layers.GlobalAveragePooling2D()(x)
-    x = keras.layers.Dense(10, activation='softmax')(x)
-    model_approx = keras.Model(inputs, x)
+    outputs = keras.layers.Dense(10, activation='softmax')(x)
+    model_approx = keras.Model(inputs, outputs)
     
-    # Initialize and copy weights
-    _ = model_std(x_test[:1])
-    _ = model_approx(x_test[:1])
+    # Copy weights from standard
     model_approx.set_weights(model_std.get_weights())
     
-    # Get predictions
-    pred_std = model_std.predict(x_test, verbose=0)
-    pred_approx = model_approx.predict(x_test, verbose=0)
+    # Predict
+    pred_approx = model_approx.predict(test_batch, verbose=0)
     
-    print(f"Standard predictions shape: {pred_std.shape}")
-    print(f"Approx predictions shape:   {pred_approx.shape}")
-    print(f"\nStandard prediction sample: {pred_std[0][:5]}")
-    print(f"Approx prediction sample:   {pred_approx[0][:5]}")
+    # Calculate difference from standard
+    diff = float(np.mean(np.abs(pred_std - pred_approx)))
     
-    # Calculate difference
-    diff = np.abs(pred_std - pred_approx)
-    mean_diff = np.mean(diff)
-    max_diff = np.max(diff)
+    print(f"{name:<25} Diff from standard: {diff:.6f}")
+    results.append((name, diff))
     
-    print(f"\nMean absolute difference: {mean_diff:.6f}")
-    print(f"Max absolute difference:  {max_diff:.6f}")
-    
-    if mean_diff < 1e-6:
-        print("✗ FAILED: No difference detected - multiplier not being used!")
-        return False
-    elif mean_diff > 0.5:
-        print("✗ WARNING: Very large difference - may indicate problem")
-    else:
-        print("✓ PASSED: Reasonable difference detected")
-    
-    return True
+    # Cleanup
+    del model_approx
+    keras.backend.clear_session()
 
-def test_actual_cifar10():
-    """Test 4: Actual CIFAR-10 test"""
-    print("\n" + "="*70)
-    print("TEST 4: CIFAR-10 Small Test")
-    print("="*70)
-    
-    # Load small CIFAR-10 subset
-    (x_train, y_train), (x_test, y_test) = keras.datasets.cifar10.load_data()
-    x_train = x_train[:1000].astype('float32') / 255.0
-    y_train = y_train[:1000].flatten()
-    x_test = x_test[:200].astype('float32') / 255.0
-    y_test = y_test[:200].flatten()
-    
-    print(f"Training samples: {len(x_train)}")
-    print(f"Test samples: {len(x_test)}")
-    
-    # Build simple model
-    inputs = keras.Input(shape=(32, 32, 3))
-    x = keras.layers.Conv2D(32, 3, padding='same', activation='relu')(inputs)
-    x = keras.layers.MaxPooling2D(2)(x)
-    x = keras.layers.Conv2D(64, 3, padding='same', activation='relu')(x)
-    x = keras.layers.GlobalAveragePooling2D()(x)
-    x = keras.layers.Dense(10, activation='softmax')(x)
-    model_std = keras.Model(inputs, x)
-    
-    model_std.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-    
-    # Train briefly
-    print("\nTraining standard model...")
-    model_std.fit(x_train, y_train, epochs=10, batch_size=32, verbose=0)
-    
-    # Evaluate standard
-    _, std_acc = model_std.evaluate(x_test, y_test, verbose=0)
-    print(f"Standard accuracy: {std_acc:.4f}")
-    
-    if std_acc < 0.3:
-        print("✗ WARNING: Standard model accuracy is very low")
+print()
+
+# Check if all diffs are the same (BAD) or different (GOOD)
+diffs = [r[1] for r in results]
+unique_diffs = len(set(f"{d:.5f}" for d in diffs))
+
+if unique_diffs == 1:
+    print("✗ CRITICAL: ALL multipliers produce IDENTICAL outputs!")
+    print("  → Multipliers are NOT being used correctly!")
+else:
+    print(f"✓ Found {unique_diffs} different output patterns")
+    print("  → Multipliers ARE being applied differently")
+
+print()
+
+# Cleanup
+del model_std
+keras.backend.clear_session()
+
+# ============================================================
+# TEST 3: Trained model with multipliers
+# ============================================================
+print("="*70)
+print("TEST 3: Trained Model Performance")
+print("="*70)
+
+# Train a standard model
+print("Training standard model...")
+model_std = keras.Sequential([
+    keras.layers.Conv2D(32, 3, padding='same', activation='relu', input_shape=(32, 32, 3)),
+    keras.layers.MaxPooling2D(2),
+    keras.layers.Conv2D(64, 3, padding='same', activation='relu'),
+    keras.layers.GlobalAveragePooling2D(),
+    keras.layers.Dense(10, activation='softmax')
+])
+
+model_std.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+model_std.fit(x_train, y_train, epochs=10, batch_size=64, verbose=0)
+
+_, std_acc = model_std.evaluate(x_test, y_test, verbose=0)
+print(f"✓ Standard accuracy: {std_acc:.4f}\n")
+
+if std_acc < 0.3:
+    print("⚠ WARNING: Standard model accuracy is very low (<30%)")
+    print("  → Weak model will be sensitive to approximation errors\n")
+
+# Save weights
+trained_weights = model_std.get_weights()
+del model_std
+keras.backend.clear_session()
+
+# Test with multiple multipliers
+print("Testing multipliers:")
+mul_results = []
+
+for mul_file in mul_files:
+    name = os.path.basename(mul_file)
     
     # Build approximate model
-    mul_file = './multipliers/mul8u_1JFF.bin'
-    x = FakeApproxConv2D(32, 3, padding='same', activation='relu', mul_map_file=mul_file)(inputs)
-    x = keras.layers.MaxPooling2D(2)(x)
-    x = FakeApproxConv2D(64, 3, padding='same', activation='relu', mul_map_file=mul_file)(x)
-    x = keras.layers.GlobalAveragePooling2D()(x)
-    x = keras.layers.Dense(10, activation='softmax')(x)
-    model_approx = keras.Model(inputs, x)
+    model_approx = keras.Sequential([
+        FakeApproxConv2D(32, 3, padding='same', activation='relu', mul_map_file=mul_file, input_shape=(32, 32, 3)),
+        keras.layers.MaxPooling2D(2),
+        FakeApproxConv2D(64, 3, padding='same', activation='relu', mul_map_file=mul_file),
+        keras.layers.GlobalAveragePooling2D(),
+        keras.layers.Dense(10, activation='softmax')
+    ])
     
     model_approx.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     
-    # Copy weights
-    model_approx.set_weights(model_std.get_weights())
+    # Copy trained weights
+    model_approx.set_weights(trained_weights)
     
-    # Evaluate approximate
+    # Evaluate
     _, approx_acc = model_approx.evaluate(x_test, y_test, verbose=0)
-    print(f"Approximate accuracy: {approx_acc:.4f}")
-    print(f"Accuracy drop: {(std_acc - approx_acc):.4f} ({(std_acc - approx_acc)/std_acc*100:.2f}%)")
+    drop = std_acc - approx_acc
+    drop_pct = (drop / std_acc * 100) if std_acc > 0 else 0
     
-    if approx_acc < 0.15:
-        print("✗ FAILED: Approximate model completely collapsed!")
-        return False
-    elif std_acc - approx_acc > 0.2:
-        print("✗ WARNING: Very large accuracy drop")
-    else:
-        print("✓ PASSED: Reasonable accuracy maintained")
+    print(f"{name:<25} Acc: {approx_acc:.4f}  Drop: {drop:.4f} ({drop_pct:+.1f}%)")
+    mul_results.append((name, approx_acc, drop_pct))
     
-    return True
+    # Cleanup
+    del model_approx
+    keras.backend.clear_session()
 
-def main():
-    print("="*70)
-    print("APPROXIMATE MULTIPLIER DIAGNOSTIC TESTS")
-    print("="*70)
-    
-    results = []
-    
-    # Run tests
-    results.append(("Basic Functionality", test_multiplier_basic()))
-    results.append(("Weight Transfer", test_weight_transfer()))
-    results.append(("Inference Difference", test_inference_difference()))
-    results.append(("CIFAR-10 Test", test_actual_cifar10()))
-    
-    # Summary
-    print("\n" + "="*70)
-    print("TEST SUMMARY")
-    print("="*70)
-    
-    for test_name, passed in results:
-        status = "✓ PASSED" if passed else "✗ FAILED"
-        print(f"{test_name:<30} {status}")
-    
-    all_passed = all(result[1] for result in results)
-    
-    print("\n" + "="*70)
-    if all_passed:
-        print("✓ ALL TESTS PASSED - Multiplier code is working correctly")
-        print("  → The issue is likely model weakness, not code bugs")
-    else:
-        print("✗ SOME TESTS FAILED - There may be issues with the multiplier code")
-    print("="*70)
+print()
 
-if __name__ == '__main__':
-    main()
+# Analyze results
+accuracies = [r[1] for r in mul_results]
+unique_accs = len(set(f"{a:.3f}" for a in accuracies))
+
+print("="*70)
+print("ANALYSIS")
+print("="*70)
+
+if unique_accs == 1:
+    print("✗ CRITICAL ISSUE: All multipliers show IDENTICAL accuracy!")
+    print(f"  All accuracy values: ~{accuracies[0]:.4f}")
+    print("\nPossible causes:")
+    print("  1. Multipliers are not being loaded/applied correctly")
+    print("  2. FakeApproxConv2D has a bug")
+    print("  3. Model collapsed completely with ALL multipliers")
+elif max(accuracies) < 0.15:
+    print("✗ CRITICAL: Model COLLAPSED with all multipliers!")
+    print(f"  Standard: {std_acc:.4f}")
+    print(f"  Best approx: {max(accuracies):.4f}")
+    print("\nLikely cause:")
+    print("  → Model is too weak to tolerate approximation errors")
+    print("  → Need stronger baseline (70%+) before testing multipliers")
+else:
+    print(f"✓ Found {unique_accs} different accuracy levels")
+    print(f"  Best multiplier: {max(accuracies):.4f}")
+    print(f"  Worst multiplier: {min(accuracies):.4f}")
+    print(f"  Range: {max(accuracies) - min(accuracies):.4f}")
+    
+    if max(accuracies) - min(accuracies) < 0.01:
+        print("\n⚠ WARNING: Very small range - multipliers may not be working correctly")
+
+print("\n" + "="*70)

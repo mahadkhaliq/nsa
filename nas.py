@@ -53,7 +53,7 @@ def random_nas(x_train, y_train, x_val, y_val, num_trials, num_blocks,
         
         try:
             model = build_model(architecture, search_space, input_shape, num_classes)
-            train_model(model, x_train, y_train, x_val, y_val)
+            train_model(model, x_train, y_train, x_val, y_val, epochs=10)  # Reduced for faster NAS
             accuracy = evaluate_model(model, x_val, y_val)
             
             if logger:
@@ -126,7 +126,7 @@ def evolutionary_nas(x_train, y_train, x_val, y_val, num_trials, num_blocks,
         
         try:
             model = build_model(architecture, search_space, input_shape, num_classes)
-            train_model(model, x_train, y_train, x_val, y_val)
+            train_model(model, x_train, y_train, x_val, y_val, epochs=10)  # Reduced for faster NAS
             accuracy = evaluate_model(model, x_val, y_val)
             
             population.append({
@@ -161,14 +161,22 @@ def validate_architecture(architecture):
     """Check if architecture is valid"""
     consecutive_pools = 0
     pool_count = 0
+    conv_count = 0
     
     for block in architecture:
-        if 'pool' in block['op']:
+        if 'conv' in block['op']:
+            conv_count += 1
+            consecutive_pools = 0
+        elif 'pool' in block['op']:
             consecutive_pools += 1
             pool_count += 1
             if consecutive_pools > 2 or pool_count > 3:
                 return False
         else:
             consecutive_pools = 0
+    
+    # Must have at least 2 conv layers
+    if conv_count < 2:
+        return False
     
     return True

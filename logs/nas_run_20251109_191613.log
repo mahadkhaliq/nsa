@@ -1,0 +1,350 @@
+2025-11-09 19:16:13 [INFO] ======================================================================
+2025-11-09 19:16:13 [INFO] NAS with Approximate Multipliers - Started
+2025-11-09 19:16:13 [INFO] Log file: logs/nas_run_20251109_191613.log
+2025-11-09 19:16:13 [INFO] ======================================================================
+2025-11-09 19:16:13 [INFO] ======================================================================
+2025-11-09 19:16:13 [INFO] CONFIGURATION
+2025-11-09 19:16:13 [INFO] ======================================================================
+2025-11-09 19:16:13 [INFO] Dataset: cifar10
+2025-11-09 19:16:13 [INFO] Training samples: 5000
+2025-11-09 19:16:13 [INFO] Validation samples: 1000
+2025-11-09 19:16:13 [INFO] NAS trials: 20
+2025-11-09 19:16:13 [INFO] NAS blocks: 4
+2025-11-09 19:16:13 [INFO] NAS method: evolutionary
+2025-11-09 19:16:13 [INFO] Training epochs: 50
+2025-11-09 19:16:13 [INFO] Batch size: 128
+2025-11-09 19:16:13 [INFO] Learning rate: 0.001
+2025-11-09 19:16:13 [INFO] LR scheduling: No
+2025-11-09 19:16:13 [INFO] Multiplier dir: ./multipliers
+2025-11-09 19:16:13 [INFO] Save predictions: No
+2025-11-09 19:16:13 [INFO] Results dir: logs/results
+2025-11-09 19:16:13 [INFO] 
+======================================================================
+2025-11-09 19:16:13 [INFO] STEP 0: Loading Dataset
+2025-11-09 19:16:13 [INFO] ======================================================================
+2025-11-09 19:16:14 [INFO] Input shape: (32, 32, 3)
+2025-11-09 19:16:14 [INFO] Number of classes: 10
+2025-11-09 19:16:14 [INFO] Training samples (full): 44000
+2025-11-09 19:16:14 [INFO] Validation samples (full): 6000
+2025-11-09 19:16:14 [INFO] Test samples: 10000
+2025-11-09 19:16:14 [INFO] 
+Using subset:
+2025-11-09 19:16:14 [INFO]   Training: 5000 samples
+2025-11-09 19:16:14 [INFO]   Validation: 1000 samples
+2025-11-09 19:16:14 [INFO]   Classes: airplane, automobile, bird, cat, deer...
+2025-11-09 19:16:14 [INFO] 
+======================================================================
+2025-11-09 19:16:14 [INFO] STEP 1: Using Predefined Architecture (NAS Skipped)
+2025-11-09 19:16:14 [INFO] ======================================================================
+2025-11-09 19:16:14 [INFO] Architecture: [{'op': 'conv3x3', 'filters': 32, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-09 19:16:15 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:16:28 [INFO] Quick evaluation accuracy: 0.1280
+2025-11-09 19:16:28 [INFO] 
+======================================================================
+2025-11-09 19:16:28 [INFO] STEP 2: Training Best Architecture
+2025-11-09 19:16:28 [INFO] ======================================================================
+2025-11-09 19:16:28 [INFO] Best Architecture: [{'op': 'conv3x3', 'filters': 32, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-09 19:16:28 [INFO] 
+Model Complexity:
+2025-11-09 19:16:28 [INFO]   Trainable Parameters: 128,010
+2025-11-09 19:16:28 [INFO]   Estimated FLOPs: 42,827,776
+2025-11-09 19:16:28 [INFO]   Model Size (approx): 0.49 MB (float32)
+2025-11-09 19:16:28 [INFO] 
+Training for 50 epochs...
+2025-11-09 19:16:28 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:17:32 [INFO] Training completed: 50 epochs
+2025-11-09 19:17:32 [INFO] ✓ Standard model accuracy: 0.5340
+2025-11-09 19:17:32 [INFO] 
+============================================================
+2025-11-09 19:17:32 [INFO] BEST ARCHITECTURE FOUND
+2025-11-09 19:17:32 [INFO] ============================================================
+2025-11-09 19:17:32 [INFO] Architecture: [{'op': 'conv3x3', 'filters': 32, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-09 19:17:32 [INFO] Accuracy: 0.5340
+2025-11-09 19:17:32 [INFO] ============================================================
+2025-11-09 19:17:32 [INFO] 
+Training Summary:
+2025-11-09 19:17:32 [INFO]   Final Training Accuracy: 0.6172
+2025-11-09 19:17:32 [INFO]   Final Validation Accuracy: 0.5340
+2025-11-09 19:17:32 [INFO]   Final Training Loss: 1.1418
+2025-11-09 19:17:32 [INFO]   Final Validation Loss: 1.4140
+2025-11-09 19:17:32 [INFO] 
+Saving training curves...
+2025-11-09 19:17:32 [INFO]   ✓ Training curves saved to logs/results/
+2025-11-09 19:17:32 [INFO] 
+✓ Standard model weights saved to logs/results/standard_model_weights.h5
+2025-11-09 19:17:32 [INFO] 
+======================================================================
+2025-11-09 19:17:32 [INFO] STEP 3: Testing Approximate Multipliers
+2025-11-09 19:17:32 [INFO] ======================================================================
+2025-11-09 19:17:32 [INFO] Testing 36 multipliers
+2025-11-09 19:17:32 [INFO] Standard model accuracy: 0.5340
+2025-11-09 19:17:32 [INFO] Using saved weights from: logs/results/standard_model_weights.h5
+
+2025-11-09 19:17:32 [INFO] [1/36] Testing: mul8u_125K.bin
+2025-11-09 19:17:33 [INFO] Testing: mul8u_125K.bin
+2025-11-09 19:17:33 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:33 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:33 [INFO] [2/36] Testing: mul8u_12N4.bin
+2025-11-09 19:17:33 [INFO] Testing: mul8u_12N4.bin
+2025-11-09 19:17:33 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:33 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:33 [INFO] [3/36] Testing: mul8u_13QR.bin
+2025-11-09 19:17:34 [INFO] Testing: mul8u_13QR.bin
+2025-11-09 19:17:34 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:34 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:34 [INFO] [4/36] Testing: mul8u_1446.bin
+2025-11-09 19:17:34 [INFO] Testing: mul8u_1446.bin
+2025-11-09 19:17:34 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:34 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:34 [INFO] [5/36] Testing: mul8u_14VP.bin
+2025-11-09 19:17:35 [INFO] Testing: mul8u_14VP.bin
+2025-11-09 19:17:35 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:35 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:35 [INFO] [6/36] Testing: mul8u_150Q.bin
+2025-11-09 19:17:35 [INFO] Testing: mul8u_150Q.bin
+2025-11-09 19:17:35 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:35 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:35 [INFO] [7/36] Testing: mul8u_17C8.bin
+2025-11-09 19:17:36 [INFO] Testing: mul8u_17C8.bin
+2025-11-09 19:17:36 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:36 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:36 [INFO] [8/36] Testing: mul8u_17KS.bin
+2025-11-09 19:17:36 [INFO] Testing: mul8u_17KS.bin
+2025-11-09 19:17:36 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:36 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:36 [INFO] [9/36] Testing: mul8u_17QU.bin
+2025-11-09 19:17:37 [INFO] Testing: mul8u_17QU.bin
+2025-11-09 19:17:37 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:37 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:37 [INFO] [10/36] Testing: mul8u_185Q.bin
+2025-11-09 19:17:37 [INFO] Testing: mul8u_185Q.bin
+2025-11-09 19:17:37 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:37 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:37 [INFO] [11/36] Testing: mul8u_18DU.bin
+2025-11-09 19:17:38 [INFO] Testing: mul8u_18DU.bin
+2025-11-09 19:17:38 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:38 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:38 [INFO] [12/36] Testing: mul8u_199Z.bin
+2025-11-09 19:17:38 [INFO] Testing: mul8u_199Z.bin
+2025-11-09 19:17:38 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:38 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:38 [INFO] [13/36] Testing: mul8u_19DB.bin
+2025-11-09 19:17:39 [INFO] Testing: mul8u_19DB.bin
+2025-11-09 19:17:39 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:39 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:39 [INFO] [14/36] Testing: mul8u_1AGV.bin
+2025-11-09 19:17:39 [INFO] Testing: mul8u_1AGV.bin
+2025-11-09 19:17:39 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:39 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:39 [INFO] [15/36] Testing: mul8u_1JFF.bin
+2025-11-09 19:17:40 [INFO] Testing: mul8u_1JFF.bin
+2025-11-09 19:17:40 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:40 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:40 [INFO] [16/36] Testing: mul8u_2AC.bin
+2025-11-09 19:17:40 [INFO] Testing: mul8u_2AC.bin
+2025-11-09 19:17:40 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:40 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:40 [INFO] [17/36] Testing: mul8u_2HH.bin
+2025-11-09 19:17:41 [INFO] Testing: mul8u_2HH.bin
+2025-11-09 19:17:41 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:41 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:41 [INFO] [18/36] Testing: mul8u_2P7.bin
+2025-11-09 19:17:41 [INFO] Testing: mul8u_2P7.bin
+2025-11-09 19:17:41 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:41 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:41 [INFO] [19/36] Testing: mul8u_7C1.bin
+2025-11-09 19:17:42 [INFO] Testing: mul8u_7C1.bin
+2025-11-09 19:17:42 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:42 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:42 [INFO] [20/36] Testing: mul8u_96D.bin
+2025-11-09 19:17:42 [INFO] Testing: mul8u_96D.bin
+2025-11-09 19:17:42 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:42 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:42 [INFO] [21/36] Testing: mul8u_CK5.bin
+2025-11-09 19:17:43 [INFO] Testing: mul8u_CK5.bin
+2025-11-09 19:17:43 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:43 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:43 [INFO] [22/36] Testing: mul8u_DM1.bin
+2025-11-09 19:17:43 [INFO] Testing: mul8u_DM1.bin
+2025-11-09 19:17:43 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:43 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:43 [INFO] [23/36] Testing: mul8u_EXZ.bin
+2025-11-09 19:17:44 [INFO] Testing: mul8u_EXZ.bin
+2025-11-09 19:17:44 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:44 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:44 [INFO] [24/36] Testing: mul8u_FTA.bin
+2025-11-09 19:17:44 [INFO] Testing: mul8u_FTA.bin
+2025-11-09 19:17:44 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:44 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:44 [INFO] [25/36] Testing: mul8u_GS2.bin
+2025-11-09 19:17:45 [INFO] Testing: mul8u_GS2.bin
+2025-11-09 19:17:45 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:45 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:45 [INFO] [26/36] Testing: mul8u_JQQ.bin
+2025-11-09 19:17:45 [INFO] Testing: mul8u_JQQ.bin
+2025-11-09 19:17:45 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:45 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:45 [INFO] [27/36] Testing: mul8u_JV3.bin
+2025-11-09 19:17:46 [INFO] Testing: mul8u_JV3.bin
+2025-11-09 19:17:46 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:46 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:46 [INFO] [28/36] Testing: mul8u_KEM.bin
+2025-11-09 19:17:46 [INFO] Testing: mul8u_KEM.bin
+2025-11-09 19:17:46 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:46 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:46 [INFO] [29/36] Testing: mul8u_L40.bin
+2025-11-09 19:17:47 [INFO] Testing: mul8u_L40.bin
+2025-11-09 19:17:47 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:47 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:47 [INFO] [30/36] Testing: mul8u_NGR.bin
+2025-11-09 19:17:47 [INFO] Testing: mul8u_NGR.bin
+2025-11-09 19:17:47 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:47 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:47 [INFO] [31/36] Testing: mul8u_PKY.bin
+2025-11-09 19:17:48 [INFO] Testing: mul8u_PKY.bin
+2025-11-09 19:17:48 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:48 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:48 [INFO] [32/36] Testing: mul8u_QJD.bin
+2025-11-09 19:17:48 [INFO] Testing: mul8u_QJD.bin
+2025-11-09 19:17:48 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:48 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:48 [INFO] [33/36] Testing: mul8u_QKX.bin
+2025-11-09 19:17:49 [INFO] Testing: mul8u_QKX.bin
+2025-11-09 19:17:49 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:49 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:49 [INFO] [34/36] Testing: mul8u_Y48.bin
+2025-11-09 19:17:49 [INFO] Testing: mul8u_Y48.bin
+2025-11-09 19:17:49 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:49 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:49 [INFO] [35/36] Testing: mul8u_YX7.bin
+2025-11-09 19:17:49 [INFO] Testing: mul8u_YX7.bin
+2025-11-09 19:17:49 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:49 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:49 [INFO] [36/36] Testing: mul8u_ZFB.bin
+2025-11-09 19:17:50 [INFO] Testing: mul8u_ZFB.bin
+2025-11-09 19:17:50 [INFO]   Accuracy: 0.0950
+2025-11-09 19:17:50 [INFO]   Drop:     0.4390 (82.21%)
+2025-11-09 19:17:50 [INFO] 
+======================================================================
+2025-11-09 19:17:50 [INFO] STEP 4: Results Analysis
+2025-11-09 19:17:50 [INFO] ======================================================================
+2025-11-09 19:17:50 [INFO] 
+======================================================================
+2025-11-09 19:17:50 [INFO] FINAL RESULTS SUMMARY
+2025-11-09 19:17:50 [INFO] ======================================================================
+2025-11-09 19:17:50 [INFO] Standard Accuracy: 0.5340
+2025-11-09 19:17:50 [INFO] Total Multipliers Tested: 36
+2025-11-09 19:17:50 [INFO] 
+Accuracy Statistics:
+2025-11-09 19:17:50 [INFO]   Best:  0.0950
+2025-11-09 19:17:50 [INFO]   Worst: 0.0950
+2025-11-09 19:17:50 [INFO]   Mean:  0.0950
+2025-11-09 19:17:50 [INFO] 
+Drop Statistics:
+2025-11-09 19:17:50 [INFO]   Min Drop:  0.4390 (82.21%)
+2025-11-09 19:17:50 [INFO]   Max Drop:  0.4390 (82.21%)
+2025-11-09 19:17:50 [INFO]   Mean Drop: 0.4390
+2025-11-09 19:17:50 [INFO] 
+Multiplier Categories:
+2025-11-09 19:17:50 [INFO]   Excellent (≤1% drop):   0
+2025-11-09 19:17:50 [INFO]   Good (1-5% drop):       0
+2025-11-09 19:17:50 [INFO]   Medium (5-10% drop):    0
+2025-11-09 19:17:50 [INFO]   Poor (>10% drop):       36
+2025-11-09 19:17:50 [INFO] 
+Multiplier                     Accuracy     Drop         Drop %    
+2025-11-09 19:17:50 [INFO] ----------------------------------------------------------------------
+2025-11-09 19:17:50 [INFO] mul8u_125K.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_12N4.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_13QR.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_1446.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_14VP.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_150Q.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_17C8.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_17KS.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_17QU.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_185Q.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_18DU.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_199Z.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_19DB.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_1AGV.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_1JFF.bin                 0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_2AC.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_2HH.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_2P7.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_7C1.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_96D.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_CK5.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_DM1.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_EXZ.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_FTA.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_GS2.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_JQQ.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_JV3.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_KEM.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_L40.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_NGR.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_PKY.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_QJD.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_QKX.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_Y48.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_YX7.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] mul8u_ZFB.bin                  0.0950       0.4390       82.21     %
+2025-11-09 19:17:50 [INFO] 
+======================================================================
+2025-11-09 19:17:50 [INFO] BEST APPROXIMATE MULTIPLIER
+2025-11-09 19:17:50 [INFO] ======================================================================
+2025-11-09 19:17:50 [INFO] Multiplier:  mul8u_125K.bin
+2025-11-09 19:17:50 [INFO] Accuracy:    0.0950
+2025-11-09 19:17:50 [INFO] Drop:        0.4390 (82.21%)
+2025-11-09 19:17:50 [INFO] 
+Top 5 Multipliers:
+2025-11-09 19:17:50 [INFO] 1. mul8u_125K.bin                 Acc: 0.0950 Drop: +82.21%
+2025-11-09 19:17:50 [INFO] 2. mul8u_12N4.bin                 Acc: 0.0950 Drop: +82.21%
+2025-11-09 19:17:50 [INFO] 3. mul8u_13QR.bin                 Acc: 0.0950 Drop: +82.21%
+2025-11-09 19:17:50 [INFO] 4. mul8u_1446.bin                 Acc: 0.0950 Drop: +82.21%
+2025-11-09 19:17:50 [INFO] 5. mul8u_14VP.bin                 Acc: 0.0950 Drop: +82.21%
+2025-11-09 19:17:50 [INFO] 
+Estimated Energy Savings:
+2025-11-09 19:17:50 [INFO]   Excellent (≤1% drop): 0 multipliers
+2025-11-09 19:17:50 [INFO]   Good (1-5% drop):     0 multipliers
+2025-11-09 19:17:50 [INFO]   Potential energy savings: 30-50% (typical for approximate multipliers)
+2025-11-09 19:17:50 [INFO]   Model parameters: 128,010
+2025-11-09 19:17:50 [INFO]   Estimated MACs per inference: 21,413,888
+2025-11-09 19:17:50 [INFO] 
+======================================================================
+2025-11-09 19:17:50 [INFO] FINAL SUMMARY
+2025-11-09 19:17:50 [INFO] ======================================================================
+2025-11-09 19:17:50 [INFO] Dataset: cifar10
+2025-11-09 19:17:50 [INFO] Best Architecture: [{'op': 'conv3x3', 'filters': 32, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-09 19:17:50 [INFO] Standard Model Accuracy: 0.5340
+2025-11-09 19:17:50 [INFO] Model Parameters: 128,010
+2025-11-09 19:17:50 [INFO] Estimated FLOPs: 42,827,776
+2025-11-09 19:17:50 [INFO] Learning Rate: 0.001
+2025-11-09 19:17:50 [INFO] 
+Multiplier Testing:
+2025-11-09 19:17:50 [INFO]   Total tested: 36
+2025-11-09 19:17:50 [INFO]   Best accuracy: 0.0950
+2025-11-09 19:17:50 [INFO]   Best multiplier: mul8u_125K.bin
+2025-11-09 19:17:50 [INFO] 
+Quality Distribution:
+2025-11-09 19:17:50 [INFO]   Excellent (≤1%):   0
+2025-11-09 19:17:50 [INFO]   Good (1-5%):       0
+2025-11-09 19:17:50 [INFO]   Medium (5-10%):    0
+2025-11-09 19:17:50 [INFO]   Poor (>10%):       36
+2025-11-09 19:17:50 [INFO] 
+Output Locations:
+2025-11-09 19:17:50 [INFO]   Logs: logs/
+2025-11-09 19:17:50 [INFO]   Results: logs/results/
+2025-11-09 19:17:50 [INFO] 
+✓ Results saved to: logs/nas_results_20251109_191613.json
+2025-11-09 19:17:50 [INFO] 
+======================================================================
+2025-11-09 19:17:50 [INFO] NAS Run Completed
+2025-11-09 19:17:50 [INFO] Log file: logs/nas_run_20251109_191613.log
+2025-11-09 19:17:50 [INFO] ======================================================================

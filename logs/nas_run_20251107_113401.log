@@ -1,0 +1,97 @@
+2025-11-07 11:34:01 [INFO] ======================================================================
+2025-11-07 11:34:01 [INFO] NAS with Approximate Multipliers - Started
+2025-11-07 11:34:01 [INFO] Log file: logs/nas_run_20251107_113401.log
+2025-11-07 11:34:01 [INFO] ======================================================================
+2025-11-07 11:34:01 [INFO] ======================================================================
+2025-11-07 11:34:01 [INFO] CONFIGURATION
+2025-11-07 11:34:01 [INFO] ======================================================================
+2025-11-07 11:34:01 [INFO] Dataset: cifar10
+2025-11-07 11:34:01 [INFO] Training samples: 5000
+2025-11-07 11:34:01 [INFO] Validation samples: 1000
+2025-11-07 11:34:01 [INFO] NAS trials: 100
+2025-11-07 11:34:01 [INFO] NAS blocks: 4
+2025-11-07 11:34:01 [INFO] NAS method: evolutionary
+2025-11-07 11:34:01 [INFO] Training epochs: 50
+2025-11-07 11:34:01 [INFO] Batch size: 128
+2025-11-07 11:34:01 [INFO] Multiplier dir: ./multipliers
+2025-11-07 11:34:01 [INFO] 
+======================================================================
+2025-11-07 11:34:01 [INFO] STEP 0: Loading Dataset
+2025-11-07 11:34:01 [INFO] ======================================================================
+2025-11-07 11:34:02 [INFO] Input shape: (32, 32, 3)
+2025-11-07 11:34:02 [INFO] Number of classes: 10
+2025-11-07 11:34:02 [INFO] Training samples (full): 44000
+2025-11-07 11:34:02 [INFO] Validation samples (full): 6000
+2025-11-07 11:34:02 [INFO] Test samples: 10000
+2025-11-07 11:34:02 [INFO] 
+Using subset:
+2025-11-07 11:34:02 [INFO]   Training: 5000 samples
+2025-11-07 11:34:02 [INFO]   Validation: 1000 samples
+2025-11-07 11:34:02 [INFO] 
+======================================================================
+2025-11-07 11:34:02 [INFO] STEP 1: Neural Architecture Search
+2025-11-07 11:34:02 [INFO] ======================================================================
+2025-11-07 11:34:02 [INFO] Starting NAS: STANDARD - Method: EVOLUTIONARY
+
+2025-11-07 11:34:02 [INFO] Phase 1: Generating initial population (20 architectures)
+2025-11-07 11:34:04 [INFO] Init 1/20: Accuracy 0.1960
+2025-11-07 11:34:06 [INFO] Init 2/20: Accuracy 0.1570
+2025-11-07 11:34:07 [INFO] Init 3/20: Accuracy 0.2410
+2025-11-07 11:34:09 [INFO] Init 4/20: Accuracy 0.1150
+2025-11-07 11:34:10 [INFO] Init 5/20: Accuracy 0.1960
+2025-11-07 11:34:12 [INFO] Init 6/20: Accuracy 0.1560
+2025-11-07 11:34:13 [INFO] Init 7/20: Accuracy 0.1950
+2025-11-07 11:34:16 [INFO] Init 9/20: Accuracy 0.2560
+2025-11-07 11:34:17 [INFO] Init 10/20: Accuracy 0.1750
+2025-11-07 11:34:20 [INFO] Init 13/20: Accuracy 0.2170
+2025-11-07 11:34:22 [INFO] Init 14/20: Accuracy 0.1540
+2025-11-07 11:34:28 [INFO] Init 18/20: Accuracy 0.1740
+2025-11-07 11:34:31 [INFO] Init 19/20: Accuracy 0.1310
+2025-11-07 11:34:33 [INFO] Init 20/20: Accuracy 0.1350
+2025-11-07 11:34:33 [INFO] 
+Phase 2: Evolution (80 generations)
+2025-11-07 11:34:34 [INFO] Trial 21/100
+2025-11-07 11:34:34 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'identity', 'filters': 128, 'use_bn': False}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}, {'op': 'identity', 'filters': 32, 'use_bn': False}]
+2025-11-07 11:34:34 [INFO]   Accuracy: 0.1970
+2025-11-07 11:34:36 [INFO] Trial 22/100
+2025-11-07 11:34:36 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 32, 'use_bn': False}]
+2025-11-07 11:34:36 [INFO]   Accuracy: 0.3010
+2025-11-07 11:34:37 [INFO] Trial 23/100
+2025-11-07 11:34:37 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 11:34:37 [INFO]   Accuracy: 0.2080
+2025-11-07 11:34:39 [INFO] Trial 24/100
+2025-11-07 11:34:39 [INFO]   Architecture: [{'op': 'conv1x1', 'filters': 32, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 32, 'use_bn': False}, {'op': 'identity', 'filters': 64, 'use_bn': False}]
+2025-11-07 11:34:39 [INFO]   Accuracy: 0.2310
+2025-11-07 11:34:40 [INFO] Trial 25/100
+2025-11-07 11:34:40 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'identity', 'filters': 128, 'use_bn': False}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}, {'op': 'identity', 'filters': 64, 'use_bn': False}]
+2025-11-07 11:34:40 [INFO]   Accuracy: 0.2050
+2025-11-07 11:34:41 [INFO] Trial 26/100
+2025-11-07 11:34:41 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 32, 'use_bn': False}, {'op': 'identity', 'filters': 128, 'use_bn': False}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}]
+2025-11-07 11:34:41 [INFO]   Accuracy: 0.2220
+2025-11-07 11:34:43 [INFO] Trial 27/100
+2025-11-07 11:34:43 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 32, 'use_bn': False}]
+2025-11-07 11:34:43 [INFO]   Accuracy: 0.2150
+2025-11-07 11:34:44 [INFO] Trial 28/100
+2025-11-07 11:34:44 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv3x3', 'filters': 32, 'use_bn': False}]
+2025-11-07 11:34:44 [INFO]   Accuracy: 0.2830
+2025-11-07 11:34:45 [INFO] Trial 29/100
+2025-11-07 11:34:45 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 11:34:45 [INFO]   Accuracy: 0.2110
+2025-11-07 11:34:46 [INFO] Trial 30/100
+2025-11-07 11:34:46 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 11:34:46 [INFO]   Accuracy: 0.2480
+2025-11-07 11:34:49 [INFO] Trial 31/100
+2025-11-07 11:34:49 [INFO]   Architecture: [{'op': 'conv1x1', 'filters': 32, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 32, 'use_bn': False}, {'op': 'identity', 'filters': 64, 'use_bn': False}]
+2025-11-07 11:34:49 [INFO]   Accuracy: 0.2540
+2025-11-07 11:34:50 [INFO] Trial 32/100
+2025-11-07 11:34:50 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 11:34:50 [INFO]   Accuracy: 0.2420
+2025-11-07 11:34:51 [INFO] Trial 33/100
+2025-11-07 11:34:51 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 32, 'use_bn': False}, {'op': 'identity', 'filters': 128, 'use_bn': False}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 11:34:51 [INFO]   Accuracy: 0.1840
+2025-11-07 11:34:53 [INFO] Trial 34/100
+2025-11-07 11:34:53 [INFO]   Architecture: [{'op': 'conv1x1', 'filters': 32, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 32, 'use_bn': False}, {'op': 'identity', 'filters': 64, 'use_bn': False}]
+2025-11-07 11:34:53 [INFO]   Accuracy: 0.2250
+2025-11-07 11:34:54 [INFO] Trial 35/100
+2025-11-07 11:34:54 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 11:34:54 [INFO]   Accuracy: 0.2010

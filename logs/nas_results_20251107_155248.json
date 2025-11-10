@@ -1,0 +1,867 @@
+{
+  "start_time": "20251107_155248",
+  "nas_results": [
+    {
+      "trial": 5,
+      "architecture": [
+        {
+          "op": "conv5x5",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": true
+        }
+      ],
+      "accuracy": 0.527999997138977,
+      "timestamp": "2025-11-07T15:57:08.433943"
+    },
+    {
+      "trial": 7,
+      "architecture": [
+        {
+          "op": "conv5x5",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": true
+        }
+      ],
+      "accuracy": 0.5362499952316284,
+      "timestamp": "2025-11-07T15:57:58.962057"
+    },
+    {
+      "trial": 8,
+      "architecture": [
+        {
+          "op": "conv5x5",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": true
+        }
+      ],
+      "accuracy": 0.578249990940094,
+      "timestamp": "2025-11-07T15:58:49.882947"
+    },
+    {
+      "trial": 9,
+      "architecture": [
+        {
+          "op": "conv3x3",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": true
+        }
+      ],
+      "accuracy": 0.606249988079071,
+      "timestamp": "2025-11-07T15:59:40.474201"
+    },
+    {
+      "trial": 10,
+      "architecture": [
+        {
+          "op": "conv3x3",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": true
+        }
+      ],
+      "accuracy": 0.5927500128746033,
+      "timestamp": "2025-11-07T16:00:30.528864"
+    },
+    {
+      "trial": 11,
+      "architecture": [
+        {
+          "op": "conv5x5",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": true
+        }
+      ],
+      "accuracy": 0.5542500019073486,
+      "timestamp": "2025-11-07T16:01:21.061716"
+    },
+    {
+      "trial": 12,
+      "architecture": [
+        {
+          "op": "conv5x5",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": true
+        }
+      ],
+      "accuracy": 0.5352500081062317,
+      "timestamp": "2025-11-07T16:02:11.846152"
+    },
+    {
+      "trial": 13,
+      "architecture": [
+        {
+          "op": "conv5x5",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 32,
+          "use_bn": true
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": false
+        }
+      ],
+      "accuracy": 0.5297499895095825,
+      "timestamp": "2025-11-07T16:03:02.056938"
+    },
+    {
+      "trial": 14,
+      "architecture": [
+        {
+          "op": "conv5x5",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "max_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 128,
+          "use_bn": false
+        }
+      ],
+      "accuracy": 0.3617500066757202,
+      "timestamp": "2025-11-07T16:03:52.505625"
+    },
+    {
+      "trial": 15,
+      "architecture": [
+        {
+          "op": "conv3x3",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": true
+        }
+      ],
+      "accuracy": 0.550000011920929,
+      "timestamp": "2025-11-07T16:04:43.539167"
+    },
+    {
+      "trial": 16,
+      "architecture": [
+        {
+          "op": "conv5x5",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": true
+        }
+      ],
+      "accuracy": 0.5272499918937683,
+      "timestamp": "2025-11-07T16:05:34.545842"
+    },
+    {
+      "trial": 17,
+      "architecture": [
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": true
+        }
+      ],
+      "accuracy": 0.4962500035762787,
+      "timestamp": "2025-11-07T16:06:25.140898"
+    },
+    {
+      "trial": 18,
+      "architecture": [
+        {
+          "op": "conv3x3",
+          "filters": 64,
+          "use_bn": true
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 64,
+          "use_bn": true
+        }
+      ],
+      "accuracy": 0.5762500166893005,
+      "timestamp": "2025-11-07T16:07:15.564874"
+    },
+    {
+      "trial": 19,
+      "architecture": [
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "conv5x5",
+          "filters": 128,
+          "use_bn": true
+        }
+      ],
+      "accuracy": 0.4909999966621399,
+      "timestamp": "2025-11-07T16:08:06.178768"
+    },
+    {
+      "trial": 20,
+      "architecture": [
+        {
+          "op": "conv5x5",
+          "filters": 64,
+          "use_bn": true
+        },
+        {
+          "op": "conv5x5",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "max_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 64,
+          "use_bn": false
+        },
+        {
+          "op": "identity",
+          "filters": 32,
+          "use_bn": false
+        },
+        {
+          "op": "avg_pool",
+          "filters": 128,
+          "use_bn": false
+        }
+      ],
+      "accuracy": 0.29624998569488525,
+      "timestamp": "2025-11-07T16:08:56.727166"
+    }
+  ],
+  "multiplier_results": [
+    {
+      "multiplier": "mul8u_125K.bin",
+      "accuracy": 0.8287500143051147,
+      "drop": 0.0004999637603759766,
+      "drop_percent": 0.060291081899777055,
+      "timestamp": "2025-11-07T16:15:30.788773"
+    },
+    {
+      "multiplier": "mul8u_12N4.bin",
+      "accuracy": 0.10400000214576721,
+      "drop": 0.7252500057220459,
+      "drop_percent": 87.4585509300232,
+      "timestamp": "2025-11-07T16:15:38.577399"
+    },
+    {
+      "multiplier": "mul8u_13QR.bin",
+      "accuracy": 0.11025000363588333,
+      "drop": 0.718999981880188,
+      "drop_percent": 86.70485615730286,
+      "timestamp": "2025-11-07T16:15:46.257140"
+    },
+    {
+      "multiplier": "mul8u_1446.bin",
+      "accuracy": 0.828499972820282,
+      "drop": 0.0007500052452087402,
+      "drop_percent": 0.09044380858540535,
+      "timestamp": "2025-11-07T16:15:53.925956"
+    },
+    {
+      "multiplier": "mul8u_14VP.bin",
+      "accuracy": 0.8192499876022339,
+      "drop": 0.009999990463256836,
+      "drop_percent": 1.2059078551828861,
+      "timestamp": "2025-11-07T16:16:01.765689"
+    },
+    {
+      "multiplier": "mul8u_150Q.bin",
+      "accuracy": 0.8059999942779541,
+      "drop": 0.02324998378753662,
+      "drop_percent": 2.8037363663315773,
+      "timestamp": "2025-11-07T16:16:09.422692"
+    },
+    {
+      "multiplier": "mul8u_17C8.bin",
+      "accuracy": 0.1054999977350235,
+      "drop": 0.7237499952316284,
+      "drop_percent": 87.27766275405884,
+      "timestamp": "2025-11-07T16:16:17.082149"
+    },
+    {
+      "multiplier": "mul8u_17KS.bin",
+      "accuracy": 0.09350000321865082,
+      "drop": 0.7357499599456787,
+      "drop_percent": 88.72475028038025,
+      "timestamp": "2025-11-07T16:16:24.913198"
+    },
+    {
+      "multiplier": "mul8u_17QU.bin",
+      "accuracy": 0.09175000339746475,
+      "drop": 0.7374999523162842,
+      "drop_percent": 88.93578052520752,
+      "timestamp": "2025-11-07T16:16:32.710358"
+    },
+    {
+      "multiplier": "mul8u_185Q.bin",
+      "accuracy": 0.16599999368190765,
+      "drop": 0.6632499694824219,
+      "drop_percent": 79.98191118240356,
+      "timestamp": "2025-11-07T16:16:40.763774"
+    },
+    {
+      "multiplier": "mul8u_18DU.bin",
+      "accuracy": 0.10300000011920929,
+      "drop": 0.7262499928474426,
+      "drop_percent": 87.57913708686829,
+      "timestamp": "2025-11-07T16:16:48.477289"
+    },
+    {
+      "multiplier": "mul8u_199Z.bin",
+      "accuracy": 0.09399999678134918,
+      "drop": 0.7352499961853027,
+      "drop_percent": 88.66446018218994,
+      "timestamp": "2025-11-07T16:16:56.116610"
+    },
+    {
+      "multiplier": "mul8u_19DB.bin",
+      "accuracy": 0.1197500005364418,
+      "drop": 0.7094999551773071,
+      "drop_percent": 85.55923700332642,
+      "timestamp": "2025-11-07T16:17:03.924034"
+    },
+    {
+      "multiplier": "mul8u_1AGV.bin",
+      "accuracy": 0.09549999982118607,
+      "drop": 0.7337499856948853,
+      "drop_percent": 88.48357200622559,
+      "timestamp": "2025-11-07T16:17:11.598834"
+    },
+    {
+      "multiplier": "mul8u_1JFF.bin",
+      "accuracy": 0.828000009059906,
+      "drop": 0.0012499690055847168,
+      "drop_percent": 0.1507348846644163,
+      "timestamp": "2025-11-07T16:17:19.267476"
+    },
+    {
+      "multiplier": "mul8u_2AC.bin",
+      "accuracy": 0.16699999570846558,
+      "drop": 0.6622499823570251,
+      "drop_percent": 79.861319065094,
+      "timestamp": "2025-11-07T16:17:27.164535"
+    },
+    {
+      "multiplier": "mul8u_2HH.bin",
+      "accuracy": 0.13449999690055847,
+      "drop": 0.6947499513626099,
+      "drop_percent": 83.78052115440369,
+      "timestamp": "2025-11-07T16:17:34.906633"
+    },
+    {
+      "multiplier": "mul8u_2P7.bin",
+      "accuracy": 0.828249990940094,
+      "drop": 0.0009999871253967285,
+      "drop_percent": 0.12058934662491083,
+      "timestamp": "2025-11-07T16:17:42.800476"
+    },
+    {
+      "multiplier": "mul8u_7C1.bin",
+      "accuracy": 0.7882500290870667,
+      "drop": 0.04099994897842407,
+      "drop_percent": 4.944220557808876,
+      "timestamp": "2025-11-07T16:17:50.469097"
+    },
+    {
+      "multiplier": "mul8u_96D.bin",
+      "accuracy": 0.6317499876022339,
+      "drop": 0.19749999046325684,
+      "drop_percent": 23.816701769828796,
+      "timestamp": "2025-11-07T16:17:58.136936"
+    },
+    {
+      "multiplier": "mul8u_CK5.bin",
+      "accuracy": 0.8012499809265137,
+      "drop": 0.02799999713897705,
+      "drop_percent": 3.376544639468193,
+      "timestamp": "2025-11-07T16:18:05.971897"
+    },
+    {
+      "multiplier": "mul8u_DM1.bin",
+      "accuracy": 0.10050000250339508,
+      "drop": 0.7287499904632568,
+      "drop_percent": 87.88061738014221,
+      "timestamp": "2025-11-07T16:18:13.641074"
+    },
+    {
+      "multiplier": "mul8u_EXZ.bin",
+      "accuracy": 0.8274999856948853,
+      "drop": 0.0017499923706054688,
+      "drop_percent": 0.21103315521031618,
+      "timestamp": "2025-11-07T16:18:21.340862"
+    },
+    {
+      "multiplier": "mul8u_FTA.bin",
+      "accuracy": 0.0885000005364418,
+      "drop": 0.7407499551773071,
+      "drop_percent": 89.32770490646362,
+      "timestamp": "2025-11-07T16:18:29.126591"
+    },
+    {
+      "multiplier": "mul8u_GS2.bin",
+      "accuracy": 0.8192499876022339,
+      "drop": 0.009999990463256836,
+      "drop_percent": 1.2059078551828861,
+      "timestamp": "2025-11-07T16:18:36.794546"
+    },
+    {
+      "multiplier": "mul8u_JQQ.bin",
+      "accuracy": 0.7072499990463257,
+      "drop": 0.12199997901916504,
+      "drop_percent": 14.71208781003952,
+      "timestamp": "2025-11-07T16:18:44.619382"
+    },
+    {
+      "multiplier": "mul8u_JV3.bin",
+      "accuracy": 0.11249999701976776,
+      "drop": 0.7167499661445618,
+      "drop_percent": 86.43352389335632,
+      "timestamp": "2025-11-07T16:18:52.308899"
+    },
+    {
+      "multiplier": "mul8u_KEM.bin",
+      "accuracy": 0.8289999961853027,
+      "drop": 0.0002499818801879883,
+      "drop_percent": 0.030145540949888527,
+      "timestamp": "2025-11-07T16:18:59.953640"
+    },
+    {
+      "multiplier": "mul8u_L40.bin",
+      "accuracy": 0.13324999809265137,
+      "drop": 0.6959999799728394,
+      "drop_percent": 83.93126130104065,
+      "timestamp": "2025-11-07T16:19:07.792673"
+    },
+    {
+      "multiplier": "mul8u_NGR.bin",
+      "accuracy": 0.3062500059604645,
+      "drop": 0.5230000019073486,
+      "drop_percent": 63.06903958320618,
+      "timestamp": "2025-11-07T16:19:15.439065"
+    },
+    {
+      "multiplier": "mul8u_PKY.bin",
+      "accuracy": 0.3490000069141388,
+      "drop": 0.48024997115135193,
+      "drop_percent": 57.913774251937866,
+      "timestamp": "2025-11-07T16:19:23.140817"
+    },
+    {
+      "multiplier": "mul8u_QJD.bin",
+      "accuracy": 0.7382500171661377,
+      "drop": 0.09099996089935303,
+      "drop_percent": 10.973767191171646,
+      "timestamp": "2025-11-07T16:19:30.961701"
+    },
+    {
+      "multiplier": "mul8u_QKX.bin",
+      "accuracy": 0.09399999678134918,
+      "drop": 0.7352499961853027,
+      "drop_percent": 88.66446018218994,
+      "timestamp": "2025-11-07T16:19:38.632093"
+    },
+    {
+      "multiplier": "mul8u_Y48.bin",
+      "accuracy": 0.828499972820282,
+      "drop": 0.0007500052452087402,
+      "drop_percent": 0.09044380858540535,
+      "timestamp": "2025-11-07T16:19:46.418876"
+    },
+    {
+      "multiplier": "mul8u_YX7.bin",
+      "accuracy": 0.09399999678134918,
+      "drop": 0.7352499961853027,
+      "drop_percent": 88.66446018218994,
+      "timestamp": "2025-11-07T16:19:54.093473"
+    },
+    {
+      "multiplier": "mul8u_ZFB.bin",
+      "accuracy": 0.6495000123977661,
+      "drop": 0.1797499656677246,
+      "drop_percent": 21.676209568977356,
+      "timestamp": "2025-11-07T16:20:01.744952"
+    }
+  ],
+  "best_architecture": {
+    "architecture": [
+      {
+        "op": "conv3x3",
+        "filters": 64,
+        "use_bn": false
+      },
+      {
+        "op": "conv5x5",
+        "filters": 128,
+        "use_bn": false
+      },
+      {
+        "op": "avg_pool",
+        "filters": 64,
+        "use_bn": false
+      },
+      {
+        "op": "avg_pool",
+        "filters": 64,
+        "use_bn": false
+      },
+      {
+        "op": "identity",
+        "filters": 64,
+        "use_bn": false
+      },
+      {
+        "op": "conv5x5",
+        "filters": 128,
+        "use_bn": true
+      }
+    ],
+    "accuracy": 0.8292499780654907,
+    "timestamp": "2025-11-07T16:15:25.858875"
+  },
+  "summary": {
+    "standard_accuracy": 0.8292499780654907,
+    "total_multipliers": 36,
+    "best_accuracy": 0.8289999961853027,
+    "worst_accuracy": 0.0885000005364418,
+    "mean_accuracy": 0.42283333155016106,
+    "min_drop": 0.0002499818801879883,
+    "max_drop": 0.7407499551773071,
+    "mean_drop": 0.4064166471362114,
+    "categories": {
+      "excellent": 9,
+      "good": 3,
+      "medium": 1,
+      "poor": 23
+    }
+  },
+  "end_time": "20251107_162006"
+}

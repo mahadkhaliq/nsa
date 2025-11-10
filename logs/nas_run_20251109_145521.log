@@ -1,0 +1,103 @@
+2025-11-09 14:55:21 [INFO] ======================================================================
+2025-11-09 14:55:21 [INFO] NAS with Approximate Multipliers - Started
+2025-11-09 14:55:21 [INFO] Log file: logs/nas_run_20251109_145521.log
+2025-11-09 14:55:21 [INFO] ======================================================================
+2025-11-09 14:55:21 [INFO] ======================================================================
+2025-11-09 14:55:21 [INFO] CONFIGURATION
+2025-11-09 14:55:21 [INFO] ======================================================================
+2025-11-09 14:55:21 [INFO] Dataset: cifar10
+2025-11-09 14:55:21 [INFO] Training samples: 1000
+2025-11-09 14:55:21 [INFO] Validation samples: 500
+2025-11-09 14:55:21 [INFO] NAS trials: 20
+2025-11-09 14:55:21 [INFO] NAS blocks: 4
+2025-11-09 14:55:21 [INFO] NAS method: evolutionary
+2025-11-09 14:55:21 [INFO] Training epochs: 5
+2025-11-09 14:55:21 [INFO] Batch size: 128
+2025-11-09 14:55:21 [INFO] Learning rate: 0.001
+2025-11-09 14:55:21 [INFO] LR scheduling: No
+2025-11-09 14:55:21 [INFO] Multiplier dir: ./multipliers
+2025-11-09 14:55:21 [INFO] Save predictions: No
+2025-11-09 14:55:21 [INFO] Results dir: logs/results
+2025-11-09 14:55:21 [INFO] 
+======================================================================
+2025-11-09 14:55:21 [INFO] STEP 0: Loading Dataset
+2025-11-09 14:55:21 [INFO] ======================================================================
+2025-11-09 14:55:22 [INFO] Input shape: (32, 32, 3)
+2025-11-09 14:55:22 [INFO] Number of classes: 10
+2025-11-09 14:55:22 [INFO] Training samples (full): 44000
+2025-11-09 14:55:22 [INFO] Validation samples (full): 6000
+2025-11-09 14:55:22 [INFO] Test samples: 10000
+2025-11-09 14:55:22 [INFO] 
+Using subset:
+2025-11-09 14:55:22 [INFO]   Training: 1000 samples
+2025-11-09 14:55:22 [INFO]   Validation: 500 samples
+2025-11-09 14:55:22 [INFO]   Classes: airplane, automobile, bird, cat, deer...
+2025-11-09 14:55:22 [INFO] 
+======================================================================
+2025-11-09 14:55:22 [INFO] STEP 1: Using Predefined Architecture (NAS Skipped)
+2025-11-09 14:55:22 [INFO] ======================================================================
+2025-11-09 14:55:22 [INFO] Architecture: [{'op': 'conv3x3', 'filters': 32, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-09 14:55:22 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 14:55:27 [INFO] Quick evaluation accuracy: 0.1180
+2025-11-09 14:55:27 [INFO] 
+======================================================================
+2025-11-09 14:55:27 [INFO] STEP 2: Training Best Architecture
+2025-11-09 14:55:27 [INFO] ======================================================================
+2025-11-09 14:55:27 [INFO] Best Architecture: [{'op': 'conv3x3', 'filters': 32, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-09 14:55:27 [INFO] 
+Model Complexity:
+2025-11-09 14:55:27 [INFO]   Trainable Parameters: 128,010
+2025-11-09 14:55:27 [INFO]   Estimated FLOPs: 42,827,776
+2025-11-09 14:55:27 [INFO]   Model Size (approx): 0.49 MB (float32)
+2025-11-09 14:55:27 [INFO] 
+Training for 5 epochs...
+2025-11-09 14:55:27 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 14:55:28 [INFO] Training completed: 5 epochs
+2025-11-09 14:55:28 [INFO] ✓ Standard model accuracy: 0.1180
+2025-11-09 14:55:28 [INFO] 
+============================================================
+2025-11-09 14:55:28 [INFO] BEST ARCHITECTURE FOUND
+2025-11-09 14:55:28 [INFO] ============================================================
+2025-11-09 14:55:28 [INFO] Architecture: [{'op': 'conv3x3', 'filters': 32, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-09 14:55:28 [INFO] Accuracy: 0.1180
+2025-11-09 14:55:28 [INFO] ============================================================
+2025-11-09 14:55:28 [INFO] 
+Training Summary:
+2025-11-09 14:55:28 [INFO]   Final Training Accuracy: 0.2087
+2025-11-09 14:55:28 [INFO]   Final Validation Accuracy: 0.1180
+2025-11-09 14:55:28 [INFO]   Final Training Loss: 2.2415
+2025-11-09 14:55:28 [INFO]   Final Validation Loss: 2.4223
+2025-11-09 14:55:28 [INFO] 
+Saving training curves...
+2025-11-09 14:55:29 [INFO]   ✓ Training curves saved to logs/results/
+2025-11-09 14:55:29 [INFO] 
+======================================================================
+2025-11-09 14:55:29 [INFO] STEP 3: Multiplier Testing Skipped
+2025-11-09 14:55:29 [INFO] ======================================================================
+2025-11-09 14:55:29 [INFO] 
+======================================================================
+2025-11-09 14:55:29 [INFO] FINAL SUMMARY
+2025-11-09 14:55:29 [INFO] ======================================================================
+2025-11-09 14:55:29 [INFO] Dataset: cifar10
+2025-11-09 14:55:29 [INFO] Best Architecture: [{'op': 'conv3x3', 'filters': 32, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-09 14:55:29 [INFO] Standard Model Accuracy: 0.1180
+2025-11-09 14:55:29 [INFO] Model Parameters: 128,010
+2025-11-09 14:55:29 [INFO] Estimated FLOPs: 42,827,776
+2025-11-09 14:55:29 [INFO] Learning Rate: 0.001
+2025-11-09 14:55:29 [INFO] 
+Output Locations:
+2025-11-09 14:55:29 [INFO]   Logs: logs/
+2025-11-09 14:55:29 [INFO]   Results: logs/results/
+2025-11-09 14:55:29 [INFO] 
+✓ Results saved to: logs/nas_results_20251109_145521.json
+2025-11-09 14:55:29 [INFO] 
+======================================================================
+2025-11-09 14:55:29 [INFO] NAS Run Completed
+2025-11-09 14:55:29 [INFO] Log file: logs/nas_run_20251109_145521.log
+2025-11-09 14:55:29 [INFO] ======================================================================

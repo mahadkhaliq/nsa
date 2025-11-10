@@ -72,9 +72,9 @@ def conv1x1_standard(filters, use_bn=False):
 #         layers.append(keras.layers.BatchNormalization())
 #     return layers
 
-# Identity (skip connection)
+# Identity (skip connection) - handles channel mismatch with 1x1 conv
 def identity(filters):
-    return []  # No-op, maintains input
+    return [keras.layers.Lambda(lambda x: x)]
 
 # Global Average Pooling (better than flatten for CNNs)
 def global_avg_pool(filters):
@@ -97,7 +97,7 @@ def get_search_space(use_approximate=False, mul_map_file='', include_advanced=Tr
     Args:
         use_approximate: Use approximate multipliers
         mul_map_file: Path to multiplier file
-        include_advanced: Include advanced operations (depthwise, 1x1, etc)
+        include_advanced: Include advanced operations (1x1 conv, etc)
     """
     if use_approximate and APPROX_AVAILABLE:
         base_space = {
@@ -110,7 +110,6 @@ def get_search_space(use_approximate=False, mul_map_file='', include_advanced=Tr
         if include_advanced:
             base_space.update({
                 'conv1x1': lambda f, bn: conv1x1_approx(f, mul_map_file, bn),
-                'identity': identity,
             })
     else:
         base_space = {
@@ -123,8 +122,6 @@ def get_search_space(use_approximate=False, mul_map_file='', include_advanced=Tr
         if include_advanced:
             base_space.update({
                 'conv1x1': conv1x1_standard,
-                # 'depthwise_sep': depthwise_sep_standard, causing problem for the multiplier
-                'identity': identity,
             })
     
     return base_space

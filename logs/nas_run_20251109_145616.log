@@ -1,0 +1,56 @@
+2025-11-09 14:56:16 [INFO] ======================================================================
+2025-11-09 14:56:16 [INFO] NAS with Approximate Multipliers - Started
+2025-11-09 14:56:16 [INFO] Log file: logs/nas_run_20251109_145616.log
+2025-11-09 14:56:16 [INFO] ======================================================================
+2025-11-09 14:56:16 [INFO] ======================================================================
+2025-11-09 14:56:16 [INFO] CONFIGURATION
+2025-11-09 14:56:16 [INFO] ======================================================================
+2025-11-09 14:56:16 [INFO] Dataset: cifar10
+2025-11-09 14:56:16 [INFO] Training samples: 5000
+2025-11-09 14:56:16 [INFO] Validation samples: 1000
+2025-11-09 14:56:16 [INFO] NAS trials: 15
+2025-11-09 14:56:16 [INFO] NAS blocks: 5
+2025-11-09 14:56:16 [INFO] NAS method: evolutionary
+2025-11-09 14:56:16 [INFO] Training epochs: 50
+2025-11-09 14:56:16 [INFO] Batch size: 128
+2025-11-09 14:56:16 [INFO] Learning rate: 0.001
+2025-11-09 14:56:16 [INFO] LR scheduling: No
+2025-11-09 14:56:16 [INFO] Multiplier dir: ./multipliers
+2025-11-09 14:56:16 [INFO] Save predictions: No
+2025-11-09 14:56:16 [INFO] Results dir: logs/results
+2025-11-09 14:56:16 [INFO] 
+======================================================================
+2025-11-09 14:56:16 [INFO] STEP 0: Loading Dataset
+2025-11-09 14:56:16 [INFO] ======================================================================
+2025-11-09 14:56:17 [INFO] Input shape: (32, 32, 3)
+2025-11-09 14:56:17 [INFO] Number of classes: 10
+2025-11-09 14:56:17 [INFO] Training samples (full): 44000
+2025-11-09 14:56:17 [INFO] Validation samples (full): 6000
+2025-11-09 14:56:17 [INFO] Test samples: 10000
+2025-11-09 14:56:17 [INFO] 
+Using subset:
+2025-11-09 14:56:17 [INFO]   Training: 5000 samples
+2025-11-09 14:56:17 [INFO]   Validation: 1000 samples
+2025-11-09 14:56:17 [INFO]   Classes: airplane, automobile, bird, cat, deer...
+2025-11-09 14:56:17 [INFO] 
+======================================================================
+2025-11-09 14:56:17 [INFO] STEP 1: Neural Architecture Search
+2025-11-09 14:56:17 [INFO] ======================================================================
+2025-11-09 14:56:17 [INFO] Starting NAS: STANDARD - Method: EVOLUTIONARY
+
+2025-11-09 14:56:17 [INFO] Phase 1: Generating initial population (3 architectures)
+2025-11-09 14:56:17 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 14:56:19 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 14:56:26 [INFO] Init 2/3: Accuracy 0.2050
+2025-11-09 14:56:26 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 14:56:32 [INFO] 
+Phase 2: Evolution (12 generations)

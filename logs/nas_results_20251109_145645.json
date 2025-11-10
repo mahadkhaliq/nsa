@@ -1,0 +1,38 @@
+{
+  "start_time": "20251109_145645",
+  "nas_results": [],
+  "multiplier_results": [],
+  "best_architecture": {
+    "architecture": [
+      {
+        "op": "conv3x3",
+        "filters": 32,
+        "use_bn": true
+      },
+      {
+        "op": "conv3x3",
+        "filters": 64,
+        "use_bn": true
+      },
+      {
+        "op": "max_pool",
+        "filters": 64,
+        "use_bn": false
+      },
+      {
+        "op": "conv3x3",
+        "filters": 128,
+        "use_bn": true
+      },
+      {
+        "op": "conv1x1",
+        "filters": 128,
+        "use_bn": false
+      }
+    ],
+    "accuracy": 0.49000000953674316,
+    "timestamp": "2025-11-09T14:57:38.157076"
+  },
+  "summary": {},
+  "end_time": "20251109_145738"
+}

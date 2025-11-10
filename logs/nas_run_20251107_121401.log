@@ -1,0 +1,622 @@
+2025-11-07 12:14:01 [INFO] ======================================================================
+2025-11-07 12:14:01 [INFO] NAS with Approximate Multipliers - Started
+2025-11-07 12:14:01 [INFO] Log file: logs/nas_run_20251107_121401.log
+2025-11-07 12:14:01 [INFO] ======================================================================
+2025-11-07 12:14:01 [INFO] ======================================================================
+2025-11-07 12:14:01 [INFO] CONFIGURATION
+2025-11-07 12:14:01 [INFO] ======================================================================
+2025-11-07 12:14:01 [INFO] Dataset: cifar10
+2025-11-07 12:14:01 [INFO] Training samples: 40000
+2025-11-07 12:14:01 [INFO] Validation samples: 4000
+2025-11-07 12:14:01 [INFO] NAS trials: 100
+2025-11-07 12:14:01 [INFO] NAS blocks: 4
+2025-11-07 12:14:01 [INFO] NAS method: evolutionary
+2025-11-07 12:14:01 [INFO] Training epochs: 200
+2025-11-07 12:14:01 [INFO] Batch size: 128
+2025-11-07 12:14:01 [INFO] Learning rate: 0.001
+2025-11-07 12:14:01 [INFO] LR scheduling: No
+2025-11-07 12:14:01 [INFO] Multiplier dir: ./multipliers
+2025-11-07 12:14:01 [INFO] Save predictions: Yes
+2025-11-07 12:14:01 [INFO] Results dir: logs/results
+2025-11-07 12:14:01 [INFO] 
+======================================================================
+2025-11-07 12:14:01 [INFO] STEP 0: Loading Dataset
+2025-11-07 12:14:01 [INFO] ======================================================================
+2025-11-07 12:14:02 [INFO] Input shape: (32, 32, 3)
+2025-11-07 12:14:02 [INFO] Number of classes: 10
+2025-11-07 12:14:02 [INFO] Training samples (full): 44000
+2025-11-07 12:14:02 [INFO] Validation samples (full): 6000
+2025-11-07 12:14:02 [INFO] Test samples: 10000
+2025-11-07 12:14:02 [INFO] 
+Using subset:
+2025-11-07 12:14:02 [INFO]   Training: 40000 samples
+2025-11-07 12:14:02 [INFO]   Validation: 4000 samples
+2025-11-07 12:14:02 [INFO]   Classes: airplane, automobile, bird, cat, deer...
+2025-11-07 12:14:02 [INFO] 
+======================================================================
+2025-11-07 12:14:02 [INFO] STEP 1: Neural Architecture Search
+2025-11-07 12:14:02 [INFO] ======================================================================
+2025-11-07 12:14:02 [INFO] Starting NAS: STANDARD - Method: EVOLUTIONARY
+
+2025-11-07 12:14:02 [INFO] Phase 1: Generating initial population (20 architectures)
+2025-11-07 12:14:09 [INFO] Init 1/20: Accuracy 0.4527
+2025-11-07 12:14:34 [INFO] Init 2/20: Accuracy 0.5610
+2025-11-07 12:15:01 [INFO] Init 3/20: Accuracy 0.4420
+2025-11-07 12:15:14 [INFO] Init 4/20: Accuracy 0.3350
+2025-11-07 12:15:25 [INFO] Init 5/20: Accuracy 0.5567
+2025-11-07 12:15:43 [INFO] Init 6/20: Accuracy 0.4762
+2025-11-07 12:16:09 [INFO] Init 7/20: Accuracy 0.5943
+2025-11-07 12:16:28 [INFO] Init 8/20: Accuracy 0.5263
+2025-11-07 12:16:36 [INFO] Init 9/20: Accuracy 0.4897
+2025-11-07 12:16:47 [INFO] Init 10/20: Accuracy 0.4173
+2025-11-07 12:16:55 [INFO] Init 11/20: Accuracy 0.4888
+2025-11-07 12:17:12 [INFO] Init 12/20: Accuracy 0.5115
+2025-11-07 12:17:19 [INFO] Init 13/20: Accuracy 0.5540
+2025-11-07 12:17:25 [INFO] Init 14/20: Accuracy 0.4243
+2025-11-07 12:17:30 [INFO] Init 15/20: Accuracy 0.3225
+2025-11-07 12:17:51 [INFO] Init 16/20: Accuracy 0.5412
+2025-11-07 12:18:01 [INFO] Init 17/20: Accuracy 0.3715
+2025-11-07 12:18:12 [INFO] Init 18/20: Accuracy 0.5150
+2025-11-07 12:18:28 [INFO] Init 19/20: Accuracy 0.4563
+2025-11-07 12:18:49 [INFO] Init 20/20: Accuracy 0.5872
+2025-11-07 12:18:49 [INFO] 
+Phase 2: Evolution (80 generations)
+2025-11-07 12:18:57 [INFO] Trial 21/100
+2025-11-07 12:18:57 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:18:57 [INFO]   Accuracy: 0.4098
+2025-11-07 12:19:35 [INFO] Trial 22/100
+2025-11-07 12:19:35 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': True}]
+2025-11-07 12:19:35 [INFO]   Accuracy: 0.6202
+2025-11-07 12:19:44 [INFO] Trial 23/100
+2025-11-07 12:19:44 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:19:44 [INFO]   Accuracy: 0.4467
+2025-11-07 12:20:08 [INFO] Trial 24/100
+2025-11-07 12:20:08 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:20:08 [INFO]   Accuracy: 0.4602
+2025-11-07 12:20:37 [INFO] Trial 25/100
+2025-11-07 12:20:37 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': True}]
+2025-11-07 12:20:37 [INFO]   Accuracy: 0.6455
+2025-11-07 12:21:02 [INFO] Trial 26/100
+2025-11-07 12:21:02 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:21:02 [INFO]   Accuracy: 0.4570
+2025-11-07 12:21:10 [INFO] Trial 27/100
+2025-11-07 12:21:10 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:21:10 [INFO]   Accuracy: 0.4710
+2025-11-07 12:21:37 [INFO] Trial 28/100
+2025-11-07 12:21:37 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:21:37 [INFO]   Accuracy: 0.4780
+2025-11-07 12:22:04 [INFO] Trial 29/100
+2025-11-07 12:22:04 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:22:04 [INFO]   Accuracy: 0.5695
+2025-11-07 12:22:29 [INFO] Trial 30/100
+2025-11-07 12:22:29 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:22:29 [INFO]   Accuracy: 0.3785
+2025-11-07 12:22:46 [INFO] Trial 31/100
+2025-11-07 12:22:46 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:22:46 [INFO]   Accuracy: 0.4888
+2025-11-07 12:23:06 [INFO] Trial 32/100
+2025-11-07 12:23:06 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:23:06 [INFO]   Accuracy: 0.4002
+2025-11-07 12:23:14 [INFO] Trial 33/100
+2025-11-07 12:23:14 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:23:14 [INFO]   Accuracy: 0.4613
+2025-11-07 12:23:26 [INFO] Trial 34/100
+2025-11-07 12:23:26 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:23:26 [INFO]   Accuracy: 0.4800
+2025-11-07 12:23:43 [INFO] Trial 35/100
+2025-11-07 12:23:43 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'identity', 'filters': 128, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:23:43 [INFO]   Accuracy: 0.3923
+2025-11-07 12:24:10 [INFO] Trial 36/100
+2025-11-07 12:24:10 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 32, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-07 12:24:10 [INFO]   Accuracy: 0.5552
+2025-11-07 12:24:38 [INFO] Trial 37/100
+2025-11-07 12:24:38 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 32, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-07 12:24:38 [INFO]   Accuracy: 0.6033
+2025-11-07 12:25:02 [INFO] Trial 38/100
+2025-11-07 12:25:02 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:25:02 [INFO]   Accuracy: 0.4417
+2025-11-07 12:25:10 [INFO] Trial 39/100
+2025-11-07 12:25:10 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:25:10 [INFO]   Accuracy: 0.3635
+2025-11-07 12:25:18 [INFO] Trial 40/100
+2025-11-07 12:25:18 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:25:18 [INFO]   Accuracy: 0.3555
+2025-11-07 12:25:42 [INFO] Trial 41/100
+2025-11-07 12:25:42 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'conv1x1', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:25:42 [INFO]   Accuracy: 0.5910
+2025-11-07 12:26:06 [INFO] Trial 42/100
+2025-11-07 12:26:06 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:26:06 [INFO]   Accuracy: 0.4505
+2025-11-07 12:26:15 [INFO] Trial 43/100
+2025-11-07 12:26:15 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:26:15 [INFO]   Accuracy: 0.4015
+2025-11-07 12:26:29 [INFO] Trial 44/100
+2025-11-07 12:26:29 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:26:29 [INFO]   Accuracy: 0.5375
+2025-11-07 12:26:46 [INFO] Trial 45/100
+2025-11-07 12:26:46 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 32, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-07 12:26:46 [INFO]   Accuracy: 0.5372
+2025-11-07 12:27:02 [INFO] Trial 46/100
+2025-11-07 12:27:02 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-07 12:27:02 [INFO]   Accuracy: 0.5790
+2025-11-07 12:27:10 [INFO] Trial 47/100
+2025-11-07 12:27:10 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': True}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:27:10 [INFO]   Accuracy: 0.5312
+2025-11-07 12:27:26 [INFO] Trial 48/100
+2025-11-07 12:27:26 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:27:26 [INFO]   Accuracy: 0.4840
+2025-11-07 12:27:44 [INFO] Trial 49/100
+2025-11-07 12:27:44 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'identity', 'filters': 128, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:27:44 [INFO]   Accuracy: 0.5180
+2025-11-07 12:27:48 [INFO] Trial 50/100
+2025-11-07 12:27:48 [INFO]   Architecture: [{'op': 'max_pool', 'filters': 64, 'use_bn': True}, {'op': 'identity', 'filters': 128, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:27:48 [INFO]   Accuracy: 0.4425
+2025-11-07 12:28:04 [INFO] Trial 51/100
+2025-11-07 12:28:04 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:28:04 [INFO]   Accuracy: 0.5345
+2025-11-07 12:28:19 [INFO] Trial 52/100
+2025-11-07 12:28:19 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-07 12:28:19 [INFO]   Accuracy: 0.6320
+2025-11-07 12:28:24 [INFO] Trial 53/100
+2025-11-07 12:28:24 [INFO]   Architecture: [{'op': 'max_pool', 'filters': 64, 'use_bn': True}, {'op': 'identity', 'filters': 128, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:28:24 [INFO]   Accuracy: 0.4250
+2025-11-07 12:28:39 [INFO] Trial 54/100
+2025-11-07 12:28:39 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-07 12:28:39 [INFO]   Accuracy: 0.6137
+2025-11-07 12:29:01 [INFO] Trial 55/100
+2025-11-07 12:29:01 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:29:01 [INFO]   Accuracy: 0.4575
+2025-11-07 12:29:25 [INFO] Trial 56/100
+2025-11-07 12:29:25 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:29:25 [INFO]   Accuracy: 0.5375
+2025-11-07 12:29:50 [INFO] Trial 57/100
+2025-11-07 12:29:50 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:29:50 [INFO]   Accuracy: 0.6170
+2025-11-07 12:29:55 [INFO] Trial 58/100
+2025-11-07 12:29:55 [INFO]   Architecture: [{'op': 'max_pool', 'filters': 64, 'use_bn': True}, {'op': 'identity', 'filters': 128, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:29:55 [INFO]   Accuracy: 0.4462
+2025-11-07 12:30:10 [INFO] Trial 59/100
+2025-11-07 12:30:10 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:30:10 [INFO]   Accuracy: 0.4205
+2025-11-07 12:30:36 [INFO] Trial 60/100
+2025-11-07 12:30:36 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:30:36 [INFO]   Accuracy: 0.6087
+2025-11-07 12:31:02 [INFO] Trial 61/100
+2025-11-07 12:31:02 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:31:02 [INFO]   Accuracy: 0.5725
+2025-11-07 12:31:06 [INFO] Trial 62/100
+2025-11-07 12:31:06 [INFO]   Architecture: [{'op': 'max_pool', 'filters': 64, 'use_bn': True}, {'op': 'identity', 'filters': 128, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:31:06 [INFO]   Accuracy: 0.3195
+2025-11-07 12:31:09 [INFO] Trial 63/100
+2025-11-07 12:31:09 [INFO]   Architecture: [{'op': 'max_pool', 'filters': 64, 'use_bn': True}, {'op': 'identity', 'filters': 128, 'use_bn': False}, {'op': 'avg_pool', 'filters': 128, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:31:09 [INFO]   Accuracy: 0.2055
+2025-11-07 12:31:24 [INFO] Trial 64/100
+2025-11-07 12:31:24 [INFO]   Architecture: [{'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:31:24 [INFO]   Accuracy: 0.5360
+2025-11-07 12:31:50 [INFO] Trial 65/100
+2025-11-07 12:31:50 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:31:50 [INFO]   Accuracy: 0.5502
+2025-11-07 12:32:04 [INFO] Trial 66/100
+2025-11-07 12:32:04 [INFO]   Architecture: [{'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:32:04 [INFO]   Accuracy: 0.4895
+2025-11-07 12:32:16 [INFO] Trial 67/100
+2025-11-07 12:32:16 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-07 12:32:16 [INFO]   Accuracy: 0.4678
+2025-11-07 12:32:21 [INFO] Trial 68/100
+2025-11-07 12:32:21 [INFO]   Architecture: [{'op': 'max_pool', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'avg_pool', 'filters': 128, 'use_bn': True}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:32:21 [INFO]   Accuracy: 0.3573
+2025-11-07 12:32:44 [INFO] Trial 69/100
+2025-11-07 12:32:44 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:32:44 [INFO]   Accuracy: 0.5098
+2025-11-07 12:32:58 [INFO] Trial 70/100
+2025-11-07 12:32:58 [INFO]   Architecture: [{'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'identity', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:32:58 [INFO]   Accuracy: 0.4820
+2025-11-07 12:33:03 [INFO] Trial 71/100
+2025-11-07 12:33:03 [INFO]   Architecture: [{'op': 'max_pool', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'avg_pool', 'filters': 128, 'use_bn': True}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:33:03 [INFO]   Accuracy: 0.3593
+2025-11-07 12:33:14 [INFO] Trial 72/100
+2025-11-07 12:33:14 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:33:14 [INFO]   Accuracy: 0.4720
+2025-11-07 12:33:19 [INFO] Trial 73/100
+2025-11-07 12:33:19 [INFO]   Architecture: [{'op': 'max_pool', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'avg_pool', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:33:19 [INFO]   Accuracy: 0.3530
+2025-11-07 12:33:28 [INFO] Trial 74/100
+2025-11-07 12:33:28 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:33:28 [INFO]   Accuracy: 0.3738
+2025-11-07 12:33:42 [INFO] Trial 75/100
+2025-11-07 12:33:42 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:33:42 [INFO]   Accuracy: 0.5552
+2025-11-07 12:34:07 [INFO] Trial 76/100
+2025-11-07 12:34:07 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:34:07 [INFO]   Accuracy: 0.4683
+2025-11-07 12:34:32 [INFO] Trial 77/100
+2025-11-07 12:34:32 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:34:32 [INFO]   Accuracy: 0.6335
+2025-11-07 12:34:56 [INFO] Trial 78/100
+2025-11-07 12:34:56 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:34:56 [INFO]   Accuracy: 0.6217
+2025-11-07 12:35:10 [INFO] Trial 79/100
+2025-11-07 12:35:10 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:35:10 [INFO]   Accuracy: 0.5987
+2025-11-07 12:35:15 [INFO] Trial 80/100
+2025-11-07 12:35:15 [INFO]   Architecture: [{'op': 'max_pool', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'avg_pool', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:35:15 [INFO]   Accuracy: 0.3240
+2025-11-07 12:35:29 [INFO] Trial 81/100
+2025-11-07 12:35:29 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:35:29 [INFO]   Accuracy: 0.5838
+2025-11-07 12:35:36 [INFO] Trial 82/100
+2025-11-07 12:35:36 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:35:36 [INFO]   Accuracy: 0.4712
+2025-11-07 12:36:00 [INFO] Trial 83/100
+2025-11-07 12:36:00 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'conv5x5', 'filters': 64, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:36:00 [INFO]   Accuracy: 0.5972
+2025-11-07 12:36:08 [INFO] Trial 84/100
+2025-11-07 12:36:08 [INFO]   Architecture: [{'op': 'max_pool', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:36:08 [INFO]   Accuracy: 0.4150
+2025-11-07 12:36:17 [INFO] Trial 85/100
+2025-11-07 12:36:17 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:36:17 [INFO]   Accuracy: 0.3620
+2025-11-07 12:36:26 [INFO] Trial 86/100
+2025-11-07 12:36:26 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:36:26 [INFO]   Accuracy: 0.3770
+2025-11-07 12:36:34 [INFO] Trial 87/100
+2025-11-07 12:36:34 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:36:34 [INFO]   Accuracy: 0.4980
+2025-11-07 12:36:48 [INFO] Trial 88/100
+2025-11-07 12:36:48 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'identity', 'filters': 32, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:36:48 [INFO]   Accuracy: 0.4322
+2025-11-07 12:36:53 [INFO] Trial 89/100
+2025-11-07 12:36:53 [INFO]   Architecture: [{'op': 'avg_pool', 'filters': 64, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': False}, {'op': 'identity', 'filters': 32, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:36:53 [INFO]   Accuracy: 0.2875
+2025-11-07 12:37:01 [INFO] Trial 90/100
+2025-11-07 12:37:01 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:37:01 [INFO]   Accuracy: 0.4843
+2025-11-07 12:37:09 [INFO] Trial 91/100
+2025-11-07 12:37:09 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:37:09 [INFO]   Accuracy: 0.4793
+2025-11-07 12:37:16 [INFO] Trial 92/100
+2025-11-07 12:37:16 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 64, 'use_bn': False}]
+2025-11-07 12:37:16 [INFO]   Accuracy: 0.4760
+2025-11-07 12:37:42 [INFO] Trial 93/100
+2025-11-07 12:37:42 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:37:42 [INFO]   Accuracy: 0.5387
+2025-11-07 12:38:05 [INFO] Trial 94/100
+2025-11-07 12:38:05 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'conv5x5', 'filters': 64, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:38:05 [INFO]   Accuracy: 0.4757
+2025-11-07 12:38:20 [INFO] Trial 95/100
+2025-11-07 12:38:20 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 64, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'identity', 'filters': 32, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:38:20 [INFO]   Accuracy: 0.4090
+2025-11-07 12:38:42 [INFO] Trial 96/100
+2025-11-07 12:38:42 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'conv5x5', 'filters': 64, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:38:42 [INFO]   Accuracy: 0.5443
+2025-11-07 12:38:47 [INFO] Trial 97/100
+2025-11-07 12:38:47 [INFO]   Architecture: [{'op': 'avg_pool', 'filters': 128, 'use_bn': True}, {'op': 'conv5x5', 'filters': 64, 'use_bn': True}, {'op': 'max_pool', 'filters': 128, 'use_bn': False}, {'op': 'max_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:38:47 [INFO]   Accuracy: 0.4482
+2025-11-07 12:38:55 [INFO] Trial 98/100
+2025-11-07 12:38:55 [INFO]   Architecture: [{'op': 'max_pool', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:38:55 [INFO]   Accuracy: 0.4527
+2025-11-07 12:39:02 [INFO] Trial 99/100
+2025-11-07 12:39:02 [INFO]   Architecture: [{'op': 'max_pool', 'filters': 64, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:39:02 [INFO]   Accuracy: 0.4038
+2025-11-07 12:39:16 [INFO] Trial 100/100
+2025-11-07 12:39:16 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'identity', 'filters': 32, 'use_bn': True}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}]
+2025-11-07 12:39:16 [INFO]   Accuracy: 0.4782
+2025-11-07 12:39:16 [INFO] 
+Top 3 Architectures:
+2025-11-07 12:39:16 [INFO] 1. Accuracy: 0.6455
+2025-11-07 12:39:16 [INFO]    [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': True}]
+2025-11-07 12:39:16 [INFO] 2. Accuracy: 0.6335
+2025-11-07 12:39:16 [INFO]    [{'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv1x1', 'filters': 64, 'use_bn': True}, {'op': 'avg_pool', 'filters': 32, 'use_bn': False}]
+2025-11-07 12:39:16 [INFO] 3. Accuracy: 0.6320
+2025-11-07 12:39:16 [INFO]    [{'op': 'conv5x5', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': False}, {'op': 'avg_pool', 'filters': 32, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-07 12:39:16 [INFO] 
+======================================================================
+2025-11-07 12:39:16 [INFO] STEP 2: Training Best Architecture
+2025-11-07 12:39:16 [INFO] ======================================================================
+2025-11-07 12:39:16 [INFO] Best Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': True}]
+2025-11-07 12:39:16 [INFO] 
+Model Complexity:
+2025-11-07 12:39:16 [INFO]   Trainable Parameters: 205,386
+2025-11-07 12:39:16 [INFO]   Estimated FLOPs: 191,201,280
+2025-11-07 12:39:16 [INFO]   Model Size (approx): 0.78 MB (float32)
+2025-11-07 12:39:16 [INFO] 
+Training for 200 epochs...
+2025-11-07 12:59:37 [INFO] Training completed: 200 epochs
+2025-11-07 12:59:37 [INFO] ✓ Standard model accuracy: 0.7455
+2025-11-07 12:59:37 [INFO] 
+============================================================
+2025-11-07 12:59:37 [INFO] BEST ARCHITECTURE FOUND
+2025-11-07 12:59:37 [INFO] ============================================================
+2025-11-07 12:59:37 [INFO] Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': True}]
+2025-11-07 12:59:37 [INFO] Accuracy: 0.7455
+2025-11-07 12:59:37 [INFO] ============================================================
+2025-11-07 12:59:37 [INFO] 
+Training Summary:
+2025-11-07 12:59:37 [INFO]   Final Training Accuracy: 0.9892
+2025-11-07 12:59:37 [INFO]   Final Validation Accuracy: 0.7455
+2025-11-07 12:59:37 [INFO]   Final Training Loss: 0.0306
+2025-11-07 12:59:37 [INFO]   Final Validation Loss: 1.9679
+2025-11-07 12:59:37 [INFO]   ⚠ Warning: Large train-val gap (0.2437) suggests overfitting
+2025-11-07 12:59:37 [INFO] 
+Saving training curves...
+2025-11-07 12:59:37 [INFO]   ✓ Training curves saved to logs/results/
+2025-11-07 12:59:37 [INFO] Saving standard model predictions and visualizations...
+2025-11-07 12:59:39 [INFO]   ✓ Predictions saved to logs/results/
+2025-11-07 12:59:39 [INFO]   ✓ Confusion matrix saved
+2025-11-07 12:59:39 [INFO]   ✓ Top 20 misclassifications visualized
+2025-11-07 12:59:39 [INFO] 
+======================================================================
+2025-11-07 12:59:39 [INFO] STEP 3: Testing Approximate Multipliers
+2025-11-07 12:59:39 [INFO] ======================================================================
+2025-11-07 12:59:39 [INFO] Testing 36 multipliers
+2025-11-07 12:59:39 [INFO] Standard model accuracy: 0.7455
+
+2025-11-07 12:59:39 [INFO] [1/36] Testing: mul8u_125K.bin
+2025-11-07 12:59:42 [INFO] Testing: mul8u_125K.bin
+2025-11-07 12:59:42 [INFO]   Accuracy: 0.0943
+2025-11-07 12:59:42 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 12:59:47 [INFO] [2/36] Testing: mul8u_12N4.bin
+2025-11-07 12:59:51 [INFO] Testing: mul8u_12N4.bin
+2025-11-07 12:59:51 [INFO]   Accuracy: 0.0943
+2025-11-07 12:59:51 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 12:59:56 [INFO] [3/36] Testing: mul8u_13QR.bin
+2025-11-07 13:00:00 [INFO] Testing: mul8u_13QR.bin
+2025-11-07 13:00:00 [INFO]   Accuracy: 0.0943
+2025-11-07 13:00:00 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:00:05 [INFO] [4/36] Testing: mul8u_1446.bin
+2025-11-07 13:00:09 [INFO] Testing: mul8u_1446.bin
+2025-11-07 13:00:09 [INFO]   Accuracy: 0.0943
+2025-11-07 13:00:09 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:00:13 [INFO] [5/36] Testing: mul8u_14VP.bin
+2025-11-07 13:00:17 [INFO] Testing: mul8u_14VP.bin
+2025-11-07 13:00:17 [INFO]   Accuracy: 0.0943
+2025-11-07 13:00:17 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:00:22 [INFO] [6/36] Testing: mul8u_150Q.bin
+2025-11-07 13:00:26 [INFO] Testing: mul8u_150Q.bin
+2025-11-07 13:00:26 [INFO]   Accuracy: 0.0943
+2025-11-07 13:00:26 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:00:30 [INFO] [7/36] Testing: mul8u_17C8.bin
+2025-11-07 13:00:34 [INFO] Testing: mul8u_17C8.bin
+2025-11-07 13:00:34 [INFO]   Accuracy: 0.0943
+2025-11-07 13:00:34 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:00:39 [INFO] [8/36] Testing: mul8u_17KS.bin
+2025-11-07 13:00:43 [INFO] Testing: mul8u_17KS.bin
+2025-11-07 13:00:43 [INFO]   Accuracy: 0.0943
+2025-11-07 13:00:43 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:00:47 [INFO] [9/36] Testing: mul8u_17QU.bin
+2025-11-07 13:00:51 [INFO] Testing: mul8u_17QU.bin
+2025-11-07 13:00:51 [INFO]   Accuracy: 0.0943
+2025-11-07 13:00:51 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:00:56 [INFO] [10/36] Testing: mul8u_185Q.bin
+2025-11-07 13:01:00 [INFO] Testing: mul8u_185Q.bin
+2025-11-07 13:01:00 [INFO]   Accuracy: 0.0943
+2025-11-07 13:01:00 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:01:05 [INFO] [11/36] Testing: mul8u_18DU.bin
+2025-11-07 13:01:09 [INFO] Testing: mul8u_18DU.bin
+2025-11-07 13:01:09 [INFO]   Accuracy: 0.0943
+2025-11-07 13:01:09 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:01:13 [INFO] [12/36] Testing: mul8u_199Z.bin
+2025-11-07 13:01:17 [INFO] Testing: mul8u_199Z.bin
+2025-11-07 13:01:17 [INFO]   Accuracy: 0.0943
+2025-11-07 13:01:17 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:01:22 [INFO] [13/36] Testing: mul8u_19DB.bin
+2025-11-07 13:01:26 [INFO] Testing: mul8u_19DB.bin
+2025-11-07 13:01:26 [INFO]   Accuracy: 0.0943
+2025-11-07 13:01:26 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:01:30 [INFO] [14/36] Testing: mul8u_1AGV.bin
+2025-11-07 13:01:34 [INFO] Testing: mul8u_1AGV.bin
+2025-11-07 13:01:34 [INFO]   Accuracy: 0.0943
+2025-11-07 13:01:34 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:01:39 [INFO] [15/36] Testing: mul8u_1JFF.bin
+2025-11-07 13:01:43 [INFO] Testing: mul8u_1JFF.bin
+2025-11-07 13:01:43 [INFO]   Accuracy: 0.0943
+2025-11-07 13:01:43 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:01:48 [INFO] [16/36] Testing: mul8u_2AC.bin
+2025-11-07 13:01:52 [INFO] Testing: mul8u_2AC.bin
+2025-11-07 13:01:52 [INFO]   Accuracy: 0.0943
+2025-11-07 13:01:52 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:01:56 [INFO] [17/36] Testing: mul8u_2HH.bin
+2025-11-07 13:02:00 [INFO] Testing: mul8u_2HH.bin
+2025-11-07 13:02:00 [INFO]   Accuracy: 0.0943
+2025-11-07 13:02:00 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:02:05 [INFO] [18/36] Testing: mul8u_2P7.bin
+2025-11-07 13:02:09 [INFO] Testing: mul8u_2P7.bin
+2025-11-07 13:02:09 [INFO]   Accuracy: 0.0943
+2025-11-07 13:02:09 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:02:13 [INFO] [19/36] Testing: mul8u_7C1.bin
+2025-11-07 13:02:17 [INFO] Testing: mul8u_7C1.bin
+2025-11-07 13:02:17 [INFO]   Accuracy: 0.0943
+2025-11-07 13:02:17 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:02:22 [INFO] [20/36] Testing: mul8u_96D.bin
+2025-11-07 13:02:26 [INFO] Testing: mul8u_96D.bin
+2025-11-07 13:02:26 [INFO]   Accuracy: 0.0943
+2025-11-07 13:02:26 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:02:31 [INFO] [21/36] Testing: mul8u_CK5.bin
+2025-11-07 13:02:35 [INFO] Testing: mul8u_CK5.bin
+2025-11-07 13:02:35 [INFO]   Accuracy: 0.0943
+2025-11-07 13:02:35 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:02:39 [INFO] [22/36] Testing: mul8u_DM1.bin
+2025-11-07 13:02:43 [INFO] Testing: mul8u_DM1.bin
+2025-11-07 13:02:43 [INFO]   Accuracy: 0.0943
+2025-11-07 13:02:43 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:02:48 [INFO] [23/36] Testing: mul8u_EXZ.bin
+2025-11-07 13:02:52 [INFO] Testing: mul8u_EXZ.bin
+2025-11-07 13:02:52 [INFO]   Accuracy: 0.0943
+2025-11-07 13:02:52 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:02:56 [INFO] [24/36] Testing: mul8u_FTA.bin
+2025-11-07 13:03:00 [INFO] Testing: mul8u_FTA.bin
+2025-11-07 13:03:00 [INFO]   Accuracy: 0.0943
+2025-11-07 13:03:00 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:03:05 [INFO] [25/36] Testing: mul8u_GS2.bin
+2025-11-07 13:03:09 [INFO] Testing: mul8u_GS2.bin
+2025-11-07 13:03:09 [INFO]   Accuracy: 0.0943
+2025-11-07 13:03:09 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:03:14 [INFO] [26/36] Testing: mul8u_JQQ.bin
+2025-11-07 13:03:17 [INFO] Testing: mul8u_JQQ.bin
+2025-11-07 13:03:17 [INFO]   Accuracy: 0.0943
+2025-11-07 13:03:17 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:03:22 [INFO] [27/36] Testing: mul8u_JV3.bin
+2025-11-07 13:03:26 [INFO] Testing: mul8u_JV3.bin
+2025-11-07 13:03:26 [INFO]   Accuracy: 0.0943
+2025-11-07 13:03:26 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:03:31 [INFO] [28/36] Testing: mul8u_KEM.bin
+2025-11-07 13:03:35 [INFO] Testing: mul8u_KEM.bin
+2025-11-07 13:03:35 [INFO]   Accuracy: 0.0943
+2025-11-07 13:03:35 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:03:39 [INFO] [29/36] Testing: mul8u_L40.bin
+2025-11-07 13:03:43 [INFO] Testing: mul8u_L40.bin
+2025-11-07 13:03:43 [INFO]   Accuracy: 0.0943
+2025-11-07 13:03:43 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:03:48 [INFO] [30/36] Testing: mul8u_NGR.bin
+2025-11-07 13:03:52 [INFO] Testing: mul8u_NGR.bin
+2025-11-07 13:03:52 [INFO]   Accuracy: 0.0943
+2025-11-07 13:03:52 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:03:56 [INFO] [31/36] Testing: mul8u_PKY.bin
+2025-11-07 13:04:00 [INFO] Testing: mul8u_PKY.bin
+2025-11-07 13:04:00 [INFO]   Accuracy: 0.0943
+2025-11-07 13:04:00 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:04:05 [INFO] [32/36] Testing: mul8u_QJD.bin
+2025-11-07 13:04:09 [INFO] Testing: mul8u_QJD.bin
+2025-11-07 13:04:09 [INFO]   Accuracy: 0.0943
+2025-11-07 13:04:09 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:04:13 [INFO] [33/36] Testing: mul8u_QKX.bin
+2025-11-07 13:04:17 [INFO] Testing: mul8u_QKX.bin
+2025-11-07 13:04:17 [INFO]   Accuracy: 0.0943
+2025-11-07 13:04:17 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:04:22 [INFO] [34/36] Testing: mul8u_Y48.bin
+2025-11-07 13:04:26 [INFO] Testing: mul8u_Y48.bin
+2025-11-07 13:04:26 [INFO]   Accuracy: 0.0943
+2025-11-07 13:04:26 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:04:31 [INFO] [35/36] Testing: mul8u_YX7.bin
+2025-11-07 13:04:34 [INFO] Testing: mul8u_YX7.bin
+2025-11-07 13:04:34 [INFO]   Accuracy: 0.0943
+2025-11-07 13:04:34 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:04:39 [INFO] [36/36] Testing: mul8u_ZFB.bin
+2025-11-07 13:04:43 [INFO] Testing: mul8u_ZFB.bin
+2025-11-07 13:04:43 [INFO]   Accuracy: 0.0943
+2025-11-07 13:04:43 [INFO]   Drop:     0.6513 (87.36%)
+2025-11-07 13:04:48 [INFO] 
+======================================================================
+2025-11-07 13:04:48 [INFO] STEP 4: Results Analysis
+2025-11-07 13:04:48 [INFO] ======================================================================
+2025-11-07 13:04:48 [INFO] 
+======================================================================
+2025-11-07 13:04:48 [INFO] FINAL RESULTS SUMMARY
+2025-11-07 13:04:48 [INFO] ======================================================================
+2025-11-07 13:04:48 [INFO] Standard Accuracy: 0.7455
+2025-11-07 13:04:48 [INFO] Total Multipliers Tested: 36
+2025-11-07 13:04:48 [INFO] 
+Accuracy Statistics:
+2025-11-07 13:04:48 [INFO]   Best:  0.0943
+2025-11-07 13:04:48 [INFO]   Worst: 0.0943
+2025-11-07 13:04:48 [INFO]   Mean:  0.0943
+2025-11-07 13:04:48 [INFO] 
+Drop Statistics:
+2025-11-07 13:04:48 [INFO]   Min Drop:  0.6513 (87.36%)
+2025-11-07 13:04:48 [INFO]   Max Drop:  0.6513 (87.36%)
+2025-11-07 13:04:48 [INFO]   Mean Drop: 0.6513
+2025-11-07 13:04:48 [INFO] 
+Multiplier Categories:
+2025-11-07 13:04:48 [INFO]   Excellent (≤1% drop):   0
+2025-11-07 13:04:48 [INFO]   Good (1-5% drop):       0
+2025-11-07 13:04:48 [INFO]   Medium (5-10% drop):    0
+2025-11-07 13:04:48 [INFO]   Poor (>10% drop):       36
+2025-11-07 13:04:48 [INFO] 
+Multiplier                     Accuracy     Drop         Drop %    
+2025-11-07 13:04:48 [INFO] ----------------------------------------------------------------------
+2025-11-07 13:04:48 [INFO] mul8u_125K.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_12N4.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_13QR.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_1446.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_14VP.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_150Q.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_17C8.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_17KS.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_17QU.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_185Q.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_18DU.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_199Z.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_19DB.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_1AGV.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_1JFF.bin                 0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_2AC.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_2HH.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_2P7.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_7C1.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_96D.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_CK5.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_DM1.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_EXZ.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_FTA.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_GS2.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_JQQ.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_JV3.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_KEM.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_L40.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_NGR.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_PKY.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_QJD.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_QKX.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_Y48.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_YX7.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] mul8u_ZFB.bin                  0.0943       0.6513       87.36     %
+2025-11-07 13:04:48 [INFO] 
+======================================================================
+2025-11-07 13:04:48 [INFO] BEST APPROXIMATE MULTIPLIER
+2025-11-07 13:04:48 [INFO] ======================================================================
+2025-11-07 13:04:48 [INFO] Multiplier:  mul8u_125K.bin
+2025-11-07 13:04:48 [INFO] Accuracy:    0.0943
+2025-11-07 13:04:48 [INFO] Drop:        0.6513 (87.36%)
+2025-11-07 13:04:48 [INFO] 
+Top 5 Multipliers:
+2025-11-07 13:04:48 [INFO] 1. mul8u_125K.bin                 Acc: 0.0943 Drop: +87.36%
+2025-11-07 13:04:48 [INFO] 2. mul8u_12N4.bin                 Acc: 0.0943 Drop: +87.36%
+2025-11-07 13:04:48 [INFO] 3. mul8u_13QR.bin                 Acc: 0.0943 Drop: +87.36%
+2025-11-07 13:04:48 [INFO] 4. mul8u_1446.bin                 Acc: 0.0943 Drop: +87.36%
+2025-11-07 13:04:48 [INFO] 5. mul8u_14VP.bin                 Acc: 0.0943 Drop: +87.36%
+2025-11-07 13:04:48 [INFO] 
+Estimated Energy Savings:
+2025-11-07 13:04:48 [INFO]   Excellent (≤1% drop): 0 multipliers
+2025-11-07 13:04:48 [INFO]   Good (1-5% drop):     0 multipliers
+2025-11-07 13:04:48 [INFO]   Potential energy savings: 30-50% (typical for approximate multipliers)
+2025-11-07 13:04:48 [INFO]   Model parameters: 205,386
+2025-11-07 13:04:48 [INFO]   Estimated MACs per inference: 95,600,640
+2025-11-07 13:04:48 [INFO] 
+Generating comparison plots...
+2025-11-07 13:04:48 [INFO]   ✓ Confidence distribution plots saved
+2025-11-07 13:04:48 [INFO] 
+======================================================================
+2025-11-07 13:04:48 [INFO] FINAL SUMMARY
+2025-11-07 13:04:48 [INFO] ======================================================================
+2025-11-07 13:04:48 [INFO] Dataset: cifar10
+2025-11-07 13:04:48 [INFO] Best Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': True}]
+2025-11-07 13:04:48 [INFO] Standard Model Accuracy: 0.7455
+2025-11-07 13:04:48 [INFO] Model Parameters: 205,386
+2025-11-07 13:04:48 [INFO] Estimated FLOPs: 191,201,280
+2025-11-07 13:04:48 [INFO] Learning Rate: 0.001
+2025-11-07 13:04:48 [INFO] 
+Multiplier Testing:
+2025-11-07 13:04:48 [INFO]   Total tested: 36
+2025-11-07 13:04:48 [INFO]   Best accuracy: 0.0943
+2025-11-07 13:04:48 [INFO]   Best multiplier: mul8u_125K.bin
+2025-11-07 13:04:48 [INFO] 
+Quality Distribution:
+2025-11-07 13:04:48 [INFO]   Excellent (≤1%):   0
+2025-11-07 13:04:48 [INFO]   Good (1-5%):       0
+2025-11-07 13:04:48 [INFO]   Medium (5-10%):    0
+2025-11-07 13:04:48 [INFO]   Poor (>10%):       36
+2025-11-07 13:04:48 [INFO] 
+Output Locations:
+2025-11-07 13:04:48 [INFO]   Logs: logs/
+2025-11-07 13:04:48 [INFO]   Results: logs/results/
+2025-11-07 13:04:48 [INFO]   Predictions: logs/results/standard_predictions.json
+2025-11-07 13:04:48 [INFO]   Confusion Matrix: logs/results/standard_confusion_matrix.png
+2025-11-07 13:04:48 [INFO]   Training Curves: logs/results/standard_model_training_curves.png
+2025-11-07 13:04:48 [INFO]   Multiplier Results: logs/results/multipliers/
+2025-11-07 13:04:48 [INFO] 
+✓ Results saved to: logs/nas_results_20251107_121401.json
+2025-11-07 13:04:48 [INFO] 
+======================================================================
+2025-11-07 13:04:48 [INFO] NAS Run Completed
+2025-11-07 13:04:48 [INFO] Log file: logs/nas_run_20251107_121401.log
+2025-11-07 13:04:48 [INFO] ======================================================================

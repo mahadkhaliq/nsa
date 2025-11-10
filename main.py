@@ -100,11 +100,11 @@ def get_predefined_architecture(dataset):
         ]
     else:  # CIFAR
         return [
-            {'op': 'conv3x3', 'filters': 64, 'use_bn': True},
+            {'op': 'conv3x3', 'filters': 32, 'use_bn': True},
             {'op': 'conv3x3', 'filters': 64, 'use_bn': True},
             {'op': 'max_pool', 'filters': 64, 'use_bn': False},
-            {'op': 'conv5x5', 'filters': 128, 'use_bn': True},
-            {'op': 'conv1x1', 'filters': 64, 'use_bn': False}
+            {'op': 'conv3x3', 'filters': 128, 'use_bn': True},
+            {'op': 'conv1x1', 'filters': 128, 'use_bn': False}
         ]
 
 def create_lr_schedule(initial_lr, epochs):
@@ -316,9 +316,14 @@ def main():
     logger.log("\nSaving training curves...")
     logger.log_training_curves(history, results_dir, 'standard_model')
     
+    # Save standard model weights
+    weights_file = os.path.join(results_dir, 'standard_model_weights.h5')
+    model_std.save_weights(weights_file)
+    logger.log(f"\n✓ Standard model weights saved to {weights_file}")
+    
     # Save predictions if requested
     if args.save_predictions:
-        logger.log("Saving standard model predictions and visualizations...")
+        logger.log("\nSaving standard model predictions and visualizations...")
         std_pred_results = save_predictions(
             model_std, x_val, y_val, 
             results_dir, 
@@ -352,7 +357,8 @@ def main():
                 multiplier_files = multiplier_files[:10]
             
             logger.log(f"Testing {len(multiplier_files)} multipliers")
-            logger.log(f"Standard model accuracy: {std_accuracy:.4f}\n")
+            logger.log(f"Standard model accuracy: {std_accuracy:.4f}")
+            logger.log(f"Using saved weights from: {weights_file}\n")
             
             approx_results = []
             all_pred_results = []
@@ -364,14 +370,14 @@ def main():
                 mul_name = os.path.basename(mul_file)
                 logger.log(f"[{idx+1}/{len(multiplier_files)}] Testing: {mul_name}")
                 
-                # Build approximate model
-                search_space_approx = get_search_space(
-                    use_approximate=True, 
-                    mul_map_file=mul_file,
-                    include_advanced=True
-                )
-                
                 try:
+                    # Build approximate model with same architecture
+                    search_space_approx = get_search_space(
+                        use_approximate=True, 
+                        mul_map_file=mul_file,
+                        include_advanced=True
+                    )
+                    
                     model_approx = build_model(
                         best_std['architecture'], 
                         search_space_approx,
@@ -379,21 +385,13 @@ def main():
                         num_classes=num_classes,
                         learning_rate=args.learning_rate
                     )
-                except Exception as e:
-                    logger.log(f"  ✗ Failed to build model: {e}\n")
-                    continue
-                
-                # Copy weights
-                try:
-                    model_approx.set_weights(trained_weights)
-                except Exception as e:
-                    logger.log(f"  ✗ Failed to copy weights: {e}\n")
-                    del model_approx
-                    keras.backend.clear_session()
-                    continue
-                
-                # Evaluate
-                try:
+                    
+                    # Load weights from standard model
+                    model_approx.build(input_shape=(None, height, width, channels))
+
+                    model_approx.load_weights(weights_file)
+                    
+                    # Evaluate with approximate multiplier
                     approx_accuracy = evaluate_model(model_approx, x_val, y_val)
                     accuracy_drop = std_accuracy - approx_accuracy
                     drop_percent = (accuracy_drop / std_accuracy) * 100 if std_accuracy > 0 else 0
@@ -415,17 +413,19 @@ def main():
                             multiplier_results_dir,
                             mul_name.replace('.bin', ''),
                             class_names,
-                            top_k=10  # Save fewer for multipliers
+                            top_k=10
                         )
                         all_pred_results.append(mul_pred_results)
                     
                 except Exception as e:
-                    logger.log(f"  ✗ Evaluation failed: {e}\n")
+                    logger.log(f"  ✗ Failed: {e}\n")
                 finally:
                     # Cleanup
-                    del model_approx
+                    if 'model_approx' in locals():
+                        del model_approx
                     keras.backend.clear_session()
-            
+    
+    # ========================================================================
             # ================================================================
             # STEP 4: Analysis and Summary
             # ================================================================
