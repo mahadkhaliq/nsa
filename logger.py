@@ -26,10 +26,10 @@ class NASLogger:
     def __init__(self, log_dir='logs'):
         self.log_dir = log_dir
         os.makedirs(log_dir, exist_ok=True)
-        
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        self.log_file = os.path.join(log_dir, f'nas_run_{timestamp}.log')
-        self.json_file = os.path.join(log_dir, f'nas_results_{timestamp}.json')
+
+        self.timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        self.log_file = os.path.join(log_dir, f'nas_run_{self.timestamp}.log')
+        self.json_file = os.path.join(log_dir, f'nas_results_{self.timestamp}.json')
         
         # Setup logging
         logging.basicConfig(
@@ -44,7 +44,7 @@ class NASLogger:
         
         self.logger = logging.getLogger(__name__)
         self.results = {
-            'start_time': timestamp,
+            'start_time': self.timestamp,
             'nas_results': [],
             'multiplier_results': [],
             'best_architecture': None,
