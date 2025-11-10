@@ -383,31 +383,24 @@ def main():
                     )
                     
                     model_approx = build_model(
-                        best_std['architecture'], 
+                        best_std['architecture'],
                         search_space_approx,
                         input_shape=(height, width, channels),
                         num_classes=num_classes,
                         learning_rate=args.learning_rate
                     )
-                    
-                    # Load weights from standard model
-                    # NOTE: Model should already be built by build_model(), don't rebuild
+
+                    # Transfer weights from standard model using set_weights (Nov 5 method)
                     try:
-                        model_approx.load_weights(weights_file)
+                        model_approx.set_weights(trained_weights)
                         if idx == 0:  # Log only for first multiplier
-                            logger.log(f"  ✓ Weights loaded successfully (no rebuild needed)")
+                            logger.log(f"  ✓ Weights transferred successfully using set_weights()")
                     except Exception as e:
-                        logger.log(f"  Warning: Weight loading failed, rebuilding: {e}")
-                        model_approx.build(input_shape=(None, height, width, channels))
-                        model_approx.load_weights(weights_file)
+                        logger.log(f"  ✗ Failed to transfer weights for {mul_name}: {e}")
+                        continue
 
-                    # Calibrate with validation data (critical for quantization)
-                    calibration_out = model_approx.predict(x_val[:100], verbose=0)
-                    if idx == 0:  # Log only for first multiplier
-                        logger.log(f"  Calibration output range: [{calibration_out.min():.4f}, {calibration_out.max():.4f}]")
-
-                    # Evaluate with approximate multiplier on TEST set
-                    approx_accuracy = evaluate_model(model_approx, x_test, y_test)
+                    # Evaluate with approximate multiplier on VALIDATION set (same as std_accuracy)
+                    approx_accuracy = evaluate_model(model_approx, x_val, y_val)
                     accuracy_drop = std_accuracy - approx_accuracy
                     drop_percent = (accuracy_drop / std_accuracy) * 100 if std_accuracy > 0 else 0
                     
