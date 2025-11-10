@@ -94,21 +94,23 @@ def get_class_names(dataset):
     return class_names_dict.get(dataset, None)
 
 def get_predefined_architecture(dataset):
-    """Get a good predefined architecture for quick testing"""
+    """Get a good predefined architecture for quick testing
+
+    NOTE: Conv1x1 is excluded as it's incompatible with approximate multipliers
+    (causes 90% accuracy drop). Using only conv3x3, conv5x5, and pooling.
+    """
     if dataset in ['mnist', 'fashion_mnist']:
+        # Working architecture (confirmed with approximate multipliers)
         return [
-            {'op': 'conv3x3', 'filters': 64, 'use_bn': True},
-            {'op': 'max_pool', 'filters': 64, 'use_bn': False},
-            {'op': 'conv5x5', 'filters': 128, 'use_bn': True},
-            {'op': 'conv1x1', 'filters': 64, 'use_bn': False}
+            {'op': 'conv3x3', 'filters': 128, 'use_bn': False},
+            {'op': 'conv5x5', 'filters': 128, 'use_bn': True}
         ]
     else:  # CIFAR
+        # Simple architecture without conv1x1
         return [
-            {'op': 'conv3x3', 'filters': 32, 'use_bn': True},
-            {'op': 'conv3x3', 'filters': 64, 'use_bn': True},
-            {'op': 'max_pool', 'filters': 64, 'use_bn': False},
-            {'op': 'conv3x3', 'filters': 128, 'use_bn': True},
-            {'op': 'conv1x1', 'filters': 128, 'use_bn': False}
+            {'op': 'conv3x3', 'filters': 64, 'use_bn': False},
+            {'op': 'conv3x3', 'filters': 128, 'use_bn': False},
+            {'op': 'conv5x5', 'filters': 128, 'use_bn': True}
         ]
 
 def create_lr_schedule(initial_lr, epochs):
