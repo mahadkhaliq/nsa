@@ -387,8 +387,13 @@ def main():
                     )
                     
                     # Load weights from standard model
-                    model_approx.build(input_shape=(None, height, width, channels))
-                    model_approx.load_weights(weights_file)
+                    # NOTE: Model should already be built by build_model(), don't rebuild
+                    try:
+                        model_approx.load_weights(weights_file)
+                    except Exception as e:
+                        logger.log(f"  Warning: Weight loading issue: {e}")
+                        model_approx.build(input_shape=(None, height, width, channels))
+                        model_approx.load_weights(weights_file)
 
                     # Calibrate with validation data (critical for quantization)
                     _ = model_approx.predict(x_val[:100], verbose=0)
