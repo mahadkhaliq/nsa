@@ -34,22 +34,20 @@ def conv5x5_approx(filters, mul_map_file='', use_bn=False):
 
 def conv3x3_standard(filters, use_bn=False):
     layers = []
+    # CRITICAL: Must match approximate layer structure when use_bn=True
+    # Approximate: FakeApproxConv2D(activation='relu') -> BN
+    # Standard must be: Conv2D(activation='relu') -> BN
+    layers.append(keras.layers.Conv2D(filters, 3, padding='same', activation='relu'))
     if use_bn:
-        layers.append(keras.layers.Conv2D(filters, 3, padding='same', activation=None))
         layers.append(keras.layers.BatchNormalization())
-        layers.append(keras.layers.Activation('relu'))
-    else:
-        layers.append(keras.layers.Conv2D(filters, 3, padding='same', activation='relu'))
     return layers
 
 def conv5x5_standard(filters, use_bn=False):
     layers = []
+    # CRITICAL: Must match approximate layer structure when use_bn=True
+    layers.append(keras.layers.Conv2D(filters, 5, padding='same', activation='relu'))
     if use_bn:
-        layers.append(keras.layers.Conv2D(filters, 5, padding='same', activation=None))
         layers.append(keras.layers.BatchNormalization())
-        layers.append(keras.layers.Activation('relu'))
-    else:
-        layers.append(keras.layers.Conv2D(filters, 5, padding='same', activation='relu'))
     return layers
 
 # ============ NEW OPERATIONS ============
@@ -65,12 +63,10 @@ def conv1x1_approx(filters, mul_map_file='', use_bn=False):
 
 def conv1x1_standard(filters, use_bn=False):
     layers = []
+    # CRITICAL: Must match approximate layer structure
+    layers.append(keras.layers.Conv2D(filters, 1, padding='same', activation='relu'))
     if use_bn:
-        layers.append(keras.layers.Conv2D(filters, 1, padding='same', activation=None))
         layers.append(keras.layers.BatchNormalization())
-        layers.append(keras.layers.Activation('relu'))
-    else:
-        layers.append(keras.layers.Conv2D(filters, 1, padding='same', activation='relu'))
     return layers
 
 # # Depthwise Separable Convolutions (efficient!)
