@@ -189,10 +189,10 @@ class NASVerifier:
             # Calculate drop percentage
             drop_pct = ((std_accuracy - approx_acc) / std_accuracy) * 100 if std_accuracy > 0 else 100
 
-            # Single point trace for offline evaluation
+            # Two point trace for offline evaluation (RTAMT bug with single points)
             dataset = {
-                'time': [0],
-                'accuracy_drop': [drop_pct]
+                'time': [0, 1],
+                'accuracy_drop': [drop_pct, drop_pct]
             }
             robustness_result = spec.evaluate(dataset)
 
@@ -242,11 +242,11 @@ class NASVerifier:
         spec.spec = f'always((energy_ratio <= {max_energy}) implies (accuracy >= {min_accuracy}))'
         spec.parse()
 
-        # Single point evaluation for offline
+        # Two point evaluation for offline (RTAMT bug with single points)
         dataset = {
-            'time': [0],
-            'accuracy': [accuracy],
-            'energy_ratio': [energy_ratio]
+            'time': [0, 1],
+            'accuracy': [accuracy, accuracy],
+            'energy_ratio': [energy_ratio, energy_ratio]
         }
         robustness_result = spec.evaluate(dataset)
 
