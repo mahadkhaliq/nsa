@@ -158,6 +158,8 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
                 logger.log(f"→ Evaluating with {len(test_multipliers)} approximate multipliers...")
 
             for mul_file in test_multipliers:
+                mul_name = mul_file.split('/')[-1]
+
                 # Set multiplier for all blocks
                 approx_config = config.copy()
                 approx_config['conv1_multiplier'] = mul_file
@@ -171,6 +173,12 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
 
                 approx_accuracy = evaluate_model(model_approx, x_val, y_val)
                 multiplier_accuracies.append(approx_accuracy)
+
+                # Log individual multiplier performance
+                if logger:
+                    drop = std_accuracy - approx_accuracy
+                    drop_pct = (drop / std_accuracy) * 100 if std_accuracy > 0 else 0
+                    logger.log(f"    {mul_name:20s}: {approx_accuracy:.4f} (drop: {drop_pct:5.1f}%)")
 
                 del model_approx
                 keras.backend.clear_session()

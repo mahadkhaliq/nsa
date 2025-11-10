@@ -61,7 +61,7 @@ results_std = run_nas_reference(
     batch_size=64,
     learning_rate=0.001,
     method='random',
-    test_multiplier=None,
+    test_multipliers=None,
     use_approximate_in_search=False,
     logger=None  # Disable logging for cleaner output
 )
@@ -89,7 +89,7 @@ results_hw = run_nas_reference(
     method='random',
     test_multipliers=test_multipliers,
     use_approximate_in_search=True,
-    logger=None  # Disable logging for cleaner output
+    logger=logger  # Enable logging to see individual multiplier performance
 )
 
 print(f"\nHardware-Aware NAS Results:")
