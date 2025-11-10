@@ -193,8 +193,7 @@ def main():
     logger.log(f"  Validation accuracy: {history.history['val_accuracy'][-1]:.4f}")
 
     # Save weights
-    results_dir = logger.results_dir
-    weights_file = os.path.join(results_dir, 'standard_model_weights.h5')
+    weights_file = os.path.join(args.log_dir, 'standard_model_weights.h5')
     model_std.save_weights(weights_file)
     logger.log(f"✓ Weights saved to {weights_file}")
 
@@ -280,7 +279,7 @@ def main():
 
     logger.log(f"\n{'='*80}")
     logger.log("Experiment Complete")
-    logger.log(f"Results saved to: {results_dir}/")
+    logger.log(f"Results saved to: {args.log_dir}/")
     logger.log(f"{'='*80}")
 
 
