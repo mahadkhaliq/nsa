@@ -111,11 +111,14 @@ def get_search_space(use_approximate=False, mul_map_file='', include_advanced=Tr
             'max_pool': max_pool,
             'avg_pool': avg_pool,
         }
-        
-        if include_advanced:
-            base_space.update({
-                'conv1x1': lambda f, bn: conv1x1_approx(f, mul_map_file, bn),
-            })
+
+        # NOTE: conv1x1 is EXCLUDED for approximate multipliers
+        # Testing shows conv1x1 causes 90% accuracy drop (random chance)
+        # Reference implementation also doesn't use 1x1 convolutions
+        # if include_advanced:
+        #     base_space.update({
+        #         'conv1x1': lambda f, bn: conv1x1_approx(f, mul_map_file, bn),
+        #     })
     else:
         base_space = {
             'conv3x3': conv3x3_standard,
