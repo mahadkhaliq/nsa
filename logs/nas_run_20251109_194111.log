@@ -1,0 +1,326 @@
+2025-11-09 19:41:11 [INFO] ======================================================================
+2025-11-09 19:41:11 [INFO] NAS with Approximate Multipliers - Started
+2025-11-09 19:41:11 [INFO] Log file: logs/nas_run_20251109_194111.log
+2025-11-09 19:41:11 [INFO] ======================================================================
+2025-11-09 19:41:11 [INFO] ======================================================================
+2025-11-09 19:41:11 [INFO] CONFIGURATION
+2025-11-09 19:41:11 [INFO] ======================================================================
+2025-11-09 19:41:11 [INFO] Dataset: cifar10
+2025-11-09 19:41:11 [INFO] Training samples: 10000
+2025-11-09 19:41:11 [INFO] Validation samples: 2000
+2025-11-09 19:41:11 [INFO] NAS trials: 15
+2025-11-09 19:41:11 [INFO] NAS blocks: 5
+2025-11-09 19:41:11 [INFO] NAS method: evolutionary
+2025-11-09 19:41:11 [INFO] Training epochs: 10
+2025-11-09 19:41:11 [INFO] Batch size: 128
+2025-11-09 19:41:11 [INFO] Learning rate: 0.001
+2025-11-09 19:41:11 [INFO] LR scheduling: No
+2025-11-09 19:41:11 [INFO] Multiplier dir: ./multipliers
+2025-11-09 19:41:11 [INFO] Save predictions: No
+2025-11-09 19:41:11 [INFO] Results dir: logs/results
+2025-11-09 19:41:11 [INFO] 
+======================================================================
+2025-11-09 19:41:11 [INFO] STEP 0: Loading Dataset
+2025-11-09 19:41:11 [INFO] ======================================================================
+2025-11-09 19:41:12 [INFO] Input shape: (32, 32, 3)
+2025-11-09 19:41:12 [INFO] Number of classes: 10
+2025-11-09 19:41:12 [INFO] Training samples (full): 44000
+2025-11-09 19:41:12 [INFO] Validation samples (full): 6000
+2025-11-09 19:41:12 [INFO] Test samples: 10000
+2025-11-09 19:41:12 [INFO] 
+Using subset:
+2025-11-09 19:41:12 [INFO]   Training: 10000 samples
+2025-11-09 19:41:12 [INFO]   Validation: 2000 samples
+2025-11-09 19:41:12 [INFO]   Classes: airplane, automobile, bird, cat, deer...
+2025-11-09 19:41:12 [INFO] 
+======================================================================
+2025-11-09 19:41:12 [INFO] STEP 1: Neural Architecture Search
+2025-11-09 19:41:12 [INFO] ======================================================================
+2025-11-09 19:41:12 [INFO] Starting NAS: STANDARD - Method: EVOLUTIONARY
+
+2025-11-09 19:41:12 [INFO] Phase 1: Initial population (4 architectures)
+2025-11-09 19:41:12 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:41:39 [INFO] Init 1/4: Accuracy 0.4870
+2025-11-09 19:41:39 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:42:05 [INFO] Init 2/4: Accuracy 0.4200
+2025-11-09 19:42:05 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:42:31 [INFO] Init 3/4: Accuracy 0.4530
+2025-11-09 19:42:31 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:42:57 [INFO] Init 4/4: Accuracy 0.5330
+2025-11-09 19:42:57 [INFO] 
+Phase 2: Evolution (11 generations)
+2025-11-09 19:42:57 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:43:35 [INFO] Trial 5/15
+2025-11-09 19:43:35 [INFO]   Architecture: [{'op': 'conv1x1', 'filters': 32, 'use_bn': False}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}]
+2025-11-09 19:43:35 [INFO]   Accuracy: 0.5285
+2025-11-09 19:43:35 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:44:13 [INFO] Trial 6/15
+2025-11-09 19:44:13 [INFO]   Architecture: [{'op': 'conv1x1', 'filters': 32, 'use_bn': False}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'max_pool', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}]
+2025-11-09 19:44:13 [INFO]   Accuracy: 0.4375
+2025-11-09 19:44:13 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:44:50 [INFO] Trial 7/15
+2025-11-09 19:44:50 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}]
+2025-11-09 19:44:50 [INFO]   Accuracy: 0.5520
+2025-11-09 19:44:50 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:45:28 [INFO] Trial 8/15
+2025-11-09 19:45:28 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 32, 'use_bn': False}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}]
+2025-11-09 19:45:28 [INFO]   Accuracy: 0.5390
+2025-11-09 19:45:28 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:46:07 [INFO] Trial 9/15
+2025-11-09 19:46:07 [INFO]   Architecture: [{'op': 'conv1x1', 'filters': 32, 'use_bn': False}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-09 19:46:07 [INFO]   Accuracy: 0.5665
+2025-11-09 19:46:07 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:46:47 [INFO] Trial 10/15
+2025-11-09 19:46:47 [INFO]   Architecture: [{'op': 'conv1x1', 'filters': 128, 'use_bn': False}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 32, 'use_bn': True}, {'op': 'conv3x3', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-09 19:46:47 [INFO]   Accuracy: 0.3950
+2025-11-09 19:46:47 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:47:25 [INFO] Trial 11/15
+2025-11-09 19:47:25 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-09 19:47:25 [INFO]   Accuracy: 0.5955
+2025-11-09 19:47:25 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:48:05 [INFO] Trial 12/15
+2025-11-09 19:48:05 [INFO]   Architecture: [{'op': 'conv3x3', 'filters': 32, 'use_bn': False}, {'op': 'conv3x3', 'filters': 64, 'use_bn': True}, {'op': 'conv1x1', 'filters': 32, 'use_bn': True}, {'op': 'conv5x5', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-09 19:48:05 [INFO]   Accuracy: 0.5385
+2025-11-09 19:48:05 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:48:44 [INFO] Trial 13/15
+2025-11-09 19:48:44 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-09 19:48:44 [INFO]   Accuracy: 0.4135
+2025-11-09 19:48:44 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:49:21 [INFO] Trial 14/15
+2025-11-09 19:49:21 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-09 19:49:21 [INFO]   Accuracy: 0.6075
+2025-11-09 19:49:21 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:49:58 [INFO] Trial 15/15
+2025-11-09 19:49:58 [INFO]   Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': False}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv1x1', 'filters': 128, 'use_bn': True}]
+2025-11-09 19:49:58 [INFO]   Accuracy: 0.4620
+2025-11-09 19:49:58 [INFO] 
+Top 3 Architectures:
+2025-11-09 19:49:58 [INFO] 1. Accuracy: 0.6075
+2025-11-09 19:49:58 [INFO]    [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-09 19:49:58 [INFO] 2. Accuracy: 0.5955
+2025-11-09 19:49:58 [INFO]    [{'op': 'conv5x5', 'filters': 32, 'use_bn': True}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-09 19:49:58 [INFO] 3. Accuracy: 0.5665
+2025-11-09 19:49:58 [INFO]    [{'op': 'conv1x1', 'filters': 32, 'use_bn': False}, {'op': 'conv3x3', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-09 19:49:58 [INFO] 
+======================================================================
+2025-11-09 19:49:58 [INFO] STEP 2: Training Best Architecture
+2025-11-09 19:49:58 [INFO] ======================================================================
+2025-11-09 19:49:58 [INFO] Best Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-09 19:49:58 [INFO] 
+Model Complexity:
+2025-11-09 19:49:58 [INFO]   Trainable Parameters: 467,466
+2025-11-09 19:49:58 [INFO]   Estimated FLOPs: 47,546,368
+2025-11-09 19:49:58 [INFO]   Model Size (approx): 1.78 MB (float32)
+2025-11-09 19:49:58 [INFO] 
+Training for 10 epochs...
+2025-11-09 19:49:58 [WARNING] sample_weight modes were coerced from
+  ...
+    to  
+  ['...']
+2025-11-09 19:50:24 [INFO] Training completed: 10 epochs
+2025-11-09 19:50:24 [INFO] ✓ Standard model accuracy: 0.5445
+2025-11-09 19:50:24 [INFO] 
+============================================================
+2025-11-09 19:50:24 [INFO] BEST ARCHITECTURE FOUND
+2025-11-09 19:50:24 [INFO] ============================================================
+2025-11-09 19:50:24 [INFO] Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-09 19:50:24 [INFO] Accuracy: 0.5445
+2025-11-09 19:50:24 [INFO] ============================================================
+2025-11-09 19:50:24 [INFO] 
+Training Summary:
+2025-11-09 19:50:24 [INFO]   Final Training Accuracy: 0.5547
+2025-11-09 19:50:24 [INFO]   Final Validation Accuracy: 0.5445
+2025-11-09 19:50:24 [INFO]   Final Training Loss: 1.2981
+2025-11-09 19:50:24 [INFO]   Final Validation Loss: 1.2830
+2025-11-09 19:50:24 [INFO] 
+Saving training curves...
+2025-11-09 19:50:24 [INFO]   ✓ Training curves saved to logs/results/
+2025-11-09 19:50:24 [INFO] 
+✓ Standard model weights saved to logs/results/standard_model_weights.h5
+2025-11-09 19:50:24 [INFO] 
+======================================================================
+2025-11-09 19:50:24 [INFO] STEP 3: Testing Approximate Multipliers
+2025-11-09 19:50:24 [INFO] ======================================================================
+2025-11-09 19:50:24 [INFO] Found 36 multipliers
+2025-11-09 19:50:24 [INFO] Testing first 10 (use --test_all_multipliers to test all)
+2025-11-09 19:50:24 [INFO] Testing 10 multipliers
+2025-11-09 19:50:24 [INFO] Standard model accuracy: 0.5445
+2025-11-09 19:50:24 [INFO] Using saved weights from: logs/results/standard_model_weights.h5
+
+2025-11-09 19:50:24 [INFO] [1/10] Testing: mul8u_125K.bin
+2025-11-09 19:50:25 [INFO] Testing: mul8u_125K.bin
+2025-11-09 19:50:25 [INFO]   Accuracy: 0.5480
+2025-11-09 19:50:25 [INFO]   Drop:     -0.0035 (-0.64%)
+2025-11-09 19:50:25 [INFO] [2/10] Testing: mul8u_12N4.bin
+2025-11-09 19:50:25 [INFO] Testing: mul8u_12N4.bin
+2025-11-09 19:50:25 [INFO]   Accuracy: 0.1020
+2025-11-09 19:50:25 [INFO]   Drop:     0.4425 (81.27%)
+2025-11-09 19:50:25 [INFO] [3/10] Testing: mul8u_13QR.bin
+2025-11-09 19:50:26 [INFO] Testing: mul8u_13QR.bin
+2025-11-09 19:50:26 [INFO]   Accuracy: 0.1015
+2025-11-09 19:50:26 [INFO]   Drop:     0.4430 (81.36%)
+2025-11-09 19:50:26 [INFO] [4/10] Testing: mul8u_1446.bin
+2025-11-09 19:50:26 [INFO] Testing: mul8u_1446.bin
+2025-11-09 19:50:26 [INFO]   Accuracy: 0.5495
+2025-11-09 19:50:26 [INFO]   Drop:     -0.0050 (-0.92%)
+2025-11-09 19:50:26 [INFO] [5/10] Testing: mul8u_14VP.bin
+2025-11-09 19:50:27 [INFO] Testing: mul8u_14VP.bin
+2025-11-09 19:50:27 [INFO]   Accuracy: 0.5500
+2025-11-09 19:50:27 [INFO]   Drop:     -0.0055 (-1.01%)
+2025-11-09 19:50:27 [INFO] [6/10] Testing: mul8u_150Q.bin
+2025-11-09 19:50:28 [INFO] Testing: mul8u_150Q.bin
+2025-11-09 19:50:28 [INFO]   Accuracy: 0.5495
+2025-11-09 19:50:28 [INFO]   Drop:     -0.0050 (-0.92%)
+2025-11-09 19:50:28 [INFO] [7/10] Testing: mul8u_17C8.bin
+2025-11-09 19:50:28 [INFO] Testing: mul8u_17C8.bin
+2025-11-09 19:50:28 [INFO]   Accuracy: 0.1015
+2025-11-09 19:50:28 [INFO]   Drop:     0.4430 (81.36%)
+2025-11-09 19:50:28 [INFO] [8/10] Testing: mul8u_17KS.bin
+2025-11-09 19:50:29 [INFO] Testing: mul8u_17KS.bin
+2025-11-09 19:50:29 [INFO]   Accuracy: 0.1025
+2025-11-09 19:50:29 [INFO]   Drop:     0.4420 (81.18%)
+2025-11-09 19:50:29 [INFO] [9/10] Testing: mul8u_17QU.bin
+2025-11-09 19:50:29 [INFO] Testing: mul8u_17QU.bin
+2025-11-09 19:50:29 [INFO]   Accuracy: 0.1015
+2025-11-09 19:50:29 [INFO]   Drop:     0.4430 (81.36%)
+2025-11-09 19:50:29 [INFO] [10/10] Testing: mul8u_185Q.bin
+2025-11-09 19:50:30 [INFO] Testing: mul8u_185Q.bin
+2025-11-09 19:50:30 [INFO]   Accuracy: 0.1050
+2025-11-09 19:50:30 [INFO]   Drop:     0.4395 (80.72%)
+2025-11-09 19:50:30 [INFO] 
+======================================================================
+2025-11-09 19:50:30 [INFO] STEP 4: Results Analysis
+2025-11-09 19:50:30 [INFO] ======================================================================
+2025-11-09 19:50:30 [INFO] 
+======================================================================
+2025-11-09 19:50:30 [INFO] FINAL RESULTS SUMMARY
+2025-11-09 19:50:30 [INFO] ======================================================================
+2025-11-09 19:50:30 [INFO] Standard Accuracy: 0.5445
+2025-11-09 19:50:30 [INFO] Total Multipliers Tested: 10
+2025-11-09 19:50:30 [INFO] 
+Accuracy Statistics:
+2025-11-09 19:50:30 [INFO]   Best:  0.5500
+2025-11-09 19:50:30 [INFO]   Worst: 0.1015
+2025-11-09 19:50:30 [INFO]   Mean:  0.2811
+2025-11-09 19:50:30 [INFO] 
+Drop Statistics:
+2025-11-09 19:50:30 [INFO]   Min Drop:  -0.0055 (-1.01%)
+2025-11-09 19:50:30 [INFO]   Max Drop:  0.4430 (81.36%)
+2025-11-09 19:50:30 [INFO]   Mean Drop: 0.2634
+2025-11-09 19:50:30 [INFO] 
+Multiplier Categories:
+2025-11-09 19:50:30 [INFO]   Excellent (≤1% drop):   4
+2025-11-09 19:50:30 [INFO]   Good (1-5% drop):       0
+2025-11-09 19:50:30 [INFO]   Medium (5-10% drop):    0
+2025-11-09 19:50:30 [INFO]   Poor (>10% drop):       6
+2025-11-09 19:50:30 [INFO] 
+Multiplier                     Accuracy     Drop         Drop %    
+2025-11-09 19:50:30 [INFO] ----------------------------------------------------------------------
+2025-11-09 19:50:30 [INFO] mul8u_14VP.bin                 0.5500       -0.0055      -1.01     %
+2025-11-09 19:50:30 [INFO] mul8u_1446.bin                 0.5495       -0.0050      -0.92     %
+2025-11-09 19:50:30 [INFO] mul8u_150Q.bin                 0.5495       -0.0050      -0.92     %
+2025-11-09 19:50:30 [INFO] mul8u_125K.bin                 0.5480       -0.0035      -0.64     %
+2025-11-09 19:50:30 [INFO] mul8u_185Q.bin                 0.1050       0.4395       80.72     %
+2025-11-09 19:50:30 [INFO] mul8u_17KS.bin                 0.1025       0.4420       81.18     %
+2025-11-09 19:50:30 [INFO] mul8u_12N4.bin                 0.1020       0.4425       81.27     %
+2025-11-09 19:50:30 [INFO] mul8u_13QR.bin                 0.1015       0.4430       81.36     %
+2025-11-09 19:50:30 [INFO] mul8u_17C8.bin                 0.1015       0.4430       81.36     %
+2025-11-09 19:50:30 [INFO] mul8u_17QU.bin                 0.1015       0.4430       81.36     %
+2025-11-09 19:50:30 [INFO] 
+======================================================================
+2025-11-09 19:50:30 [INFO] BEST APPROXIMATE MULTIPLIER
+2025-11-09 19:50:30 [INFO] ======================================================================
+2025-11-09 19:50:30 [INFO] Multiplier:  mul8u_14VP.bin
+2025-11-09 19:50:30 [INFO] Accuracy:    0.5500
+2025-11-09 19:50:30 [INFO] Drop:        -0.0055 (-1.01%)
+2025-11-09 19:50:30 [INFO] 
+Top 5 Multipliers:
+2025-11-09 19:50:30 [INFO] 1. mul8u_14VP.bin                 Acc: 0.5500 Drop: -1.01%
+2025-11-09 19:50:30 [INFO] 2. mul8u_1446.bin                 Acc: 0.5495 Drop: -0.92%
+2025-11-09 19:50:30 [INFO] 3. mul8u_150Q.bin                 Acc: 0.5495 Drop: -0.92%
+2025-11-09 19:50:30 [INFO] 4. mul8u_125K.bin                 Acc: 0.5480 Drop: -0.64%
+2025-11-09 19:50:30 [INFO] 5. mul8u_185Q.bin                 Acc: 0.1050 Drop: +80.72%
+2025-11-09 19:50:30 [INFO] 
+Estimated Energy Savings:
+2025-11-09 19:50:30 [INFO]   Excellent (≤1% drop): 4 multipliers
+2025-11-09 19:50:30 [INFO]   Good (1-5% drop):     0 multipliers
+2025-11-09 19:50:30 [INFO]   Potential energy savings: 30-50% (typical for approximate multipliers)
+2025-11-09 19:50:30 [INFO]   Model parameters: 467,466
+2025-11-09 19:50:30 [INFO]   Estimated MACs per inference: 23,773,184
+2025-11-09 19:50:30 [INFO] 
+======================================================================
+2025-11-09 19:50:30 [INFO] FINAL SUMMARY
+2025-11-09 19:50:30 [INFO] ======================================================================
+2025-11-09 19:50:30 [INFO] Dataset: cifar10
+2025-11-09 19:50:30 [INFO] Best Architecture: [{'op': 'conv5x5', 'filters': 32, 'use_bn': False}, {'op': 'avg_pool', 'filters': 64, 'use_bn': False}, {'op': 'conv3x3', 'filters': 128, 'use_bn': True}, {'op': 'avg_pool', 'filters': 128, 'use_bn': False}, {'op': 'conv5x5', 'filters': 128, 'use_bn': True}]
+2025-11-09 19:50:30 [INFO] Standard Model Accuracy: 0.5445
+2025-11-09 19:50:30 [INFO] Model Parameters: 467,466
+2025-11-09 19:50:30 [INFO] Estimated FLOPs: 47,546,368
+2025-11-09 19:50:30 [INFO] Learning Rate: 0.001
+2025-11-09 19:50:30 [INFO] 
+Multiplier Testing:
+2025-11-09 19:50:30 [INFO]   Total tested: 10
+2025-11-09 19:50:30 [INFO]   Best accuracy: 0.5500
+2025-11-09 19:50:30 [INFO]   Best multiplier: mul8u_14VP.bin
+2025-11-09 19:50:30 [INFO] 
+Quality Distribution:
+2025-11-09 19:50:30 [INFO]   Excellent (≤1%):   4
+2025-11-09 19:50:30 [INFO]   Good (1-5%):       0
+2025-11-09 19:50:30 [INFO]   Medium (5-10%):    0
+2025-11-09 19:50:30 [INFO]   Poor (>10%):       6
+2025-11-09 19:50:30 [INFO] 
+Output Locations:
+2025-11-09 19:50:30 [INFO]   Logs: logs/
+2025-11-09 19:50:30 [INFO]   Results: logs/results/
+2025-11-09 19:50:30 [INFO] 
+✓ Results saved to: logs/nas_results_20251109_194111.json
+2025-11-09 19:50:30 [INFO] 
+======================================================================
+2025-11-09 19:50:30 [INFO] NAS Run Completed
+2025-11-09 19:50:30 [INFO] Log file: logs/nas_run_20251109_194111.log
+2025-11-09 19:50:30 [INFO] ======================================================================
