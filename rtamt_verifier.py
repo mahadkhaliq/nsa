@@ -134,19 +134,17 @@ class NASVerifier:
 
         # Evaluate offline
         try:
-            # Prepare data for offline evaluation
-            train_acc_data = [(t['time'], t['train_acc']) for t in trace]
-            val_acc_data = [(t['time'], t['val_acc']) for t in trace]
-            loss_data = [(t['time'], t['loss']) for t in trace]
-            epoch_data = [(t['time'], t['epoch']) for t in trace]
+            # Prepare dataset dictionary for offline evaluation
+            dataset = {
+                'time': [t['time'] for t in trace],
+                'train_acc': [t['train_acc'] for t in trace],
+                'val_acc': [t['val_acc'] for t in trace],
+                'loss': [t['loss'] for t in trace],
+                'epoch': [t['epoch'] for t in trace]
+            }
 
             # Evaluate with offline spec
-            robustness = spec.evaluate(
-                train_acc=train_acc_data,
-                val_acc=val_acc_data,
-                loss=loss_data,
-                epoch=epoch_data
-            )
+            robustness = spec.evaluate(dataset)
 
             # For offline, robustness is a list - take the first value (at time 0)
             if isinstance(robustness, list) and len(robustness) > 0:
@@ -192,7 +190,11 @@ class NASVerifier:
             drop_pct = ((std_accuracy - approx_acc) / std_accuracy) * 100 if std_accuracy > 0 else 100
 
             # Single point trace for offline evaluation
-            robustness_result = spec.evaluate(accuracy_drop=[(0, drop_pct)])
+            dataset = {
+                'time': [0],
+                'accuracy_drop': [drop_pct]
+            }
+            robustness_result = spec.evaluate(dataset)
 
             # Extract robustness value
             if isinstance(robustness_result, list) and len(robustness_result) > 0:
@@ -241,10 +243,12 @@ class NASVerifier:
         spec.parse()
 
         # Single point evaluation for offline
-        robustness_result = spec.evaluate(
-            accuracy=[(0, accuracy)],
-            energy_ratio=[(0, energy_ratio)]
-        )
+        dataset = {
+            'time': [0],
+            'accuracy': [accuracy],
+            'energy_ratio': [energy_ratio]
+        }
+        robustness_result = spec.evaluate(dataset)
 
         # Extract robustness value
         if isinstance(robustness_result, list) and len(robustness_result) > 0:
