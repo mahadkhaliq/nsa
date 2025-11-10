@@ -16,6 +16,8 @@ from nas_reference import run_nas_reference, config_to_string
 from model_builder import build_model_for_training, build_model_for_evaluation
 from training import evaluate_model
 from logger import NASLogger
+from rtamt_verifier import NASVerifier, estimate_energy_ratio
+from pareto_visualization import plot_pareto_frontier, plot_accuracy_energy_scatter, plot_nas_verification_summary
 
 # GPU memory management
 physical_devices = tf.config.list_physical_devices('GPU')
@@ -61,6 +63,14 @@ def parse_args():
     parser.add_argument('--multiplier_dir', type=str, default='./multipliers')
     parser.add_argument('--skip_multipliers', action='store_true')
     parser.add_argument('--test_all_multipliers', action='store_true')
+
+    # RTAMT Formal Verification
+    parser.add_argument('--use_rtamt', action='store_true',
+                       help='Enable RTAMT formal verification during NAS')
+    parser.add_argument('--rtamt_min_accuracy', type=float, default=0.7,
+                       help='Minimum accuracy threshold for RTAMT verification')
+    parser.add_argument('--rtamt_max_drop', type=float, default=10.0,
+                       help='Maximum accuracy drop percentage for robustness verification')
 
     # Output
     parser.add_argument('--log_dir', type=str, default='logs')
@@ -162,7 +172,10 @@ def main():
             method=args.nas_method,
             test_multipliers=nas_multipliers,
             use_approximate_in_search=nas_multipliers is not None,
-            logger=logger
+            logger=logger,
+            use_rtamt_verification=args.use_rtamt,
+            min_accuracy_threshold=args.rtamt_min_accuracy,
+            max_accuracy_drop_percent=args.rtamt_max_drop
         )
         best_config = nas_results['best_config']
 
@@ -276,6 +289,74 @@ def main():
             logger.log(f"\nTop 5 Worst Multipliers:")
             for i, r in enumerate(results_sorted[-5:]):
                 logger.log(f"  {i+1}. {r['name']:20s}  Acc: {r['accuracy']:.4f}  Drop: {r['drop_pct']:6.2f}%")
+
+    # ========================================================================
+    # STEP 5: Generate RTAMT Verification Report (if enabled)
+    # ========================================================================
+    if args.use_rtamt and not args.skip_nas and 'verifier' in nas_results and nas_results['verifier']:
+        logger.log_section("STEP 5: Formal Verification Report")
+
+        verifier = nas_results['verifier']
+        best_result = nas_results['best_result']
+
+        # Prepare multiplier results for verification report
+        multiplier_results_for_report = []
+        if 'verification' in best_result and best_result['verification'] and best_result['verification']['pareto']:
+            for pareto_point in best_result['verification']['pareto']:
+                multiplier_results_for_report.append({
+                    'name': pareto_point['multiplier'],
+                    'accuracy': pareto_point['accuracy'],
+                    'energy_ratio': pareto_point['energy_ratio']
+                })
+
+        # Generate comprehensive verification report
+        if multiplier_results_for_report:
+            training_history = {
+                'accuracy': best_result['history']['accuracy'],
+                'val_accuracy': best_result['history']['val_accuracy'],
+                'loss': best_result['history']['loss']
+            }
+
+            verification_report = verifier.generate_verification_report(
+                config=best_config,
+                training_history=training_history,
+                std_accuracy=best_result['std_accuracy'],
+                multiplier_results=multiplier_results_for_report
+            )
+
+            # Print summary
+            summary_str = verifier.get_summary_string(verification_report)
+            logger.log(summary_str)
+
+            # Save verification report as JSON
+            import json
+            report_file = os.path.join(args.log_dir, f'verification_report_{logger.timestamp}.json')
+            with open(report_file, 'w') as f:
+                json.dump(verification_report, f, indent=2)
+            logger.log(f"\nVerification report saved to: {report_file}")
+
+            # Generate visualizations
+            logger.log(f"\nGenerating Pareto frontier visualizations...")
+
+            # Pareto frontier plot
+            pareto_plot = os.path.join(args.log_dir, f'pareto_frontier_{logger.timestamp}.png')
+            pareto_stats = plot_pareto_frontier(
+                multiplier_results_for_report,
+                output_file=pareto_plot,
+                title=f'Accuracy-Energy Pareto Frontier ({args.dataset.upper()})'
+            )
+            logger.log(f"  Pareto frontier plot: {pareto_plot}")
+            logger.log(f"  Pareto-optimal points: {pareto_stats['pareto_optimal_count']}/{pareto_stats['total_points']}")
+
+            # Scatter plot
+            scatter_plot = os.path.join(args.log_dir, f'accuracy_energy_scatter_{logger.timestamp}.png')
+            plot_accuracy_energy_scatter(multiplier_results_for_report, output_file=scatter_plot)
+            logger.log(f"  Scatter plot: {scatter_plot}")
+
+            # Verification summary plot
+            summary_plot = os.path.join(args.log_dir, f'verification_summary_{logger.timestamp}.png')
+            plot_nas_verification_summary(verification_report, output_file=summary_plot)
+            logger.log(f"  Verification summary: {summary_plot}")
 
     logger.log(f"\n{'='*80}")
     logger.log("Experiment Complete")

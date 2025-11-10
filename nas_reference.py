@@ -7,6 +7,7 @@ import tensorflow as tf
 from tensorflow import keras
 from model_builder import build_model_for_training, build_model_for_evaluation
 from training import evaluate_model
+from rtamt_verifier import NASVerifier, estimate_energy_ratio
 
 # Search space for reference architecture
 SEARCH_SPACE = {
@@ -75,7 +76,8 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
                      num_trials=20, epochs_per_trial=15, batch_size=64,
                      learning_rate=0.001, method='evolutionary',
                      test_multipliers=None, use_approximate_in_search=True,
-                     logger=None):
+                     logger=None, use_rtamt_verification=False,
+                     min_accuracy_threshold=0.7, max_accuracy_drop_percent=10.0):
     """
     Hardware-aware NAS with reference architecture pattern.
     Evaluates architectures with ALL approximate multipliers during search.
@@ -93,6 +95,9 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
         test_multipliers: LIST of multiplier file paths for approximate evaluation
         use_approximate_in_search: If True, use approximate multipliers during NAS
         logger: Logger instance
+        use_rtamt_verification: If True, use RTAMT for formal verification
+        min_accuracy_threshold: Minimum accuracy threshold for RTAMT verification
+        max_accuracy_drop_percent: Maximum accuracy drop for robustness verification
 
     Returns:
         dict: Best configuration and results
@@ -108,6 +113,19 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
         logger.log(f"Approximate evaluation: {use_approximate_in_search}")
         if use_approximate_in_search and test_multipliers:
             logger.log(f"Testing with {len(test_multipliers)} multipliers")
+        if use_rtamt_verification:
+            logger.log(f"RTAMT Formal Verification: ENABLED")
+            logger.log(f"  Min accuracy threshold: {min_accuracy_threshold:.2f}")
+            logger.log(f"  Max accuracy drop: {max_accuracy_drop_percent:.1f}%")
+
+    # Initialize RTAMT verifier if enabled
+    verifier = None
+    if use_rtamt_verification:
+        verifier = NASVerifier()
+        verifier.create_training_spec(min_accuracy=min_accuracy_threshold, max_epochs=epochs_per_trial)
+        verifier.create_robustness_spec(max_drop_percent=max_accuracy_drop_percent)
+        if logger:
+            logger.log("✓ RTAMT verifier initialized")
 
     configs_tried = []
     fitness_scores = []
@@ -187,6 +205,71 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
             mean_approx_accuracy = np.mean(multiplier_accuracies)
             mean_accuracy_drop = std_accuracy - mean_approx_accuracy
 
+        # RTAMT Formal Verification
+        verification_results = None
+        verification_satisfied = True  # Default to True if verification disabled
+
+        if verifier is not None:
+            if logger:
+                logger.log(f"→ Formal verification with RTAMT...")
+
+            # 1. Verify training convergence
+            training_history = {
+                'accuracy': history.history['accuracy'],
+                'val_accuracy': history.history['val_accuracy'],
+                'loss': history.history['loss']
+            }
+            train_robustness, train_satisfied = verifier.verify_training(training_history)
+
+            # 2. Verify multiplier robustness (if using approximate multipliers)
+            robustness_verification = None
+            if use_approximate_in_search and test_multipliers and multiplier_accuracies:
+                robustness_verification = verifier.verify_multiplier_robustness(
+                    std_accuracy, multiplier_accuracies
+                )
+
+            # 3. Verify energy-accuracy tradeoff for each multiplier
+            pareto_results = []
+            if use_approximate_in_search and test_multipliers:
+                for i, (mul_file, mul_acc) in enumerate(zip(test_multipliers, multiplier_accuracies)):
+                    mul_name = mul_file.split('/')[-1]
+                    energy_ratio = estimate_energy_ratio(mul_name)
+                    pareto_rob, pareto_sat = verifier.verify_pareto_point(
+                        mul_acc, energy_ratio,
+                        min_accuracy=min_accuracy_threshold
+                    )
+                    pareto_results.append({
+                        'multiplier': mul_name,
+                        'accuracy': mul_acc,
+                        'energy_ratio': energy_ratio,
+                        'robustness': float(pareto_rob),
+                        'satisfied': bool(pareto_sat)
+                    })
+
+            # Overall verification satisfaction
+            verification_satisfied = train_satisfied
+            if robustness_verification:
+                verification_satisfied = verification_satisfied and (robustness_verification['satisfaction_rate'] >= 0.7)
+
+            verification_results = {
+                'training': {
+                    'robustness': float(train_robustness),
+                    'satisfied': bool(train_satisfied)
+                },
+                'robustness': robustness_verification,
+                'pareto': pareto_results,
+                'overall_satisfied': verification_satisfied
+            }
+
+            if logger:
+                logger.log(f"  ✓ Training convergence: {'PASS' if train_satisfied else 'FAIL'} (robustness: {train_robustness:.4f})")
+                if robustness_verification:
+                    logger.log(f"  ✓ Multiplier robustness: {robustness_verification['satisfaction_rate']:.1%} pass rate")
+                if pareto_results:
+                    satisfied_count = sum(1 for p in pareto_results if p['satisfied'])
+                    logger.log(f"  ✓ Pareto points: {satisfied_count}/{len(pareto_results)} satisfy energy-accuracy tradeoff")
+                logger.log(f"  {'✓' if verification_satisfied else '✗'} Overall verification: {'PASS' if verification_satisfied else 'FAIL'}")
+
         # Fitness function: balance standard accuracy and robustness to approximate multipliers
         # We want high standard accuracy AND low AVERAGE drop across ALL multipliers
         if use_approximate_in_search and test_multipliers:
@@ -194,6 +277,12 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
             # Robustness = average performance across all multipliers
             robustness_score = max(0, 1 - (mean_accuracy_drop / std_accuracy))
             fitness = 0.7 * std_accuracy + 0.3 * robustness_score
+
+            # Penalty for failing formal verification (if enabled)
+            if verifier is not None and not verification_satisfied:
+                fitness = fitness * 0.8  # 20% penalty for failing verification
+                if logger:
+                    logger.log(f"  ⚠ Fitness penalty applied for failing verification")
         else:
             # Single objective: just standard accuracy
             fitness = std_accuracy
@@ -209,7 +298,8 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
             'mean_accuracy_drop': mean_accuracy_drop,
             'multiplier_accuracies': multiplier_accuracies,
             'fitness': fitness,
-            'history': history.history
+            'history': history.history,
+            'verification': verification_results
         }
         results.append(result)
 
@@ -247,10 +337,37 @@ def run_nas_reference(x_train, y_train, x_val, y_val, input_shape, num_classes,
         logger.log(f"  Fitness score: {best_result['fitness']:.4f}")
         logger.log(f"  Mean fitness: {np.mean(fitness_scores):.4f} ± {np.std(fitness_scores):.4f}")
 
+        # RTAMT verification summary
+        if verifier is not None:
+            logger.log(f"\n{'='*80}")
+            logger.log(f"Formal Verification Summary (RTAMT)")
+            logger.log(f"{'='*80}")
+
+            verified_count = sum(1 for r in results if r['verification'] and r['verification']['overall_satisfied'])
+            logger.log(f"Verified architectures: {verified_count}/{num_trials} ({100*verified_count/num_trials:.1f}%)")
+
+            if best_result['verification']:
+                best_ver = best_result['verification']
+                logger.log(f"\nBest Architecture Verification:")
+                logger.log(f"  Training convergence: {'✓ PASS' if best_ver['training']['satisfied'] else '✗ FAIL'}")
+                if best_ver['robustness']:
+                    logger.log(f"  Robustness rate: {best_ver['robustness']['satisfaction_rate']:.1%}")
+                if best_ver['pareto']:
+                    satisfied_pareto = sum(1 for p in best_ver['pareto'] if p['satisfied'])
+                    logger.log(f"  Pareto-optimal points: {satisfied_pareto}/{len(best_ver['pareto'])}")
+                    # Show best Pareto point
+                    satisfied_points = [p for p in best_ver['pareto'] if p['satisfied']]
+                    if satisfied_points:
+                        best_pareto = max(satisfied_points, key=lambda p: p['accuracy'])
+                        logger.log(f"  Best Pareto point: {best_pareto['multiplier']}")
+                        logger.log(f"    Accuracy: {best_pareto['accuracy']:.4f}")
+                        logger.log(f"    Energy ratio: {best_pareto['energy_ratio']:.2f}x")
+
     return {
         'best_config': best_config,
         'best_result': best_result,
         'all_configs': configs_tried,
         'all_fitness_scores': fitness_scores,
-        'results': results
+        'results': results,
+        'verifier': verifier
     }
