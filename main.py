@@ -8,9 +8,13 @@ Features:
 """
 
 from tensorflow import keras
+import tensorflow as tf
 from nas import run_nas
 from model_builder import build_model, count_model_params, estimate_flops
 from operations import get_search_space
+
+# Print TensorFlow version for debugging
+print(f"TensorFlow version: {tf.__version__}")
 from training import evaluate_model, train_model
 from logger import NASLogger
 from validation_utils import save_predictions, plot_confidence_distribution
@@ -390,13 +394,17 @@ def main():
                     # NOTE: Model should already be built by build_model(), don't rebuild
                     try:
                         model_approx.load_weights(weights_file)
+                        if idx == 0:  # Log only for first multiplier
+                            logger.log(f"  ✓ Weights loaded successfully (no rebuild needed)")
                     except Exception as e:
-                        logger.log(f"  Warning: Weight loading issue: {e}")
+                        logger.log(f"  Warning: Weight loading failed, rebuilding: {e}")
                         model_approx.build(input_shape=(None, height, width, channels))
                         model_approx.load_weights(weights_file)
 
                     # Calibrate with validation data (critical for quantization)
-                    _ = model_approx.predict(x_val[:100], verbose=0)
+                    calibration_out = model_approx.predict(x_val[:100], verbose=0)
+                    if idx == 0:  # Log only for first multiplier
+                        logger.log(f"  Calibration output range: [{calibration_out.min():.4f}, {calibration_out.max():.4f}]")
 
                     # Evaluate with approximate multiplier on TEST set
                     approx_accuracy = evaluate_model(model_approx, x_test, y_test)
