@@ -330,9 +330,11 @@ def main():
 
             # Save verification report as JSON
             import json
+            from logger import convert_to_json_serializable
             report_file = os.path.join(args.log_dir, f'verification_report_{logger.timestamp}.json')
             with open(report_file, 'w') as f:
-                json.dump(verification_report, f, indent=2)
+                json_safe_report = convert_to_json_serializable(verification_report)
+                json.dump(json_safe_report, f, indent=2)
             logger.log(f"\nVerification report saved to: {report_file}")
 
             # Generate visualizations
