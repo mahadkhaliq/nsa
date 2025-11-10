@@ -388,11 +388,13 @@ def main():
                     
                     # Load weights from standard model
                     model_approx.build(input_shape=(None, height, width, channels))
-
                     model_approx.load_weights(weights_file)
-                    
-                    # Evaluate with approximate multiplier
-                    approx_accuracy = evaluate_model(model_approx, x_val, y_val)
+
+                    # Calibrate with validation data (critical for quantization)
+                    _ = model_approx.predict(x_val[:100], verbose=0)
+
+                    # Evaluate with approximate multiplier on TEST set
+                    approx_accuracy = evaluate_model(model_approx, x_test, y_test)
                     accuracy_drop = std_accuracy - approx_accuracy
                     drop_percent = (accuracy_drop / std_accuracy) * 100 if std_accuracy > 0 else 0
                     
