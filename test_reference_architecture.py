@@ -6,6 +6,16 @@ from model_builder import build_model_for_training, build_model_for_evaluation
 from dataloader import load_dataset
 from training import evaluate_model
 
+# GPU memory management
+physical_devices = tf.config.list_physical_devices('GPU')
+if physical_devices:
+    try:
+        for device in physical_devices:
+            tf.config.experimental.set_memory_growth(device, True)
+        print(f"✓ GPU memory growth enabled for {len(physical_devices)} device(s)")
+    except:
+        print("⚠ Could not enable GPU memory growth")
+
 print(f"TensorFlow version: {tf.__version__}")
 
 # Load MNIST
@@ -19,18 +29,18 @@ if len(x_train.shape) == 3:
 
 input_shape, num_classes = x_train.shape[1:], 10
 
-# Configuration matching reference implementation
+# Configuration matching reference implementation (reduced for MNIST)
 config = {
-    'conv1_filters': 32,
+    'conv1_filters': 16,
     'conv1_kernel': 3,
     'conv1_multiplier': './multipliers/mul8u_2P7.bin',
-    'conv2_filters': 64,
+    'conv2_filters': 32,
     'conv2_kernel': 3,
     'conv2_multiplier': './multipliers/mul8u_2P7.bin',
-    'conv3_filters': 128,
+    'conv3_filters': 64,
     'conv3_kernel': 3,
     'conv3_multiplier': './multipliers/mul8u_2P7.bin',
-    'dense1_size': 128,
+    'dense1_size': 64,
     'dropout_rate': 0.3
 }
 
@@ -59,8 +69,8 @@ for i, layer in enumerate(model_std.layers[:10]):  # Show first 10 layers
 history = model_std.fit(
     x_train, y_train,
     validation_data=(x_val, y_val),
-    epochs=20,
-    batch_size=128,
+    epochs=15,
+    batch_size=64,
     verbose=1
 )
 
@@ -102,12 +112,26 @@ elif drop_pct < 50:
 else:
     print("\n✗ FAILURE: Severe degradation")
 
+# Cleanup
+del model_std, model_approx
+keras.backend.clear_session()
+
 # ==============================================================================
 # Test multiple multipliers
 # ==============================================================================
 print("\n" + "=" * 80)
 print("Testing multiple multipliers...")
 print("=" * 80)
+
+# Re-train fresh model for multiplier testing
+print("Re-training fresh model for multiplier evaluation...")
+model_fresh = build_model_for_training(config, input_shape, num_classes, learning_rate=0.001)
+model_fresh.fit(x_train, y_train, validation_data=(x_val, y_val), epochs=15, batch_size=64, verbose=0)
+fresh_std_acc = evaluate_model(model_fresh, x_val, y_val)
+fresh_weights = model_fresh.get_weights()
+print(f"✓ Fresh model accuracy: {fresh_std_acc:.4f}\n")
+del model_fresh
+keras.backend.clear_session()
 
 multiplier_files = sorted(glob.glob('./multipliers/*.bin'))[:10]  # Test first 10
 results = []
@@ -122,9 +146,9 @@ for mul_file in multiplier_files:
     test_config['conv3_multiplier'] = mul_file
 
     # Build and evaluate
-    model_test = build_model_for_evaluation(test_config, input_shape, num_classes, weights=trained_weights)
+    model_test = build_model_for_evaluation(test_config, input_shape, num_classes, weights=fresh_weights)
     test_acc = evaluate_model(model_test, x_val, y_val)
-    test_drop = ((std_accuracy - test_acc) / std_accuracy) * 100
+    test_drop = ((fresh_std_acc - test_acc) / fresh_std_acc) * 100
 
     results.append({'name': mul_name, 'accuracy': test_acc, 'drop_pct': test_drop})
     print(f"  {mul_name:20s}  Acc: {test_acc:.4f}  Drop: {test_drop:6.2f}%")
@@ -136,6 +160,6 @@ print("\n" + "=" * 80)
 print("Multiplier differentiation test:")
 drops = [r['drop_pct'] for r in results]
 if max(drops) - min(drops) > 5:
-    print("✓ Multipliers show DIFFERENT performance (good!)")
+    print(f"✓ Multipliers show DIFFERENT performance (range: {min(drops):.2f}% to {max(drops):.2f}%)")
 else:
-    print("✗ Multipliers show UNIFORM performance (bad)")
+    print(f"✗ Multipliers show UNIFORM performance (range: {min(drops):.2f}% to {max(drops):.2f}%)")
