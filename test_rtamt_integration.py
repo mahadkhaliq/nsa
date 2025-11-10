@@ -25,8 +25,14 @@ x_train, y_train, x_val, y_val, x_test, y_test = load_dataset('mnist')
 x_train, y_train = x_train[:1000], y_train[:1000]  # Very small for quick test
 x_val, y_val = x_val[:200], y_val[:200]
 
+# Ensure correct shape (add channel dimension if needed)
+if len(x_train.shape) == 3:
+    x_train = x_train[..., None]
+    x_val = x_val[..., None]
+
 print(f"Training samples: {len(x_train)}")
 print(f"Validation samples: {len(x_val)}")
+print(f"Input shape: {x_train.shape[1:]}")
 
 input_shape = x_train.shape[1:]
 num_classes = 10
